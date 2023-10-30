@@ -14,7 +14,7 @@
   Author: Felix Messmer
 -->
 
-  <xacro:macro name="sbot_arm" params="prefix joint_limited shoulder_pan_lower_limit:=${-pi} shoulder_pan_upper_limit:=${pi} shoulder_lift_lower_limit:=${-pi} shoulder_lift_upper_limit:=${pi} elbow_joint_lower_limit:=${-pi} elbow_joint_upper_limit:=${pi} wrist_1_lower_limit:=${-pi} wrist_1_upper_limit:=${pi} wrist_2_lower_limit:=${-pi} wrist_2_upper_limit:=${pi} wrist_3_lower_limit:=${-pi} wrist_3_upper_limit:=${pi} transmission_hw_interface:=hardware_interface/PositionJointInterface safety_limits:=false safety_pos_margin:=0.15 safety_k_position:=20">
+  <xacro:macro name="sbot_arm" params="prefix joint_limited">
 
     <!-- LINKS REALES DEL BRAZO -->
     <xacro:property name="robot_name" default="scorbot"/>
@@ -38,23 +38,114 @@
     <xacro:property name="forearm_mass" value="5.6889976191393" />
     <xacro:property name="flange_mass" value="1.08471916910904" />
 
-    <xacro:m_link name="${base}" color="Grey" origin_rpy="0 0 0" origin_xyz="-0.108054021244931 -6.78949721999444E-08 0.0484049851585737" mass="${base_mass}" ixx="0.085126670768749" ixy="2.58404334129752E-08" ixz="-1.08844213882229E-08" iyy="0.085126691797693" iyz="-6.7077388590106E-09" izz="0.0998601414904193" meshfile="file:$(find sbot_description)/meshes/link_base.STL" meshscale="1 1 1" />
+    <xacro:m_link name="${base}" color="Grey"
+            origin_rpy="0 0 0"
+            origin_xyz="-0.108054021244931 -6.78949721999444E-08 0.0484049851585737"
+            mass="${base_mass}"
+            ixx="0.085126670768749"
+            ixy="2.58404334129752E-08"
+            ixz="-1.08844213882229E-08"
+            iyy="0.085126691797693"
+            iyz="-6.7077388590106E-09"
+            izz="0.0998601414904193"
+            meshfile="file:$(find sbot_description)/meshes/link_base.STL"
+            meshscale="1 1 1" />
 
-    <xacro:m_link name="${body}" color="Grey" origin_rpy="0 0 0" origin_xyz="-0.0593135451515788 -0.00322725876445507 0.320154858954509" mass="${body_mass}" ixx="0.145932144728803" ixy="0.00612026711691293" ixz="-0.0110238426104326" iyy="0.254113528367173" iyz="0.00247600075693871" izz="0.247916599392411" meshfile="file:$(find sbot_description)/meshes/link_one.STL" meshscale="1 1 1" />
+    <xacro:m_link name="${body}" color="Grey"
+            origin_rpy="0 0 0"
+            origin_xyz="-0.0593135451515788 -0.00322725876445507 0.320154858954509"
+            mass="${body_mass}"
+            ixx="0.145932144728803"
+            ixy="0.00612026711691293"
+            ixz="-0.0110238426104326"
+            iyy="0.254113528367173"
+            iyz="0.00247600075693871"
+            izz="0.247916599392411"
+            meshfile="file:$(find sbot_description)/meshes/link_one.STL"
+            meshscale="1 1 1" />
 
-    <xacro:m_link name="${upper_arm}" color="Grey" origin_rpy="0 0 0" origin_xyz="4.85332329874938E-05 0.0339669542339676 0.1583205027378" mass="${upper_arm_mass}" ixx="0.145932144728803" ixy="0.00612026711691293" ixz="-0.0110238426104326" iyy="0.254113528367173" iyz="0.00247600075693871" izz="0.247916599392411" meshfile="file:$(find sbot_description)/meshes/link_two.STL" meshscale="1 1 1" />
+    <xacro:m_link name="${upper_arm}" color="Grey"
+                origin_rpy="0 0 0"
+                origin_xyz="4.85332329874938E-05 0.0339669542339676 0.1583205027378"
+                mass="${upper_arm_mass}"
+                ixx="0.145932144728803"
+                ixy="0.00612026711691293"
+                ixz="-0.0110238426104326"
+                iyy="0.254113528367173"
+                iyz="0.00247600075693871"
+                izz="0.247916599392411"
+                meshfile="file:$(find sbot_description)/meshes/link_two.STL"
+                meshscale="1 1 1" />
 
-    <xacro:m_link name="${forearm}" color="Grey" origin_rpy="0 0 0" origin_xyz="-1.47432084651733E-07 -0.111132038571227 0.0375927278081665" mass="${forearm_mass}" ixx="0.066293063521651" ixy="-6.29583836298716E-08" ixz="-5.35286377624852E-08" iyy="0.012551076830058" iyz="-0.000390405491272255" izz="0.0629744677227373" meshfile="file:$(find sbot_description)/meshes/link_three.STL" meshscale="1 1 1" />
+    <xacro:m_link name="${forearm}" color="Grey"
+                origin_rpy="0 0 0"
+                origin_xyz="-1.47432084651733E-07 -0.111132038571227 0.0375927278081665"
+                mass="${forearm_mass}"
+                ixx="0.066293063521651"
+                ixy="-6.29583836298716E-08"
+                ixz="-5.35286377624852E-08"
+                iyy="0.012551076830058"
+                iyz="-0.000390405491272255"
+                izz="0.0629744677227373"
+                meshfile="file:$(find sbot_description)/meshes/link_three.STL"
+                meshscale="1 1 1" />
 
-    <xacro:m_link name="${flange}" color="Grey" origin_rpy="0 0 0" origin_xyz="-0.0382603821035229 -0.00311385230179761 0.0369189530731333" mass="${flange_mass}" ixx="0.000700705072423402" ixy="0.000134315224988601" ixz="3.57613195744678E-06" iyy="0.0024076862804167" iyz="-2.44981684573351E-07" izz="0.00265552184192292" meshfile="file:$(find sbot_description)/meshes/link_four.STL" meshscale="1 1 1" />
+    <xacro:m_link name="${flange}" color="Grey"
+                origin_rpy="0 0 0"
+                origin_xyz="-0.0382603821035229 -0.00311385230179761 0.0369189530731333"
+                mass="${flange_mass}"
+                ixx="0.000700705072423402"
+                ixy="0.000134315224988601"
+                ixz="3.57613195744678E-06"
+                iyy="0.0024076862804167"
+                iyz="-2.44981684573351E-07"
+                izz="0.00265552184192292"
+                meshfile="file:$(find sbot_description)/meshes/link_four.STL"
+                meshscale="1 1 1" />
 
-    <xacro:m_joint name="${base_joint}" type="continuous" axis_xyz="0 0 -1" origin_rpy="0 0 0" origin_xyz="-0.10805388876492 0 0" parent="${base}" child="${body}" limit_e="1000" limit_l="-2.3562" limit_u="2.3562" limit_v="0.5" />
+    <xacro:m_joint name="${base_joint}" type="continuous"
+                axis_xyz="0 0 -1"
+                origin_rpy="0 0 0"
+                origin_xyz="-0.10805388876492 0 0"
+                parent="${base}"
+                child="${body}"
+                limit_e="1000"
+                limit_l="-2.3562"
+                limit_u="2.3562"
+                limit_v="0.5" />
 
-    <xacro:m_joint name="${elbow}" type="continuous" axis_xyz="0 0 1" origin_rpy="1.5708 0 0" origin_xyz="0.07 0 0.372" parent="${body}" child="${upper_arm}" limit_e="1000" limit_l="-2.3562" limit_u="2.3562" limit_v="0.5" />
+    <xacro:m_joint name="${elbow}" type="continuous"
+                axis_xyz="0 0 1"
+                origin_rpy="1.5708 0 0"
+                origin_xyz="0.07 0 0.372"
+                parent="${body}"
+                child="${upper_arm}"
+                limit_e="1000"
+                limit_l="-2.3562"
+                limit_u="2.3562"
+                limit_v="0.5" />
 
-    <xacro:m_joint name="${shoulder}" type="continuous" axis_xyz="0 0 1" origin_rpy="0 0 1.5708" origin_xyz="0 0.28 0" parent="${upper_arm}" child="${forearm}" limit_e="1000" limit_l="-2.3562" limit_u="2.3562" limit_v="0.5" />
+    <xacro:m_joint name="${shoulder}" type="continuous" 
+                axis_xyz="0 0 1"
+                origin_rpy="0 0 1.5708"
+                origin_xyz="0 0.28 0"
+                parent="${upper_arm}"
+                child="${forearm}"
+                limit_e="1000"
+                limit_l="-2.3562"
+                limit_u="2.3562"
+                limit_v="0.5" />
 
-    <xacro:m_joint name="${pitch}" type="continuous" axis_xyz="0 0 1" origin_rpy="0 0 -1.5708" origin_xyz="0 -0.23 0" parent="${forearm}" child="${flange}" limit_e="1000" limit_l="-2.3562" limit_u="2.3562" limit_v="0.5" />
+    <xacro:m_joint name="${pitch}" type="continuous"
+                axis_xyz="0 0 1"
+                origin_rpy="0 0 -1.5708"
+                origin_xyz="0 -0.23 0"
+                parent="${forearm}"
+                child="${flange}"
+                limit_e="1000"
+                limit_l="-2.3562"
+                limit_u="2.3562"
+                limit_v="0.5" />
 
     <!-- DEFINO UN CILINDRO INTERMEDIO PARA QUE GIRE EL GRIPPER LUEGO -->
     <link name="cylinder_link">

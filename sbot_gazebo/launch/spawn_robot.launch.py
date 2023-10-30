@@ -16,37 +16,6 @@ from launch_ros.parameter_descriptions import ParameterValue
 
 def generate_launch_description():
 
-    ######### Nuevo: Descripción del robot para no depender del launch de RVIZ ######
-    default_package_path = get_package_share_path('sbot_description')
-    default_model_path = default_package_path / 'urdf/scorbot.urdf.xacro'
-    default_rviz_config_path = default_package_path / 'rviz/config.rviz'
-
-    model_arg = DeclareLaunchArgument(name='model', default_value=str(default_model_path),
-                                      description='Absolute path to robot urdf file')
-    jsp_arg = DeclareLaunchArgument(name='joint_state_publisher', default_value='true', choices=['true', 'false'],
-                                    description='Flag to enable Joint State Publisher')
-    robot_description = ParameterValue(Command(['xacro ', LaunchConfiguration('model')]),
-                                       value_type=str)
-
-    # robot_state_publisher_node = Node(
-    #     package='robot_state_publisher',
-    #     executable='robot_state_publisher',
-    #     emulate_tty=True,
-    #     parameters=[{'use_sim_time': True,'robot_description': robot_description}]
-    # )
-    
-
-    robot_state_publisher_node = Node(
-        package='robot_state_publisher',
-        executable='robot_state_publisher',
-        name='robot_state_publisher_node',
-        emulate_tty=True,
-        parameters=[{'use_sim_time': True, 'robot_description': robot_description}],
-        output="screen"
-    )
-
-    ############################################################################
-
     # Position and orientation
     # [X, Y, Z]
     position = [0.0, 0.0, 0.0]
@@ -78,9 +47,6 @@ def generate_launch_description():
     # create and return launch description object
     return LaunchDescription(
         [
-            model_arg, #Nuevo
-            jsp_arg, #Nuevo
-            robot_state_publisher_node, #Nuevo
             spawn_robot,
         ]
     )
