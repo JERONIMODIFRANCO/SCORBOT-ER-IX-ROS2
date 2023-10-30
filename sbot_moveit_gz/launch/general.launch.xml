@@ -1,0 +1,9 @@
+<?xml version='1.0' ?>
+<launch>
+  <!-- Generate the world -->
+  <include file="$(find-pkg-share sbot_gazebo)/launch/start_world.launch.py"/>
+  <!-- Publish URDF file in robot_description topic and spawn that in gazebo-->
+  <include file="$(find-pkg-share sbot_gazebo)/launch/spawn_robot.launch.py"/>
+  <!-- Load the core of moveit, ros2_control and rviz with the interaction with gz -->
+  <include file="$(find-pkg-share sbot_moveit_gz)/launch/demo.launch.py"/>
+ </launch> 

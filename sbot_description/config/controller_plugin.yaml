@@ -1,0 +1,35 @@
+scorbot:
+  # Joint state controller publisher
+  joint_state_controller:
+    type: joint_state_controller/JointStateController
+    publish_rate: 50
+
+  # Controllers
+  base_joint_position_controller:
+    type: position_controllers/JointPositionController
+    joint: base_joint
+    pid: {p: 5.0, i: 0.01, d: 0.01}
+   elbow_position_controller:
+    type: position_controllers/JointPositionController
+    joint: elbow
+    pid: {p: 5.0, i: 0.01, d: 0.01}  
+  shoulder_position_controller:
+    type: position_controllers/JointPositionController
+    joint: shoulder
+    pid: {p: 5.0, i: 0.01, d: 0.01}  
+  pitch_position_controller:
+    type: position_controllers/JointPositionController
+    joint: pitch
+    pid: {p: 5.0, i: 0.01, d: 0.01}  
+  roll_position_controller:
+    type: position_controllers/JointPositionController
+    joint: roll
+    pid: {p: 5.0, i: 0.01, d: 0.01}  
+  # finger_R_joint_position_controller:
+  #   type: position_controllers/JointPositionController
+  #   joint: finger_R_joint
+  #   pid: {p: 5.0, i: 0.01, d: 0.01}  
+  # finger_L_joint_position_controller:
+  #   type: position_controllers/JointPositionController
+  #   joint: finger_L_joint
+  #   pid: {p: 5.0, i: 0.01, d: 0.01} 
