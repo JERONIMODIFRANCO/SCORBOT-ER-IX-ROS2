@@ -8,8 +8,17 @@ from launch_ros.parameter_descriptions import ParameterValue
 
 
 def generate_launch_description():
-    default_package_path = get_package_share_path('sbot_description')
-    default_model_path = default_package_path / 'urdf/scorbot.urdf.xacro'
+    sim_gazebo_arg = DeclareLaunchArgument(name='sim_gazebo', default_value=str(False),
+                                      description='select sim gazebo')
+    if(sim_gazebo_arg):
+        # Si es verdadero se utiliza la descripcion ampliada        
+        default_package_path = get_package_share_path('sbot_gazebo')
+        default_model_path = default_package_path / 'config/sbot.urdf.xacro'
+    else:
+        # Si es falso se utiliza la descripcion base
+        default_package_path = get_package_share_path('sbot_description')
+        default_model_path = default_package_path / 'urdf/scorbot.urdf.xacro'
+
     model_arg = DeclareLaunchArgument(name='model', default_value=str(default_model_path),
                                       description='Absolute path to robot urdf file')
 

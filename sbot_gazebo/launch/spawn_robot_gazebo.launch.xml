@@ -3,7 +3,9 @@
   <!-- rviz -->
   <include file="$(find-pkg-share sbot_description)/launch/rviz.launch.py"/>
   <!-- rsp -->
-  <include file="$(find-pkg-share sbot_description)/launch/rsp.launch.py"/>
+  <include file="$(find-pkg-share sbot_description)/launch/rsp.launch.py">
+    <arg name="sim_gazebo" value="True" />
+  </include>
   <!-- Read robot_description an spawn in gazebo running sim -->
   <include file="$(find-pkg-share sbot_gazebo)/launch/spawn_robot.launch.py"/>
   <!-- Load the bridge -->
