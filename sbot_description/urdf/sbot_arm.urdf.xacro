@@ -158,12 +158,12 @@
           <color rgba="0.7 0.7 0.7 1.0"/>
         </material>
       </visual>
-      <collision>
+      <!-- <collision>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
           <cylinder radius="0.01" length="0.05" />
         </geometry>
-      </collision>
+      </collision> -->
     </link>
 
     <xacro:m_joint name="${roll}" type="continuous" axis_xyz="0 0 -1" origin_rpy="-1.5708 0 -1.5708" origin_xyz="0 -0.0058721 0.036836" parent="${flange}" child="cylinder_link" limit_e="1000" limit_l="-2.3562" limit_u="2.3562" limit_v="0.5" />
