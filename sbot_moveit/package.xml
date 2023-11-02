@@ -4,9 +4,9 @@
   <name>sbot_moveit</name>
   <version>0.3.0</version>
   <description>
-     An automatically generated package with all the configuration and launch files for using the sbot with the MoveIt Motion Planning Framework
+     An automatically generated package with all the configuration and launch files for using the scorbot with the MoveIt Motion Planning Framework
   </description>
-  <maintainer email="gaston.gaston@gmail.com">gaston</maintainer>
+  <maintainer email="glgaspoz@gmail.com">g</maintainer>
 
   <license>BSD</license>
 
@@ -14,7 +14,7 @@
   <url type="bugtracker">https://github.com/ros-planning/moveit2/issues</url>
   <url type="repository">https://github.com/ros-planning/moveit2</url>
 
-  <author email="gaston.gaston@gmail.com">gaston</author>
+  <author email="glgaspoz@gmail.com">g</author>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
