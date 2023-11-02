@@ -73,14 +73,14 @@
                     axis_xyz="0 0 -1"
                     origin_rpy="-1.5708 0 0" origin_xyz="0 0 0.134"
                     parent="${gripper}" child="${finger_L}"
-                    limit_e="1000" limit_l="0" limit_u="0.02" limit_v="0.5" />
+                    limit_e="1000" limit_l="0" limit_u="0.024" limit_v="0.5" />
 
 
         <xacro:m_joint name="${finger_R_joint}" type="prismatic"
                     axis_xyz="0 0 1"
                     origin_rpy="-1.5708 0 0" origin_xyz="0 0 0.134"
                     parent="${gripper}" child="${finger_R}"
-                    limit_e="1000" limit_l="0" limit_u="0.02" limit_v="0.5" mimic="true"
+                    limit_e="1000" limit_l="0" limit_u="0.024" limit_v="0.5" mimic="true"
                     />
 
     </xacro:macro>
