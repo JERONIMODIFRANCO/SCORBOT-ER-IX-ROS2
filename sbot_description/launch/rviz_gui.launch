@@ -1,0 +1,9 @@
+<?xml version='1.0' ?>
+<launch>
+  <!-- rviz -->
+  <include file="$(find-pkg-share sbot_description)/launch/rviz.launch.py"/>
+  <!-- jsp gui -->
+  <include file="$(find-pkg-share sbot_description)/launch/jsp_gui.launch.py"/>
+  <!-- rsp -->
+  <include file="$(find-pkg-share sbot_description)/launch/rsp.launch.py"/>
+</launch> 

@@ -16,6 +16,7 @@
 
   <xacro:macro name="m_link" params="name color origin_xyz origin_rpy meshfile meshscale mass ixx ixy ixz iyy iyz izz">
     <link name="${name}">
+      <!-- <selfCollide>true</selfCollide> -->
       <inertial>
         <mass value="${mass}" />
         <origin rpy="${origin_rpy}" xyz="${origin_xyz}" />
