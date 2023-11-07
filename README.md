@@ -1,71 +1,82 @@
 # SCORBOT-ER-IX-ROS2
-Ros2 packages for a control uptdate of a SCORBOT-ER-IX robot arm
-Packages developed for ROS2 Humble, Ignition Fortress and Linux 
+
+*Ros2 packages for a control uptdate of a SCORBOT-ER-IX robot arm*
+
+ *Packages developed for ROS2 Humble, Ignition Fortress and Linux Ubuntu 22.04LTS*
+
 
 # PAQUETES, INSTALACIONES y COMENTARIOS 
-ROS2 HUMBLE
+
+## ROS2 HUMBLE
+
 https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debians.html
+
 Al instalar ros 2 (no instalar ros base), si el ros desktop y ros tools
 
-// Para ejecutar ros en una terminal hay q bashearlo, alternativamente se puede añadir al bashrc para que cada vez que se abra la ventana de comandos se genere el source, de esta forma ros puede ver los paquetes
-'source /opt/ros/humble/setup.bash'
 
-MOVEIT
+## MOVEIT
+
 https://moveit.ros.org/install-moveit2/binary/
 
-ROS2 CONTROL
- 'sudo apt install ros-humble-ros2-control'
- sudo apt install ros-humble-ros2-controllers
+## ROS2 CONTROL
 
-Hasta aca iba con sbot_description y necesite :
- sudo apt install ros-humble-joint-state-publisher
- sudo apt install ros-humble-joint-state-publisher-gui
+ ``` sudo apt install ros-humble-ros2-control``` 
+ 
+```  sudo apt install ros-humble-ros2-controllers```  
 
-PARA MOVEIT Y RESTO 
- sudo apt install ros-humble-gripper-controllers
+## GAZEBO IGNITION FORTRESS
 
-
-GAZEBO IGNITION FORTRESS
-instalando gazebo fortress desde:
 https://gazebosim.org/docs/fortress/install_ubuntu
- sudo apt install ros-humble-ros-ign
- sudo apt install ros-humble-gazebo-ros-pkgs 
 
-ESTO NO SE DE DONDE SALIO
-. ~/workspace/install/setup.bash
-https://gazebosim.org/docs/fortress/install_ubuntu_src
 
+## ADICIONALES 
+
+ ``` sudo apt install ros-humble-gripper-controllers``` 
  
-Por el momento no los instale
-
- ros-humble-ign-ros2-control
- ros-humble-gazebo-ros2-control
-  
+ ``` sudo apt install ros-humble-joint-state-publisher``` 
  
- ESTOS DOS SUPUESTAMENTE VIENEN CON OTROS ARCHIVOS, EL SEGUNDO NO ESTOY SEGURO EL PRIMERO SI
- joint-state-publisher
- ros-humble-rqt-joint-trajectory-controller
- source ~/scorbot_ws/install/setup.sh
+ ``` sudo apt install ros-humble-joint-state-publisher-gui``` 
+ 
+ ``` sudo apt install ros-humble-ros-ign``` 
+ 
+ ``` sudo apt install ros-humble-gazebo-ros-pkgs``` 
+ 
+ ``` ros-humble-ign-ros2-control #solo deberia ser este y no el que sigue``` 
+ 
+ ``` ros-humble-gazebo-ros2-control``` 
+ 
 
-BASHRC 2/11
-export GZ_VERSION=fortress
-export ROS_PACKAGE_PATH=/opt/ros/humble/share:$ROS_PACKAGE_PATH #SOURCE PARA QUE GAZEBO LEA LOS PAQUETES QUE TRAE POR DEFECTO
+## ENVIROMENT VARIABLES  (recomendable colocarlas en el bashrc)
 
-export IGN_GAZEBO_RESOURCE_PATH=$IGN_GAZEBO_RESOURCE_PATH:/home/jdf/scorbot_ws/install/sbot_description/share/sbot_description/meshes
-export IGN_GAZEBO_SYSTEM_PLUGIN_PATH=$IGN_GAZEBO_SYSTEM_PLUGIN_PATH:/opt/ros/humble/lib
+An environment variable is a dynamic-named value that can affect the way running processes will behave on a computer.
 
-export GZ_SIM_RESOURCE_PATH=$GZ_SIM_RESOURCE_PATH:/home/jdf/sbot/install/sbot_description/share/sbot_description/meshes
-export GZ_SIM_SYSTEM_PLUGIN_PATH=$GZ_SIM_SYSTEM_PLUGIN_PATH:/opt/ros/humble/lib
+Environment variables are set when you open a new Shell session
 
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/ros/humble/lib
+The **export** command, on the other hand, provides the ability to update the current Shell session about the change you made to the exported variable
 
-source /opt/ros/humble/setup.bash #SOURCE DE ROS2 HUMBLE
-source ~/sbot/install/setup.bash #SOURCE DE ENTORNO DE TRABAJO DEL PROYECTO
+``` export GZ_VERSION=fortress #setear fortress como version de gazebo``` 
 
-source ~/ws_moveit2/install/setup.bash 
+``` export ROS_PACKAGE_PATH=/opt/ros/humble/share:$ROS_PACKAGE_PATH #para que ros acceda a los paquetes que trae por defecto``` 
+
+``` export IGN_GAZEBO_RESOURCE_PATH=$IGN_GAZEBO_RESOURCE_PATH:~/sbot/install/sbot_description/share/sbot_description/meshes #para que gazebo pueda acceder a las meshes de descripcion del scorbot``` 
+
+``` export IGN_GAZEBO_SYSTEM_PLUGIN_PATH=$IGN_GAZEBO_SYSTEM_PLUGIN_PATH:/opt/ros/humble/lib #para que ignition acceda a los plugins```  
+
+``` source /opt/ros/humble/setup.bash #SOURCE DE ROS2 HUMBLE``` 
+
+``` source ~/sbot/install/setup.bash #SOURCE DE ENTORNO DE TRABAJO DEL PROYECTO``` 
+
+
+ESTOS NO , FALTA CONFIRMAR 
+
+``` export GZ_SIM_RESOURCE_PATH=$GZ_SIM_RESOURCE_PATH:~/sbot/install/sbot_description/share/sbot_description/meshes``` 
+
+``` export GZ_SIM_SYSTEM_PLUGIN_PATH=$GZ_SIM_SYSTEM_PLUGIN_PATH:/opt/ros/humble/lib``` 
+
+``` export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/ros/humble/lib``` 
 
 
 
-COMANDOS UTILES:
-colcon build --packages-select sbot_moveit para construir un paquete solo
-source /direcciondelpaquete/install/setup.bash para hacer visible un entorno para ros
+# COMANDOS UTILES:
+
+
