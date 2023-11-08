@@ -38,6 +38,16 @@ source .bashrc # para forzar la ejecucion del script actualizando los cambios
 ```sh
 export <env_variable> # para forzar la actualizacion de la variable
 ```
+### sudo y apt
+
+Linux uses a **dpkg** packaging system. A packaging system is a way to provide programs and applications for installation
+
+**APT** (Advanced Package Tool) is the command line tool to interact with this packaging system
+
+apt-get basically works on a database of available packages. If you don’t update this database, the system won’t know if there are newer packages available or not
+
+**Sudo** is a utility of Linux systems (and other Unix based systems) that allows users to execute a program or a command with the privileges (permissions) of another user (usually the **root** user)
+
 ```sh
 sudo apt install <package> # para forzar instalar el package, sudo tiene los permisos para realizar cambios en el sistema
 apt search <package> # para buscar paquetes por su nombre
@@ -45,4 +55,25 @@ sudo apt-get remove <package> # para eliminar paquetes
 ```
 ```sh
 grep # para filtrar en busquedas de otros comandos o buscar dentro de archivos
+```
+There are 2 types of processes in Linux:
+
+- **Foreground processes** : These are initialized and controlled through a terminal session
+- **Background processes**: These are processes not connected to a terminal
+```sh
+htop # ambos comandos para visualizar procesos
+ps # mas sencillo para principiantes
+```
+```sh
+Ctrl+c # para terminiar procesos de terminal o foreground
+Ctrl+z # para suspender o enviar al background un proceso, luego debera ser matado con el comando kill
+bg # para traer un proceso del reposo
+```
+```sh
+# The PID will be required to terminate the process
+kill 26244
+```
+### SSH protocol
+```sh
+ssh <user>@<host> # para realizar comunicaciones seguras
 ```
