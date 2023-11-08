@@ -145,6 +145,6 @@ Las 2 juntas están limitadas en su rango de movimiento. Los límites de movimie
 ~~~shell1
 ros2 launch sbot_moveit demo.launch.py 
 ~~~
-Para no ver en loop la animacion, hay que destildar la casilla. Debajo se encuentran los controles para las juntas, se debe seleccionar el grupo a controlar: arm contiene todas las juntas excepto las de prismaticas del gripper que se encuentran en el grupo hand.
+Para no ver en loop la animacion, hay que destildar la loop animation, que se visualiza al desplazarse hacia abajo en el area correspondiente. Debajo se encuentran los controles para las juntas, se debe seleccionar el grupo a controlar: arm contiene todas las juntas excepto las de prismaticas del gripper que se encuentran en el grupo hand.
 ![image](https://github.com/JERONIMODIFRANCO/SCORBOT-ER-IX-ROS2/assets/95137387/48642bd3-4a09-44d0-9b57-52ababeaf423)
 
