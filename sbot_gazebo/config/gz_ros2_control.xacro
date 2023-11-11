@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="scorbot">
+
+
+    <!-- Argumentos de ros2_control sobre gazebo -->
+    <!-- Posiciones iniciales de las juntas -->
+    <xacro:arg name="initial_positions_file" default="initial_positions.yaml" />
+    <!-- Import control_xacro -->
+    <xacro:include filename="scorbot.ros2_control.xacro" />
+
+    <xacro:scorbot_ros2_control name="IgnitionSystem" initial_positions_file="$(arg initial_positions_file)"/>
+
+
+    <gazebo>
+    <!-- Plugin de gazebo sobre ros2_control -->
+        <plugin filename="ign_ros2_control-system" name="ign_ros2_control::IgnitionROS2ControlPlugin">
+                <robot_param>/robot_description</robot_param>
+                <parameters>$(find sbot_moveit_gz)/config/ros2_controllers.yaml</parameters>
+                <robot_param_node>/robot_state_publisher</robot_param_node>
+        </plugin>
+    </gazebo>
+
+</robot>

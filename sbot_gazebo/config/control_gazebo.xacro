@@ -110,7 +110,36 @@
             </actuator>
         </transmission>
 
+    <gazebo>
+        <xacro:macro name="joint_position_controller" params="joint_name p_gain:=1 d_gain:=0 i_gain:=0 mimic_joint:=''">
+            <plugin filename="ignition-gazebo-joint-position-controller-system"
+                name="gz::sim::systems::JointPositionController">
+                <xacro:if value="${mimic_joint == ''}">
+                <xacro:property name="topic_joint" value="${joint_name}"/>
+                </xacro:if>
+                <xacro:unless value="${mimic_joint == ''}">
+                <xacro:property name="topic_joint" value="${mimic_joint}"/>
+                </xacro:unless>
 
+                <joint_name>${joint_name}</joint_name>
+                <p_gain>${p_gain}</p_gain>
+                <d_gain>${d_gain}</d_gain>
+                <i_gain>${i_gain}</i_gain>
+                <i_max>1000</i_max>
+                <i_min>-1000</i_min>
+                <topic>/model/scorbot/joint/${topic_joint}/cmd_pos</topic>
+            </plugin>
+        </xacro:macro>
+
+        <xacro:joint_position_controller joint_name="base_joint" p_gain="1e4" d_gain="1e1" i_gain="1e1"/>
+        <xacro:joint_position_controller joint_name="elbow" p_gain="1e4" d_gain="1e1" i_gain="1e1"/>
+        <xacro:joint_position_controller joint_name="shoulder" p_gain="1e4" d_gain="1e1" i_gain="1e1"/>
+        <xacro:joint_position_controller joint_name="pitch" p_gain="1e4" d_gain="1e1" i_gain="1e1"/>
+        <xacro:joint_position_controller joint_name="roll" p_gain="1e4" d_gain="1e1" i_gain="1e1"/>
+        <xacro:joint_position_controller joint_name="finger_R_joint" p_gain="1e4" d_gain="1e1" i_gain="1e1" mimic_joint="finger_L_joint"/>
+        <xacro:joint_position_controller joint_name="finger_L_joint" p_gain="1e4" d_gain="1e" i_gain="1e1"/>
+
+    </gazebo>
 
 
 

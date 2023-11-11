@@ -2,7 +2,6 @@
 controller_manager:
   ros__parameters:
     update_rate: 100  # Hz
-    #use_sim_time : true #el tipo hace esto, pero no explica el pq
 
     arm_controller:
       type: joint_trajectory_controller/JointTrajectoryController
@@ -28,7 +27,6 @@ arm_controller:
     state_interfaces:
       - position
       - velocity
-   # use_stamp_vel : false #el tipo hace esto, pero no explica el pq
 hand_controller:
   ros__parameters:
     joint: finger_L_joint

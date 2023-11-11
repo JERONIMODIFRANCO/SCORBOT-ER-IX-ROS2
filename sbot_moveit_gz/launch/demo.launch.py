@@ -1,7 +1,7 @@
 from moveit_configs_utils import MoveItConfigsBuilder
 from moveit_configs_utils.launches import generate_demo_launch
 
-#nuevo
+
 import os
 
 from launch import LaunchDescription
@@ -22,23 +22,10 @@ from moveit_configs_utils.launch_utils import (
     add_debuggable_node,
     DeclareBooleanLaunchArg,
 )
-#/nuevo
 
 
 def generate_launch_description():
-    moveit_config = MoveItConfigsBuilder("sbot", package_name="sbot_moveit_gz").to_moveit_configs()
-    #return generate_demo_launch(moveit_config)
-        # """
-    # Launches a self contained demo
-
-    # Includes
-    #  * static_virtual_joint_tfs
-    #  * robot_state_publisher
-    #  * move_group
-    #  * moveit_rviz
-    #  * warehouse_db (optional)
-    #  * ros2_control_node + controller spawners
-    # """
+    moveit_config = MoveItConfigsBuilder("scorbot", package_name="sbot_moveit_gz").to_moveit_configs()
     ld = LaunchDescription()
     ld.add_action(
         DeclareBooleanLaunchArg(
@@ -67,14 +54,14 @@ def generate_launch_description():
             )
         )
 
-    # # Given the published joint states, publish tf for the robot links
-    # ld.add_action(
-    #     IncludeLaunchDescription(
-    #         PythonLaunchDescriptionSource(
-    #             str(moveit_config.package_path / "launch/rsp.launch.py")
-    #         ),
-    #     )
-    # )
+    # Given the published joint states, publish tf for the robot links
+    ld.add_action(
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(
+                str(moveit_config.package_path / "launch/rsp.launch.py")
+            ),
+        )
+    )
 
     ld.add_action(
         IncludeLaunchDescription(
@@ -103,11 +90,6 @@ def generate_launch_description():
             condition=IfCondition(LaunchConfiguration("db")),
         )
     )
-    # Creo que el problema está acá (o lo que estaría adentro de ros2_controllers.yaml),
-    # ya que se puede ir lanzando de a uno y funciona, pero sin una configuración de los
-    # controladores no puede funcionar el controller_manager. Esto se debe seguramente
-    # a la librería del HI 
-    # https://answers.ros.org/question/406566/ros2-control-hardware-plugin-not-found-when-using-the-ignition-gazebo-controller/
 
     # Fake joint driver
     ld.add_action(
@@ -130,3 +112,4 @@ def generate_launch_description():
     )
 
     return ld
+

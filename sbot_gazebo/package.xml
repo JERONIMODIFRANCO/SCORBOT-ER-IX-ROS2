@@ -12,6 +12,9 @@
   <depend>rclpy</depend>
   <depend>gazebo_ros</depend>
   <depend>sbot_description</depend>
+  <!-- <depend>gz_ros2_control</depend> -->
+  <depend>ign_ros2_control</depend>
+  <depend>sbot_moveit_gz</depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>

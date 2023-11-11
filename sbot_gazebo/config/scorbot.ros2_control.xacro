@@ -1,14 +1,13 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-    <xacro:macro name="sbot_ros2_control" params="name initial_positions_file">
-        <xacro:property name="initial_positions" value="${load_yaml(initial_positions_file)['initial_positions']}"/>
+    <xacro:macro name="scorbot_ros2_control" params="name initial_positions_file">
+        <xacro:property name="initial_positions" value="${xacro.load_yaml(initial_positions_file)['initial_positions']}"/>
 
         <ros2_control name="${name}" type="system">
             <hardware>
                 <!-- By default, set up controllers for simulation. This won't work on real hardware -->
-                <plugin>gazebo_ros_control/GazeboSystem</plugin>
-                <!-- <plugin>ign_ros2_control/IgnitionSystem</plugin> -->
                 <!-- <plugin>mock_components/GenericSystem</plugin> -->
+                <plugin>ign_ros2_control/IgnitionSystem</plugin>
             </hardware>
             <joint name="base_joint">
                 <command_interface name="position"/>
@@ -54,10 +53,5 @@
             </joint>
 
         </ros2_control>
-        <gazebo>
-          <plugin name="gazebo_ros2_control" filename="libgazebo_ros2_control.so">
-            <parameters>"$(find sbot_moveit_gz)/config/ros2_controllers.yaml"</parameters>
-          </plugin>
-        </gazebo>
     </xacro:macro>
 </robot>
