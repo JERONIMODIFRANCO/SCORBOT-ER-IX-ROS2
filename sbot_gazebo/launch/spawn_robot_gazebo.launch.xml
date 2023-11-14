@@ -1,14 +1,25 @@
 <?xml version='1.0' ?>
 <launch>
+
+  <arg name="no_moveit2_control"            default="True"/>
+  <arg name="launch_rviz"                default="True"/>
+  <arg name="auto_rsp"                   default="True"/>
+  
+
   <!-- rviz -->
+  <include if="$(arg launch_rviz)" file="$(find-pkg-share sbot_description)/launch/rviz.launch.py"/>
   <!-- <include file="$(find-pkg-share sbot_description)/launch/rviz.launch.py"/> -->
-  <!-- rsp -->
-  <!-- <include file="$(find-pkg-share sbot_description)/launch/rsp.launch.py">
+  
+  <!-- robot state publisher -->
+  <include if="$(arg auto_rsp)" file="$(find-pkg-share sbot_description)/launch/rsp.launch.py">
+  <!-- <include file="$(find-pkg-share sbot_description)/launch/rsp.launch.py"> -->
     <arg name="sim_gazebo" value="True" />
-  </include> -->
+  </include>
   <!-- Read robot_description an spawn in gazebo running sim -->
   <include file="$(find-pkg-share sbot_gazebo)/launch/spawn_robot.launch.py"/>
+
   <!-- Load the bridge -->
+  <include if="$(arg no_moveit2_control)" file="$(find-pkg-share sbot_gazebo)/launch/bridge.launch.py"/>
   <!-- <include file="$(find-pkg-share sbot_gazebo)/launch/bridge.launch.py"/> -->
 
   <!-- Load the controllers -->

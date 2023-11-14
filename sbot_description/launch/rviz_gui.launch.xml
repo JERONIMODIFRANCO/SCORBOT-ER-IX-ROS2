@@ -5,5 +5,7 @@
   <!-- jsp gui -->
   <include file="$(find-pkg-share sbot_description)/launch/jsp_gui.launch.py"/>
   <!-- rsp -->
-  <include file="$(find-pkg-share sbot_description)/launch/rsp.launch.py"/>
+  <include file="$(find-pkg-share sbot_description)/launch/rsp.launch.py">
+    <arg name="sim_gazebo" value="False" />
+  </include>
 </launch> 

@@ -18,6 +18,8 @@ from launch_ros.parameter_descriptions import ParameterValue
 
 from srdfdom.srdf import SRDF
 
+from ament_index_python.packages import get_package_share_path
+
 from moveit_configs_utils.launch_utils import (
     add_debuggable_node,
     DeclareBooleanLaunchArg,
@@ -26,6 +28,9 @@ from moveit_configs_utils.launch_utils import (
 
 def generate_launch_description():
     moveit_config = MoveItConfigsBuilder("scorbot", package_name="sbot_moveit_gz").to_moveit_configs()
+    gazebo_path = get_package_share_path('sbot_gazebo')
+    description_path = get_package_share_path('sbot_description')
+    
     ld = LaunchDescription()
     ld.add_action(
         DeclareBooleanLaunchArg(
@@ -41,7 +46,7 @@ def generate_launch_description():
             description="By default, we are not in debug mode",
         )
     )
-    ld.add_action(DeclareBooleanLaunchArg("use_rviz", default_value=True))
+    
 
     # If there are virtual joints, broadcast static tf by including virtual_joints launch
     virtual_joints_launch = (
@@ -55,13 +60,26 @@ def generate_launch_description():
         )
 
     # Given the published joint states, publish tf for the robot links
+    ld.add_action(DeclareBooleanLaunchArg("sim_gazebo", default_value=True))
+
     ld.add_action(
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
-                str(moveit_config.package_path / "launch/rsp.launch.py")
+                str(description_path / "launch/rsp.launch.py")
+            ),
+            condition=IfCondition(LaunchConfiguration("sim_gazebo")),
+        )
+    )
+
+    #Given the tf for the robot, spawn it in gazebo
+    ld.add_action(
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(
+                str( gazebo_path / "launch/spawn_robot.launch.py")
             ),
         )
     )
+
 
     ld.add_action(
         IncludeLaunchDescription(
@@ -71,13 +89,14 @@ def generate_launch_description():
         )
     )
 
+    ld.add_action(DeclareBooleanLaunchArg("moveit_rviz", default_value=True))
     # Run Rviz and load the default config to see the state of the move_group node
     ld.add_action(
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
-                str(moveit_config.package_path / "launch/moveit_rviz.launch.py")
+                str(description_path / "launch/rviz.launch.py")
             ),
-            condition=IfCondition(LaunchConfiguration("use_rviz")),
+            condition=IfCondition(LaunchConfiguration("moveit_rviz")),
         )
     )
 

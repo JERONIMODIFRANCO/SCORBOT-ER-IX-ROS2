@@ -8,7 +8,7 @@ from launch_ros.parameter_descriptions import ParameterValue
 
 
 def generate_launch_description():
-    sim_gazebo_arg = DeclareLaunchArgument(name='sim_gazebo', default_value=str(False),
+    sim_gazebo_arg = DeclareLaunchArgument(name='sim_gazebo', default_value=False,
                                       description='select sim gazebo')
     if(sim_gazebo_arg):
         # Si es verdadero se utiliza la descripcion ampliada        
@@ -35,6 +35,7 @@ def generate_launch_description():
     )
 
     return LaunchDescription([
+        sim_gazebo_arg,
         model_arg,
         robot_state_publisher_node,
     ])
