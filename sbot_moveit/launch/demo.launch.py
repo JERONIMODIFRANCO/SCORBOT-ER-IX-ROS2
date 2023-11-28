@@ -28,8 +28,8 @@ from moveit_configs_utils.launch_utils import (
 
 def generate_launch_description():
     moveit_config = MoveItConfigsBuilder("scorbot", package_name="sbot_moveit").to_moveit_configs()
-    gazebo_path = get_package_share_path('sbot_gazebo')
-    description_path = get_package_share_path('sbot_description')
+    # gazebo_path = get_package_share_path('sbot_gazebo')
+    # description_path = get_package_share_path('sbot_description')
     
     ld = LaunchDescription()
     ld.add_action(
@@ -60,26 +60,27 @@ def generate_launch_description():
         )
 
     # Given the published joint states, publish tf for the robot links
-    ld.add_action(DeclareBooleanLaunchArg("sim_gazebo", default_value=False))
+    # ld.add_action(DeclareBooleanLaunchArg("sim_gazebo", default_value=False))
 
     ld.add_action(
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
-                str(description_path / "launch/rsp.launch.py")
+                # str(description_path / "launch/rsp.launch.py")
+                str(moveit_config.package_path / "launch/rsp.launch.py")
             ),
-            condition=IfCondition(LaunchConfiguration("sim_gazebo")),
+            # condition=IfCondition(LaunchConfiguration("sim_gazebo")),
         )
     )
 
-    if("sim_gazebo" == True):
-        #Given the tf for the robot, spawn it in gazebo
-        ld.add_action(
-            IncludeLaunchDescription(
-                PythonLaunchDescriptionSource(
-                    str( gazebo_path / "launch/spawn_robot.launch.py")
-                ),
-            )
-        )
+    # if("sim_gazebo" == True):
+    #     #Given the tf for the robot, spawn it in gazebo
+    #     ld.add_action(
+    #         IncludeLaunchDescription(
+    #             PythonLaunchDescriptionSource(
+    #                 str( gazebo_path / "launch/spawn_robot.launch.py")
+    #             ),
+    #         )
+    #     )
 
 
     ld.add_action(
@@ -95,7 +96,8 @@ def generate_launch_description():
     ld.add_action(
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
-                str(description_path / "launch/rviz.launch.py")
+                # str(description_path / "launch/rviz.launch.py")
+                str(moveit_config.package_path / "launch/moveit_rviz.launch.py")
             ),
             condition=IfCondition(LaunchConfiguration("moveit_rviz")),
         )
@@ -123,17 +125,17 @@ def generate_launch_description():
         )
     )
 
-    if ("sim_gazebo" == True):
-        ld.add_action(DeclareBooleanLaunchArg("no_sim_gazebo", default_value=False))
-    else:
-        ld.add_action(DeclareBooleanLaunchArg("no_sim_gazebo", default_value=True))
+    # if ("sim_gazebo" == True):
+    #     ld.add_action(DeclareBooleanLaunchArg("no_sim_gazebo", default_value=False))
+    # else:
+    #     ld.add_action(DeclareBooleanLaunchArg("no_sim_gazebo", default_value=True))
 
     ld.add_action(
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
                 str(moveit_config.package_path / "launch/spawn_controllers.launch.py")
             ),
-            condition=IfCondition(LaunchConfiguration("sim_gazebo","no_sim_gazebo")),
+            # condition=IfCondition(LaunchConfiguration("sim_gazebo","no_sim_gazebo")),
         )
     )
 

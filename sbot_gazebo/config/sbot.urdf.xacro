@@ -5,10 +5,10 @@
     <xacro:include filename="$(find sbot_description)/urdf/scorbot.urdf.xacro" />
 
     <!-- Import control_xacro -->
-    <!-- <xacro:include filename="control_gazebo.xacro" /> -->
+    <xacro:include filename="control_gazebo.xacro" />
 
     <!-- Import ignition_ros2_control conection file -->
-    <xacro:include filename="$(find sbot_gazebo)/config/gz_ros2_control.xacro" />
+    <!-- <xacro:include filename="$(find sbot_gazebo)/config/gz_ros2_control.xacro" /> -->
 
 
           <!-- JOINT PUBLISHER -->

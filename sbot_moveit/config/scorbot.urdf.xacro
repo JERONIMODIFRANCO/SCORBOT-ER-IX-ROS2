@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="scorbot">
 
-    <arg name="sim_gazebo"            default="False"/>
-    <arg name="no_sim_gazebo"         default="True"/>
+    <!-- <arg name="sim_gazebo"            default="False"/>
+    <arg name="no_sim_gazebo"         default="True"/> -->
 
     <xacro:arg name="initial_positions_file" default="initial_positions.yaml" />
 
@@ -11,13 +11,14 @@
 
     <xacro:include filename="scorbot.ros2_control.xacro" />
 
-    <include if="$(arg sim_gazebo)">
+    <!-- <include if="$(arg sim_gazebo)">
         <xacro:scorbot_ros2_control name="IgnSystem"
         system="ign_ros2_control/IgnitionSystem" 
         initial_positions_file="$(arg initial_positions_file)"/>
-    </include>
+    </include> -->
 
-    <include if="$(arg no_sim_gazebo)">
+    <!-- <include if="$(arg no_sim_gazebo)"> -->
+     <include>
         <!-- Import control_xacro -->
         <xacro:scorbot_ros2_control name="FakeSystem"
         system="mock_components/GenericSystem" 
