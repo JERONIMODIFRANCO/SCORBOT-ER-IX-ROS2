@@ -14,46 +14,62 @@ from moveit_configs_utils.launch_utils import (
     DeclareBooleanLaunchArg,
 )
 
-
 def generate_launch_description():
+    # Path de los archivos 
     default_package_path = get_package_share_path('sbot_description')
+    
+    # Path descripcion con configuracion base rviz
     default_rviz_config_path = default_package_path / 'rviz/config.rviz'
-    moveit_rviz_config_path = default_package_path / 'rviz/moveit.rviz'
+    rviz_arg_base = DeclareLaunchArgument(name='rviz_base', default_value=str(default_rviz_config_path),
+                                      description='Absolute path to rviz base config file')    
+    rviz_config_arg = LaunchConfiguration('rviz_base')
 
-    moveit_rviz_arg = DeclareLaunchArgument(name='moveit_rviz', default_value='false', 
+    # Path descripcion con configuracion de rviz para moveit 
+    moveit_rviz_config_path = default_package_path / 'rviz/moveit.rviz'
+    rviz_arg_moveit = DeclareLaunchArgument(name='rviz_moveit', default_value=str(moveit_rviz_config_path),
+                                      description='Absolute path to rviz moveit config file') 
+    rviz_config_moveit_arg = LaunchConfiguration('rviz_moveit')
+
+    # Argumento de seleccion de configuracion a setear
+    moveit_rviz_arg = DeclareLaunchArgument(name='rviz_with_moveit', default_value='false', 
                                     choices=['true', 'false'],
                                     description='Flag to enable RVIZ with Moveit Plugins')
-    
-    # rviz_arg = DeclareLaunchArgument(name='rvizconfig', default_value=str(default_rviz_config_path),
-    #                                  description='Absolute path to rviz config file',
-    #                                  choices=[str(default_rviz_config_path),str(moveit_rviz_config_path)])
-
-    rviz_node1 = Node(
+    # Nodo base
+    rviz_node_base = Node(
         package='rviz2',
         executable='rviz2',
         name='rviz2',
         output='screen',
         # arguments=['-d', LaunchConfiguration('rvizconfig')],
-        arguments=['-d', str(moveit_rviz_config_path)],
-        condition=IfCondition(LaunchConfiguration('moveit_rviz'))
+        arguments=['-d', rviz_config_arg],
+        condition=UnlessCondition(LaunchConfiguration('rviz_with_moveit'))
     )
+    
+    # rviz_parameters = [
+    #     moveit_config.planning_pipelines,
+    #     moveit_config.robot_description_kinematics,
+    # ]
 
-    rviz_node2 = Node(
+
+
+    # Nodo para moveit
+    rviz_node_moveit = Node(
         package='rviz2',
         executable='rviz2',
         name='rviz2',
         output='screen',
         # arguments=['-d', LaunchConfiguration('rvizconfig')],
-        arguments=['-d', str(default_rviz_config_path)],
-        condition=UnlessCondition(LaunchConfiguration('moveit_rviz'))
+        arguments=['-d', rviz_config_moveit_arg],
+        # parameters=rviz_parameters,
+        condition=IfCondition(LaunchConfiguration('rviz_with_moveit'))
     )
 
     # msg_exit = LogInfo(msg=('Dirección del paquete seleccionado: ', LaunchConfiguration('moveit_rviz')))
 
     return LaunchDescription([
         moveit_rviz_arg,
-        # rviz_arg,
-        rviz_node1,
-        rviz_node2,
-        # msg_exit,
+        rviz_arg_base,
+        rviz_arg_moveit,
+        rviz_node_base,
+        rviz_node_moveit,
     ])

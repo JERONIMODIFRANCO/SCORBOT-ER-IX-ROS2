@@ -1,22 +1,190 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="scorbot">
+<!-- transmision tags to add versatility in gazebo are not required to ros control works -->
 
+        <!-- base_joint -->
+        <transmission name="trans_base_joint">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="base_joint">
+                <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="motor_base_joint">
+                <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+                <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+        </transmission>
+
+        <!-- elbow -->
+        <transmission name="trans_elbow">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="elbow">
+                <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="motor_elbow">
+                <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+                <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+        </transmission>
+
+        <!-- shoulder -->
+        <transmission name="trans_shoulder">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="shoulder">
+                <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="motor_shoulder">
+                <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+                <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+        </transmission>
+
+        <!-- pitch -->
+        <transmission name="trans_pitch">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="pitch">
+                <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="motor_pitch">
+                <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+                <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+        </transmission>
+
+        <!-- roll -->
+        <transmission name="trans_roll">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="roll">
+                <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="motor_roll">
+                <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+                <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+        </transmission>
+
+        <!-- finger_R_joint -->
+        <!-- <transmission name="trans_finger_R_joint">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="finger_R_joint">
+                <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="motor_finger_R_joint">
+                <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+                <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+        </transmission> -->
+
+        <!-- <xacro:macro name="mimic_joint_plugin_ignition" params="parent_joint mimic_joint has_pid:=false multiplier:=1.0 offset:=0 sensitiveness:=0.0 max_effort:=200.0 robot_namespace:=''">
+            <gazebo>
+                <plugin name="${mimic_joint}_mimic_joint_plugin" filename="libroboticsgroup_ignition_mimic_joint_plugin.so">
+                    <joint>${parent_joint}</joint>
+                    <mimicJoint>${mimic_joint}</mimicJoint>
+                    <xacro:if value="${has_pid}">
+                    <hasPID />
+                    </xacro:if>
+                    <multiplier>${multiplier}</multiplier>
+                    <offset>${offset}</offset>
+                    <sensitiveness>${sensitiveness}</sensitiveness>
+                    <maxEffort>${max_effort}</maxEffort>
+                    <xacro:unless value="${robot_namespace == ''}">
+                        <robotNamespace>($robot_namespace)</robotNamespace>
+                    </xacro:unless>
+                </plugin>
+            </gazebo>
+        </xacro:macro> -->
+
+        <!-- <xacro:mimic_joint_plugin_ignition parent_joint="finger_L_joint"
+        mimic_joint="finger_R_joint" has_pid="false" multiplier="1.0"
+        max_effort="200.0" /> -->
+
+        <!-- finger_L_joint -->
+        <transmission name="trans_finger_L_joint">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="finger_L_joint">
+                <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="motor_finger_L_joint">
+                <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+                <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+        </transmission>
 
     <!-- Argumentos de ros2_control sobre gazebo -->
     <!-- Posiciones iniciales de las juntas -->
     <xacro:arg name="initial_positions_file" default="initial_positions.yaml" />
-    <!-- Import control_xacro -->
-    <xacro:include filename="scorbot.ros2_control.xacro" />
+    <!-- Import ros2_control_xacro -->
+    <!-- <xacro:include filename="scorbot.ros2_control.xacro" /> -->
+    <!-- creo que es mejor tener todo en este archivo antes que importar la linea anterior -->
+        <xacro:macro name="scorbot_ros2_control" params="name initial_positions_file">
+        <xacro:property name="initial_positions" value="${xacro.load_yaml(initial_positions_file)['initial_positions']}"/>
+
+        <!-- definiciones de ros2 control para el control de las juntas -->
+        <ros2_control name="${name}" type="system">
+            <hardware>
+                <!-- By default, set up controllers for simulation. This won't work on real hardware -->
+                <!-- para visualizacion  -->
+                <!-- <plugin>mock_components/GenericSystem</plugin> -->
+                <!-- para simulacion en gazebo -->
+                <plugin>ign_ros2_control/IgnitionSystem</plugin>
+                <!-- para control en sistema real -->
+                <!-- <plugin>ign_ros2_control/IgnitionSystem</plugin> -->
+            </hardware>
+            <joint name="base_joint">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['base_joint']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="shoulder">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['shoulder']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="elbow">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['elbow']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="pitch">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['pitch']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="roll">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['roll']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="finger_L_joint">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['finger_L_joint']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+
+        </ros2_control>
+    </xacro:macro>
 
     <xacro:scorbot_ros2_control name="IgnitionSystem" initial_positions_file="$(arg initial_positions_file)"/>
 
-
     <gazebo>
-    <!-- Plugin de gazebo sobre ros2_control -->
+        <!-- Plugin de gazebo sobre ros2_control -->
         <plugin filename="ign_ros2_control-system" name="ign_ros2_control::IgnitionROS2ControlPlugin">
                 <robot_param>/robot_description</robot_param>
                 <parameters>$(find sbot_moveit_gz)/config/ros2_controllers.yaml</parameters>
                 <robot_param_node>/robot_state_publisher</robot_param_node>
+                <!-- AÑADIDO A CHEQUEAR -->
+                <!-- <parameters>$(find my_package)/config/my_joint_state_broadcaster.yaml</parameters> -->
         </plugin>
     </gazebo>
 
