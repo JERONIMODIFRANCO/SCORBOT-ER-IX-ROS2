@@ -7,7 +7,7 @@ controller_manager:
       type: joint_trajectory_controller/JointTrajectoryController
 
 
-    hand_controller:
+    gripper_controller:
       type: position_controllers/GripperActionController
 
 
@@ -18,8 +18,8 @@ arm_controller:
   ros__parameters:
     joints:
       - base_joint
-      - elbow
       - shoulder
+      - elbow
       - pitch
       - roll
     command_interfaces:
@@ -27,6 +27,6 @@ arm_controller:
     state_interfaces:
       - position
       - velocity
-hand_controller:
+gripper_controller:
   ros__parameters:
     joint: finger_L_joint

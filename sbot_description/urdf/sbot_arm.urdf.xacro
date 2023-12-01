@@ -103,7 +103,7 @@
                 meshfile="file:$(find sbot_description)/meshes/link_four.STL"
                 meshscale="1 1 1" />
 
-    <xacro:m_joint name="${base_joint}" type="continuous"
+    <xacro:m_joint name="${base_joint}" type="revolute" 
                 axis_xyz="0 0 -1"
                 origin_rpy="0 0 0"
                 origin_xyz="-0.10805388876492 0 0"
@@ -115,7 +115,7 @@
                 limit_v="0.5" />
 
 <!-- cambie el shoulder por el elbow -->
-    <xacro:m_joint name="${shoulder}" type="continuous"
+    <xacro:m_joint name="${shoulder}" type="revolute"
                 axis_xyz="0 0 1"
                 origin_rpy="1.5708 0 0"
                 origin_xyz="0.07 0 0.372"
@@ -126,7 +126,7 @@
                 limit_u="2.3562"
                 limit_v="0.5" />
 
-    <xacro:m_joint name="${elbow}" type="continuous" 
+    <xacro:m_joint name="${elbow}" type="revolute" 
                 axis_xyz="0 0 1"
                 origin_rpy="0 0 1.5708"
                 origin_xyz="0 0.28 0"
@@ -137,7 +137,7 @@
                 limit_u="2.3562"
                 limit_v="0.5" />
 
-    <xacro:m_joint name="${pitch}" type="continuous"
+    <xacro:m_joint name="${pitch}" type="revolute"
                 axis_xyz="0 0 1"
                 origin_rpy="0 0 -1.5708"
                 origin_xyz="0 -0.23 0"
