@@ -84,7 +84,7 @@ from launch.conditions import IfCondition, UnlessCondition
 
 def generate_launch_description():
     
-    moveit_config = MoveItConfigsBuilder("scorbot", package_name="sbot_moveit_gz").to_moveit_configs()
+    moveit_config = MoveItConfigsBuilder("scorbot", package_name="sbot_moveit").to_moveit_configs()
 
     returnList = []
    
