@@ -34,9 +34,16 @@ class MinimalSubscriber(Node):
         # ser = serial.Serial('/dev/ttyUSB0', 9600)
 
     def listener_callback(self, msg):
-        self.get_logger().info('I heard: "%s", publishing via Serial' % msg.data)
+        # self.get_logger().info('I heard: "%s", publishing via Serial' % msg.data)
+        self.get_logger().info('Enviando comando via Serial "%s"' % msg.data)
         ser = serial.Serial('/dev/ttyACM0', 4800,8,"N",1,None,True)
-        ser.write(b'a')
+        serial_msg = bytes(msg.data, 'utf-8')
+        ser.write(b'%b\n' % serial_msg)
+        self.data = str(ser.readline())
+        msg = String()
+        msg.data = self.data
+        # msg.data = 'Hello World: %d' % 2
+        self.get_logger().info('%s' % msg.data)
         ser.close()
 
 
