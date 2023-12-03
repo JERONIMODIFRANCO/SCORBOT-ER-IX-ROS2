@@ -35,7 +35,7 @@ def generate_launch_description():
     bridgeDefaults = Node(
         package='ros_gz_bridge',
         executable='parameter_bridge',
-        condition = UnlessCondition(LaunchConfiguration('bridge')),
+        condition = IfCondition(LaunchConfiguration('bridge')),
         arguments=[
             # Clock (IGN -> ROS2)
             '/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock',
@@ -53,7 +53,7 @@ def generate_launch_description():
     bridgeJointCommands = Node(
         package='ros_gz_bridge',
         executable='parameter_bridge',
-        condition = UnlessCondition(LaunchConfiguration('control_type')),
+        condition = IfCondition(LaunchConfiguration('bridge')),
         arguments=[
             # Joint Commands (ROS2 -> GZ)
             '/model/scorbot/joint/base_joint/cmd_pos@std_msgs/msg/Float64]gz.msgs.Double',

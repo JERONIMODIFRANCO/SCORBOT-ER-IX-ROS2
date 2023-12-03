@@ -44,8 +44,9 @@
   <exec_depend>tf2_ros</exec_depend>
   <exec_depend>warehouse_ros_mongo</exec_depend>
   <exec_depend>xacro</exec_depend>
-
-
+  <!-- dependencias a paquete de gazebo -->
+  <exec_depend>sbot_gazebo</exec_depend>
+  <exec_depend>ign_ros2_control</exec_depend>
   <export>
       <build_type>ament_cmake</build_type>
   </export>

@@ -2,13 +2,21 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="scorbot">
     <xacro:arg name="initial_positions_file" default="initial_positions.yaml" />
 
+    <!-- <xacro:arg name="sim_gz" type="bool" default="false"/> -->
+    <xacro:arg name="fake" type="bool" default="false"/>
+
     <!-- Import scorbot urdf file -->
     <xacro:include filename="$(find sbot_description)/urdf/scorbot.urdf.xacro" />
 
     <!-- Import control_xacro -->
     <xacro:include filename="scorbot.ros2_control.xacro" />
 
+    <!-- <include if="$(arg fake)"> -->
+    <xacro:scorbot_ros2_control name="FakeSystem" system="mock_components/GenericSystem"  initial_positions_file="$(arg initial_positions_file)"/>
+    <!-- </include> -->
 
-    <xacro:scorbot_ros2_control name="FakeSystem" initial_positions_file="$(arg initial_positions_file)"/>
+    <!-- <xacro:if value="$(arg sim_gz)">
+        <xacro:scorbot_ros2_control name="IgnitionSystem" system="ign_ros2_control/IgnitionSystem" initial_positions_file="$(arg initial_positions_file)"/>
+    </xacro:if>  -->
 
 </robot>
