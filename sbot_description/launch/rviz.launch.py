@@ -72,4 +72,5 @@ def generate_launch_description():
         rviz_arg_moveit,
         rviz_node_base,
         rviz_node_moveit,
+        # msg_exit,
     ])

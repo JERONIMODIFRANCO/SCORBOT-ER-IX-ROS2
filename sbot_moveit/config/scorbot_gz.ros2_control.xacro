@@ -53,13 +53,14 @@
         </ros2_control>
     </xacro:macro>
     
-    <!-- Plugin de gazebo sobre ros2_control -->
-    <!-- <gazebo>
+ 
+    <gazebo>
+        <!-- Plugin de gazebo sobre ros2_control -->
         <plugin filename="ign_ros2_control-system" name="ign_ros2_control::IgnitionROS2ControlPlugin">
                 <robot_param>/robot_description</robot_param>
                 <parameters>$(find sbot_moveit)/config/ros2_controllers.yaml</parameters>
                 <robot_param_node>/robot_state_publisher</robot_param_node>
         </plugin>
-    </gazebo> -->
+    </gazebo>
 
 </robot>
