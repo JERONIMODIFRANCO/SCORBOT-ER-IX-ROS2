@@ -149,7 +149,10 @@ Se usa la dirección del Workspace como `~/sbot` para ejemplificar pero se puede
     colcon build
     source ~/sbot/install/setup.sh
 ~~~
-### IMPORTANTE "MATAR" (Ctrl+C) TODOS LOS PROCESOS ANTES DE LANZAR OTRO EJECUTABLE PARA EVITAR INCONSISTENCIAS
+### IMPORTANTE "MATAR" (Ctrl+C) TODOS LOS PROCESOS ANTES DE LANZAR OTRO EJECUTABLE PARA EVITAR INCONSISTENCIAS O NODOS EJECUTANDOSÉ EN EL BACKGROUND
+
+[Enlace a sbot_description/readme.md](sbot_description/readme.md)
+
 
 ## Sbot_description
 ~~~shell1
