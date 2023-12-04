@@ -5,7 +5,7 @@
     │      ├── jsp_gui.launch.py: joint state publisher gui for manual control of the joints
     │      ├── rsp.launch.py: robot state publisher necesary for obtain the actual state of the robot
     │      ├── rviz_gui.launch.xml: visualization and joint state publisher gui manipulation
-    │      ├── rviz.launch.py: visualization of robot
+    │      └── rviz.launch.py: visualization of robot
     │
     ├── meshes
     │      └──  ... all the meshes that compose the robot
