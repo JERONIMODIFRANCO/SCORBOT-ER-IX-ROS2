@@ -63,7 +63,7 @@ def generate_launch_description():
             '/model/scorbot/joint/roll/cmd_pos@std_msgs/msg/Float64]gz.msgs.Double',
             '/model/scorbot/joint/finger_R_joint/cmd_pos@std_msgs/msg/Float64]gz.msgs.Double',
             '/model/scorbot/joint/finger_L_joint/cmd_pos@std_msgs/msg/Float64]gz.msgs.Double',
-            '/world/default/model/scorbot/joint_state@sensor_msgs/msg/JointState[ignition.msgs.Model'
+            # '/world/default/model/scorbot/joint_state@sensor_msgs/msg/JointState[ignition.msgs.Model'
         ],
         remappings=[
             ('/model/scorbot/joint/base_joint/cmd_pos', '/commands/base_joint'),
@@ -73,7 +73,7 @@ def generate_launch_description():
             ('/model/scorbot/joint/roll/cmd_pos', '/commands/roll'),
             ('/model/scorbot/joint/finger_R_joint/cmd_pos', '/commands/finger_R_joint'),
             ('/model/scorbot/joint/finger_L_joint/cmd_pos', '/commands/finger_L_joint'),
-            ('/world/default/model/scorbot/joint_state', '/joint_states'),
+            # ('/world/default/model/scorbot/joint_state', '/joint_states'),
         ],
         output='screen'
     )
