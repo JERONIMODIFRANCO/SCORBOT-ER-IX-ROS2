@@ -1,6 +1,6 @@
 moveit_setup_assistant_config:
   urdf:
-    package: sbot_description
+    package: sbot_description_gazebo
     relative_path: urdf/scorbot.urdf.xacro
   srdf:
     relative_path: config/scorbot.srdf

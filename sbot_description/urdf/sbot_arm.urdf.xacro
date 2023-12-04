@@ -192,7 +192,8 @@
     <joint name="${prefix}ee_fixed_joint" type="fixed">
       <parent link="cylinder_link" />
       <child link = "ee_link" />
-      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+      <origin xyz="0 0 0.170" rpy="0.0 0.0 0.0" /> 
+      <!-- cambie por el 0 0 0 para llevar el end effector mas adelante -->
     </joint>
     <!--0.123619254184439-->
     <!-- DEFINO TOOL_LINK -->

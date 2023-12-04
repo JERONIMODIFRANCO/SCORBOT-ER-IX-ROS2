@@ -6,7 +6,7 @@
     <xacro:include filename="$(find sbot_description)/urdf/scorbot.urdf.xacro" />
 
     <!-- Import control_xacro -->
-    <xacro:include filename="scorbot_gz.ros2_control.xacro" />
+    <xacro:include filename="scorbot.ros2_control.xacro" />
 
     <!-- Macro control_xacro -->
     <xacro:scorbot_ros2_control name="IgnitionSystem" system="ign_ros2_control/IgnitionSystem" initial_positions_file="$(arg initial_positions_file)"/>

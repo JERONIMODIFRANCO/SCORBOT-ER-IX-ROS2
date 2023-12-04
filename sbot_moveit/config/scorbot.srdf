@@ -25,25 +25,13 @@
         <joint name="roll" value="0"/>
         <joint name="shoulder" value="0"/>
     </group_state>
-    <group_state name="open" group="gripper">
-        <joint name="finger_L_joint" value="0"/>
-    </group_state>
-    <group_state name="closed" group="gripper">
-        <joint name="finger_L_joint" value="0.024"/>
-    </group_state>
-    <group_state name="reverence" group="arm">
-        <joint name="base_joint" value="0"/>
-        <joint name="elbow" value="1.497"/>
-        <joint name="pitch" value="-1.2106"/>
-        <joint name="roll" value="0"/>
-        <joint name="shoulder" value="-1.5751"/>
-    </group_state>
     <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
-    <end_effector name="end_effector" parent_link="gripper" group="gripper"/>
+    <end_effector name="end_effector" parent_link="ee_link" group="gripper"/>
     <!--VIRTUAL JOINT: Purpose: this element defines a virtual joint between a robot link and an external frame of reference (considered fixed with respect to the robot)-->
-    <virtual_joint name="virtual_joint" type="fixed" parent_frame="world" child_link="base"/>
+    <virtual_joint name="vj" type="fixed" parent_frame="world" child_link="base"/>
     <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
     <disable_collisions link1="base" link2="body" reason="Adjacent"/>
+    <disable_collisions link1="base" link2="upper_arm" reason="Never"/>
     <disable_collisions link1="body" link2="upper_arm" reason="Adjacent"/>
     <disable_collisions link1="finger_L" link2="finger_R" reason="Never"/>
     <disable_collisions link1="finger_L" link2="flange" reason="Never"/>
@@ -58,4 +46,5 @@
     <disable_collisions link1="flange" link2="gripper" reason="Adjacent"/>
     <disable_collisions link1="flange" link2="upper_arm" reason="Never"/>
     <disable_collisions link1="forearm" link2="upper_arm" reason="Adjacent"/>
+    <disable_collisions link1="gripper" link2="upper_arm" reason="Never"/>
 </robot>
