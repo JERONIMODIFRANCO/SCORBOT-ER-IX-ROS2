@@ -5,7 +5,7 @@
  *Packages developed for ROS2 Humble, Ignition Fortress and Linux Ubuntu 22.04LTS*
 
 
-# PAQUETES, INSTALACIONES y COMENTARIOS 
+# PREREQUISITOS E INSTALACIONES NECESARIAS 
 
 ## ROS2 HUMBLE
 
@@ -79,18 +79,63 @@ ESTOS NO , FALTA CONFIRMAR
 
 # GUIA DE USO:
 
-**PAQUETES FUNCIONANDO**
+**PAQUETES**
+Aclaracion: Gazebo es equivalente a Ignition y se lo nombra en cualquiera de sus formas.
 
- * **sbot_description**: Contiene la descripción para **ROS2** del modelo en formato URDF, meshses (exportadas directamente desde SolidWorks).
- * Launcher rviz_gui que tiene lanza el visualizador `rviz` con una gui de publicacion de estados de las juntas, añadiendo tambien los ejes de cada marco de referencia.
+ * **sbot_description**: Contiene la descripción para **ROS2** del modelo en formato URDF, incluidas las meshses (exportadas directamente desde SolidWorks).
+ * Launcher rviz_gui que tiene lanza el visualizador `rviz` con una gui de publicación de estados de las juntas.
 
- * **sbot_gazebo**: Contiene los archivos necesarios para la simulación en Gazebo. Los modelos URDF se importan de la descripción contenida en *sbot_description* y se agregan los plugins de GAZEBO (controladores PID de las juntas con las ganancias correspondientes). Además existen ejecutables para realizar el bridge, necesario para comunicar Ignition con ROS2. Existe un launcher para iniciar gazebo, y otro para realizar el spawn del brazo y demás nodos necesarios para la correcta simulacion en Ignition, así como tambien la visualización paralela en RVIZ2.
+ * **sbot_gazebo**: Contiene los archivos necesarios para la simulación basíca de control en Gazebo/Ignition. Los modelos URDF se importan de la descripción contenida en *sbot_description* y se agregan los plugins de GAZEBO (controladores PID de las juntas con las ganancias correspondientes). Además existen ejecutables para realizar el bridge, necesario para comunicar Ignition con ROS2. Existe un launcher para iniciar gazebo, y otro para realizar el spawn del brazo dentro de gazeob y demás nodos necesarios para la correcta simulacion en Ignition, así como tambien la visualización paralela en RVIZ2.
    
- * **sbot_moveit**: Contiene los archivos generados en una estructura predefinida por el setup assistant de MOVEIT2. Existen diversos launchs que cumplen diferentes funciones, y la estructura modular generada permite el agregado o modificacion reducida de lineas de codigo para, en conjunto con ROS2CONTROL permitir el uso de controladores existentes o generados para realizar controles de alto nivel. Mediante RVIZ se permite controlar las distintas juntas que componen al robot para posteriormente ser controladas por el control definido. En un futuro se incorporará gazebo a este paquete para la simulación más cercana a la realidad.
+ * **sbot_moveit**: Contiene los archivos generados en una estructura predefinida por el setup assistant de MOVEIT2. Existen diversos launchs que cumplen diferentes funciones, y la estructura modular generada permite el agregado o modificacion reducida de lineas de codigo para, en conjunto con ROS2CONTROL permitir el uso de controladores existentes o generados para realizar controles de alto nivel. Mediante RVIZ se permite controlar las distintas juntas que componen al robot para posteriormente ser controladas, valga la redundancia, por el control definido. En un futuro se incorporará gazebo a este paquete para la simulación más cercana a la realidad.
+
+ * **sbot_moveit_gazebo**: Este paquete es similar al anterior con el añadido configuraciones para la ejecución de la simulación del control de alto nivel sobre Gazebo. Para ello se requiere configurar la descripción del robot, lanzar el mundo y spawnear el robot.
+
+
+**ESTRUCTURA**
+
+SCORBOT-ER-IX-ROS2
+```
+├── sbot_description
+│   ├── config
+│   ├── launch
+│   ├── meshes
+│   ├── rviz
+│   ├── urdf
+│   ├── CMakeLists.txt
+│   └── package.xml
+│
+├── sbot_gazebo
+│   ├── config
+│   ├── launch
+│   ├── models
+│   ├── worlds
+│   ├── CMakeLists.txt
+│   └── package.xml
+│
+├── sbot_moveit
+│   ├── config
+│   ├── launch
+│   ├── .setup_assistant
+│   ├── CMakeLists.txt
+│   └── package.xml
+│
+├── sbot_moveit_gazebo
+│   ├── config
+│   ├── launch
+│   ├── .setup_assistant
+│   ├── CMakeLists.txt
+│   └── package.xml
+│
+├── README.md
+├── LICENSE
+└── .gitignore
+```
+
 
 **COMANDOS BASICOS**
 
-Se usa la dirección del Workspace como `~/scorbot_ws` para ejemplificar pero se puede cambiar.
+Se usa la dirección del Workspace como `~/sbot` para ejemplificar pero se puede cambiar.
 
 * Crear Workspace y Clonar repositorio:
 ~~~
@@ -133,7 +178,7 @@ Los posibles nombres de las juntas <joint_name\> a controlar y el tipo (en paré
 3. *elbow* (revolución): Articulación brazo-antebrazo
 4. *pitch* (revolución): Articulación muñeca
 5. *roll* (revolución): Rotación del End Effector
-6. *finger_L_joint* (prismática): Dedos de la garra (ambos juntos)
+6. *finger_L_joint* (prismática): Dedos del gripper (ambos juntos)
 
 El <valor\> pasado está en radianes para las juntas de revolución y en metros para las prismáticas.
 
