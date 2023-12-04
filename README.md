@@ -92,6 +92,12 @@ ESTOS NO , FALTA CONFIRMAR
     colcon build
     source ~/sbot/install/setup.sh
 ```
+* Ejecutar un programa
+```
+    cd ~/sbot
+    ros2 launch <Nombre del paquete> <Ejecutable> (argumentos)
+```
+Ejemplos de uso se encuentran dentro de cada uno de los paquetes.
 ### IMPORTANTE "MATAR" (Ctrl+C) TODOS LOS PROCESOS ANTES DE LANZAR OTRO EJECUTABLE PARA EVITAR INCONSISTENCIAS O NODOS EJECUTANDOSÉ EN EL BACKGROUND
 
 **ESTRUCTURA**
