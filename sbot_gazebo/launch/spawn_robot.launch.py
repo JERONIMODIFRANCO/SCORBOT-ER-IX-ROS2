@@ -1,19 +1,11 @@
-#!/usr/bin/python3
-# -*- coding: utf-8 -*-
 from ament_index_python.packages import get_package_share_path
-
 import random
 from launch_ros.actions import Node
 from launch import LaunchDescription
-
 from launch.actions import DeclareLaunchArgument
 from launch.substitutions import Command, LaunchConfiguration
 from launch.conditions import IfCondition
-
 from launch_ros.parameter_descriptions import ParameterValue
-
-# this is the function launch  system will look for
-
 def generate_launch_description():
 
     # Position and orientation
@@ -30,7 +22,7 @@ def generate_launch_description():
     spawn_robot = Node(
         package='ros_ign_gazebo',
         # package='ros_gz_sim',
-        executable='create',
+        executable='create',   
         output='screen',
         arguments=['-entity',
                    entity_name,
@@ -41,8 +33,6 @@ def generate_launch_description():
                    '-topic', '/robot_description'
                    ]
     )
-
-    
 
     # create and return launch description object
     return LaunchDescription(

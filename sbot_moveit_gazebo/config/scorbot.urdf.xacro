@@ -9,6 +9,7 @@
     <xacro:include filename="scorbot.ros2_control.xacro" />
 
     <!-- Macro control_xacro -->
-    <xacro:scorbot_ros2_control name="FakeSystem" system="mock_components/GenericSystem"  initial_positions_file="$(arg initial_positions_file)"/>
+    <xacro:scorbot_ros2_control name="IgnitionSystem" system="ign_ros2_control/IgnitionSystem" initial_positions_file="$(arg initial_positions_file)"/>
+ 
 
 </robot>

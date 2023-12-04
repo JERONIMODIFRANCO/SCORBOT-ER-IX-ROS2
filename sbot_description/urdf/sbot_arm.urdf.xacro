@@ -26,8 +26,8 @@
 
     <!-- JUNTAS REALES DEL BRAZO -->
     <xacro:property name="base_joint" default="base_joint"/>
-    <xacro:property name="elbow" default="elbow"/>
     <xacro:property name="shoulder" default="shoulder"/>
+    <xacro:property name="elbow" default="elbow"/>
     <xacro:property name="pitch" default="pitch"/>
     <xacro:property name="roll" default="roll"/>
 
@@ -103,7 +103,7 @@
                 meshfile="file:$(find sbot_description)/meshes/link_four.STL"
                 meshscale="1 1 1" />
 
-    <xacro:m_joint name="${base_joint}" type="continuous"
+    <xacro:m_joint name="${base_joint}" type="revolute" 
                 axis_xyz="0 0 -1"
                 origin_rpy="0 0 0"
                 origin_xyz="-0.10805388876492 0 0"
@@ -114,7 +114,8 @@
                 limit_u="2.3562"
                 limit_v="0.5" />
 
-    <xacro:m_joint name="${elbow}" type="continuous"
+<!-- cambie el shoulder por el elbow -->
+    <xacro:m_joint name="${shoulder}" type="revolute"
                 axis_xyz="0 0 1"
                 origin_rpy="1.5708 0 0"
                 origin_xyz="0.07 0 0.372"
@@ -125,7 +126,7 @@
                 limit_u="2.3562"
                 limit_v="0.5" />
 
-    <xacro:m_joint name="${shoulder}" type="continuous" 
+    <xacro:m_joint name="${elbow}" type="revolute" 
                 axis_xyz="0 0 1"
                 origin_rpy="0 0 1.5708"
                 origin_xyz="0 0.28 0"
@@ -136,7 +137,7 @@
                 limit_u="2.3562"
                 limit_v="0.5" />
 
-    <xacro:m_joint name="${pitch}" type="continuous"
+    <xacro:m_joint name="${pitch}" type="revolute"
                 axis_xyz="0 0 1"
                 origin_rpy="0 0 -1.5708"
                 origin_xyz="0 -0.23 0"
@@ -166,8 +167,17 @@
       </collision> -->
     </link>
 
-    <xacro:m_joint name="${roll}" type="continuous" axis_xyz="0 0 -1" origin_rpy="-1.5708 0 -1.5708" origin_xyz="0 -0.0058721 0.036836" parent="${flange}" child="cylinder_link" limit_e="1000" limit_l="-2.3562" limit_u="2.3562" limit_v="0.5" />
-
+    <xacro:m_joint name="${roll}" type="continuous"
+                  axis_xyz="0 0 -1"
+                  origin_rpy="-1.5708 0 -1.5708"
+                  origin_xyz="0 -0.0058721 0.036836"
+                  parent="${flange}"
+                  child="cylinder_link"
+                  limit_e="1000"
+                  limit_l="-2.3562"
+                  limit_u="2.3562"
+                  limit_v="0.5" />
+                  
     <!-- DEFINO EE_LINK -->
     <link name="ee_link">
       <!-- <collision>
@@ -182,7 +192,8 @@
     <joint name="${prefix}ee_fixed_joint" type="fixed">
       <parent link="cylinder_link" />
       <child link = "ee_link" />
-      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+      <origin xyz="0 0 0.170" rpy="0.0 0.0 0.0" /> 
+      <!-- cambie por el 0 0 0 para llevar el end effector mas adelante -->
     </joint>
     <!--0.123619254184439-->
     <!-- DEFINO TOOL_LINK -->

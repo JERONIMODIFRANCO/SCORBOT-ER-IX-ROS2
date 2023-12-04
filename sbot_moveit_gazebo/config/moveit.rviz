@@ -1,17 +1,18 @@
 Panels:
   - Class: rviz_common/Displays
-    Help Height: 0
+    Help Height: 70
     Name: Displays
     Property Tree Widget:
       Expanded:
         - /MotionPlanning1
+        - /MotionPlanning1/Scene Geometry1
+        - /MotionPlanning1/Scene Robot1
         - /MotionPlanning1/Planning Request1
         - /MotionPlanning1/Planning Metrics1
         - /MotionPlanning1/Planned Path1
         - /TF1
-        - /TF1/Status1
       Splitter Ratio: 0.5
-    Tree Height: 244
+    Tree Height: 174
   - Class: rviz_common/Help
     Name: Help
   - Class: rviz_common/Views
@@ -40,7 +41,7 @@ Visualization Manager:
       Plane Cell Count: 10
       Reference Frame: <Fixed Frame>
       Value: true
-    - Acceleration_Scaling_Factor: 0.1
+    - Acceleration_Scaling_Factor: 1
       Class: moveit_rviz_plugin/MotionPlanning
       Enabled: true
       Move Group Namespace: ""
@@ -63,7 +64,7 @@ Visualization Manager:
           Z: 2
       Name: MotionPlanning
       Planned Path:
-        Color Enabled: false
+        Color Enabled: true
         Interrupt Display: false
         Links:
           All Links Enabled: true
@@ -90,7 +91,6 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
-            Value: true
           finger_L:
             Alpha: 1
             Show Axes: false
@@ -129,9 +129,9 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
-        Loop Animation: false
+        Loop Animation: true
         Robot Alpha: 0.5
-        Robot Color: 150; 50; 150
+        Robot Color: 53; 132; 228
         Show Robot Collision: false
         Show Robot Visual: true
         Show Trail: false
@@ -149,15 +149,15 @@ Visualization Manager:
       Planning Request:
         Colliding Link Color: 255; 0; 0
         Goal State Alpha: 1
-        Goal State Color: 250; 128; 0
-        Interactive Marker Size: 0
+        Goal State Color: 51; 209; 122
+        Interactive Marker Size: 0.20000000298023224
         Joint Violation Color: 255; 0; 255
-        Planning Group: hand
+        Planning Group: arm
         Query Goal State: true
         Query Start State: false
         Show Workspace: false
         Start State Alpha: 1
-        Start State Color: 0; 255; 0
+        Start State Color: 255; 255; 255
       Planning Scene Topic: monitored_planning_scene
       Robot Description: robot_description
       Scene Geometry:
@@ -168,7 +168,7 @@ Visualization Manager:
         Voxel Coloring: Z-Axis
         Voxel Rendering: Occupied Voxels
       Scene Robot:
-        Attached Body Color: 150; 50; 150
+        Attached Body Color: 53; 132; 228
         Links:
           All Links Enabled: true
           Expand Joint Details: false
@@ -194,7 +194,6 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
-            Value: true
           finger_L:
             Alpha: 1
             Show Axes: false
@@ -233,11 +232,11 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
-        Robot Alpha: 0.5
+        Robot Alpha: 1
         Show Robot Collision: false
         Show Robot Visual: true
       Value: true
-      Velocity_Scaling_Factor: 0.1
+      Velocity_Scaling_Factor: 1
     - Class: rviz_default_plugins/TF
       Enabled: true
       Frame Timeout: 15
@@ -267,7 +266,7 @@ Visualization Manager:
           Value: true
         world:
           Value: true
-      Marker Scale: 0.5
+      Marker Scale: 0.4000000059604645
       Name: TF
       Show Arrows: true
       Show Axes: true
@@ -308,7 +307,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 1.7346559762954712
+      Distance: 2
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -323,10 +322,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.4000001549720764
+      Pitch: 0.5
       Target Frame: world
       Value: Orbit (rviz_default_plugins)
-      Yaw: 0.1320042461156845
+      Yaw: -0.6230000257492065
     Saved: ~
 Window Geometry:
   Displays:

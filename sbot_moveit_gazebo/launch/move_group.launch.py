@@ -3,5 +3,5 @@ from moveit_configs_utils.launches import generate_move_group_launch
 
 
 def generate_launch_description():
-    moveit_config = MoveItConfigsBuilder("sbot", package_name="sbot_moveit_gz").to_moveit_configs()
+    moveit_config = MoveItConfigsBuilder("scorbot", package_name="sbot_moveit_gazebo").to_moveit_configs()
     return generate_move_group_launch(moveit_config)

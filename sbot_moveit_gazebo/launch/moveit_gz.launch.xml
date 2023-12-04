@@ -1,0 +1,13 @@
+<?xml version='1.0' ?>
+<launch>
+
+  <!-- gazebo -->
+  <include file="$(find-pkg-share sbot_gazebo)/launch/start_world.launch.py"/>
+
+  <!-- moveit -->
+  <include file="$(find-pkg-share sbot_moveit_gazebo)/launch/demo.launch.py"/>
+
+  <!-- Read robot_description an spawn in gazebo running sim -->
+  <include file="$(find-pkg-share sbot_gazebo)/launch/spawn_robot.launch.py"/>
+
+</launch> 

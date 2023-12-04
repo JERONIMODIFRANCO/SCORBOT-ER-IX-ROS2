@@ -1,13 +1,13 @@
+# importamos utilidades 
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
 from launch.substitutions import  LaunchConfiguration
 from launch.conditions import IfCondition
-
 from launch_ros.actions import Node
 
 
 def generate_launch_description():
-
+    #Declaracion de argumentos de joint state publisher node 
     jsp_arg = DeclareLaunchArgument(name='joint_state_publisher', default_value='true', choices=['true', 'false'],
                                     description='Flag to enable Joint State Publisher')
 

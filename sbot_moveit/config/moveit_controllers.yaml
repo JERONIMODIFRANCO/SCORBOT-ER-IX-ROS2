@@ -5,7 +5,7 @@ moveit_controller_manager: moveit_simple_controller_manager/MoveItSimpleControll
 moveit_simple_controller_manager:
   controller_names:
     - arm_controller
-    - hand_controller
+    - gripper_controller
 
   arm_controller:
     type: FollowJointTrajectory
@@ -13,11 +13,11 @@ moveit_simple_controller_manager:
     default: true
     joints:
       - base_joint
-      - elbow
       - shoulder
+      - elbow
       - pitch
       - roll
-  hand_controller:
+  gripper_controller:
     type: GripperCommand
     joints:
       - finger_L_joint

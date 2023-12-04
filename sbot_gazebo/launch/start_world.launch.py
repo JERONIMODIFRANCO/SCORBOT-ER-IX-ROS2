@@ -11,7 +11,7 @@ from ament_index_python.packages import get_package_prefix
 
 def generate_launch_description():
 
-    pkg_gazebo_ros = get_package_share_directory('gazebo_ros')
+    # pkg_gazebo_ros = get_package_share_directory('gazebo_ros')
     pkg_sbot_gazebo = get_package_share_directory('sbot_gazebo')
 
     # We get the whole install dir
@@ -48,7 +48,7 @@ def generate_launch_description():
     return LaunchDescription([
         DeclareLaunchArgument(
           'world',
-          default_value=[os.path.join(pkg_sbot_gazebo, 'worlds', 'empty.world'), ''],
+          default_value=[os.path.join(pkg_sbot_gazebo, 'worlds', 'empty'), ''],
           description='SDF world file'),
         gazebo
     ])
