@@ -16,7 +16,7 @@
     │     
     ├── launch
     │      ├── demo.launch.py: Launch file to dynamically control the robot in RViz.
-    │      ├── move_group.launch.py: Launch file for proper management of ROS 2 controllers.
+    │      ├── move_group.launch.py: Launch file for load all plugins of MOVEIT2.
     │      ├── moveit_gz.launch.xml: moveit simulation on igniton, includes demo.launch.py, start_world.launch.py and spawn_robot.launch.py
     │      ├── moveit_rviz.launch.py: RViz launch file.
     │      ├── rsp.launch.py: robot state publisher.
