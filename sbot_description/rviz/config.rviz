@@ -88,7 +88,6 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
         finger_L:
           Alpha: 1
           Show Axes: false
@@ -164,7 +163,7 @@ Visualization Manager:
           Value: true
         world:
           Value: true
-      Marker Scale: 0.5
+      Marker Scale: 0.4000000059604645
       Name: TF
       Show Arrows: true
       Show Axes: true
@@ -233,7 +232,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 2.2428619861602783
+      Distance: 1.7368723154067993
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -248,10 +247,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: -0.00960104912519455
+      Pitch: 0.5053988099098206
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 4.96856689453125
+      Yaw: 5.678569793701172
     Saved: ~
 Window Geometry:
   Displays:
