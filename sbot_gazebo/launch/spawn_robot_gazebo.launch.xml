@@ -17,6 +17,6 @@
   <include file="$(find-pkg-share sbot_gazebo)/launch/bridge.launch.py"/>
 
   <!-- Load the controllers -->
-  <include file="$(find-pkg-share sbot_gazebo)/launch/controllers.launch.py"/>  
+  <!-- <include file="$(find-pkg-share sbot_gazebo)/launch/controllers.launch.py"/>   -->
 
 </launch> 
