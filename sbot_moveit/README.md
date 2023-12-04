@@ -16,7 +16,7 @@
     │     
     ├── launch
     │      ├── demo.launch: Launch file to dynamically control the robot in RViz.
-    │      ├── move_group.launch.py: Launch file for proper management of ROS 2 controllers.
+    │      ├── move_group.launch.py: Launch file for load all the plugins of MOVEIT2.
     │      ├── moveit_rviz.launch.py: RViz launch file.
     │      ├── rsp.launch.py: robot state publisher.
     │      ├── setup_assistant.launch.py: Launch file to reconfigure the file.
