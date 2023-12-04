@@ -26,3 +26,7 @@
     ├── CMakeLists.txt
     └── package.xml
 ```
+## Launch file principal 
+```bash
+ros2 launch sbot_description rviz_gui.launch.xml
+```
