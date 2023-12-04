@@ -76,12 +76,27 @@ ESTOS NO , FALTA CONFIRMAR
 ``` export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/ros/humble/lib``` 
 
 
+**CLONE AND SOURCE REPOSITORY**
+
+* Crear Workspace y Clonar repositorio:
+~~~
+    mkdir -p ~/sbot/src
+    cd ~/sbot
+    git clone -b refactor_v1 git@github.com:LAC-FCEIA-UNR/Scorbot-ERIX-ROS.git src #chequear
+~~~
+* Compilar y Source
+~~~
+    cd ~/sbot
+    colcon build
+    source ~/sbot/install/setup.sh
+~~~
+### IMPORTANTE "MATAR" (Ctrl+C) TODOS LOS PROCESOS ANTES DE LANZAR OTRO EJECUTABLE PARA EVITAR INCONSISTENCIAS O NODOS EJECUTANDOSÉ EN EL BACKGROUND
+
 **ESTRUCTURA**
 
 SCORBOT-ER-IX-ROS2
 ```
 ├── sbot_description
-│   ├── config
 │   ├── launch
 │   ├── meshes
 │   ├── rviz
@@ -120,57 +135,10 @@ SCORBOT-ER-IX-ROS2
 └── .gitignore
 ```
 
- * **sbot_description**: Contiene la descripción para **ROS2** del modelo en formato URDF, incluidas las meshses (exportadas directamente desde SolidWorks).
- * Launcher rviz_gui que tiene lanza el visualizador `rviz` con una gui de publicación de estados de las juntas.
+ * **[sbot_description](sbot_description/readme.md)**: Contiene la descripción para **ROS2** del modelo en formato URDF, incluidas las meshses (exportadas directamente desde SolidWorks) y ejecutables de `rviz` para visaulización y debugeo inicial del robot.
 
- * **sbot_gazebo**: Contiene los archivos necesarios para la simulación basíca de control en Gazebo/Ignition. Los modelos URDF se importan de la descripción contenida en *sbot_description* y se agregan los plugins de GAZEBO (controladores PID de las juntas con las ganancias correspondientes). Además existen ejecutables para realizar el bridge, necesario para comunicar Ignition con ROS2. Existe un launcher para iniciar gazebo, y otro para realizar el spawn del brazo dentro de gazeob y demás nodos necesarios para la correcta simulacion en Ignition, así como tambien la visualización paralela en RVIZ2.
+ * **[sbot_gazebo](sbot_gazebo/readme.md)**: Contiene los archivos necesarios para la simulación basíca de control en Gazebo/Ignition. Los modelos URDF se importan de la descripción contenida en *sbot_description* y se agregan los plugins de GAZEBO (controladores PID de las juntas con las ganancias correspondientes). Además existen ejecutables para realizar el bridge, necesario para comunicar Ignition con ROS2. Existe un launcher para iniciar gazebo, y otro para realizar el spawn del brazo dentro de gazeob y demás nodos necesarios para la correcta simulacion en Ignition, así como tambien la visualización paralela en RVIZ2.
    
- * **sbot_moveit**: Contiene los archivos generados en una estructura predefinida por el setup assistant de MOVEIT2. Existen diversos launchs que cumplen diferentes funciones, y la estructura modular generada permite el agregado o modificacion reducida de lineas de codigo para, en conjunto con ROS2CONTROL permitir el uso de controladores existentes o generados para realizar controles de alto nivel. Mediante RVIZ se permite controlar las distintas juntas que componen al robot para posteriormente ser controladas, valga la redundancia, por el control definido. En un futuro se incorporará gazebo a este paquete para la simulación más cercana a la realidad.
+ * **[sbot_moveit](sbot_moveit/readme.md)**: Contiene los archivos generados en una estructura predefinida por el setup assistant de MOVEIT2. Existe un conjunto de launchs que cumplen diferentes funciones, y posee una estructura modular generada que permite el agregado o modificacion reducida de lineas de codigo para, en conjunto con ROS2CONTROL permitir el uso de controladores existentes o desarrollados para realizar controles de alto nivel. Mediante RVIZ se permite controlar las distintas juntas que componen al robot para posteriormente ser controladas, valga la redundancia, por el control definido. 
 
- * **sbot_moveit_gazebo**: Este paquete es similar al anterior con el añadido configuraciones para la ejecución de la simulación del control de alto nivel sobre Gazebo. Para ello se requiere configurar la descripción del robot, lanzar el mundo y spawnear el robot.
-
-Para más información acerca de cada paquete:
-[sbot_description](sbot_description/readme.md)
-[sbot_gazebo](sbot_gazebo/readme.md)
-[sbot_moveit](sbot_moveit/readme.md)
-[sbot_moveit_gazebo](sbot_moveit_gazebo/readme.md)
-
-
-
-
-**COMANDOS BASICOS**
-
-Se usa la dirección del Workspace como `~/sbot` para ejemplificar pero se puede cambiar.
-
-* Crear Workspace y Clonar repositorio:
-~~~
-    mkdir -p ~/sbot/src
-    cd ~/sbot
-    git clone -b refactor_v1 git@github.com:LAC-FCEIA-UNR/Scorbot-ERIX-ROS.git src #chequear
-~~~
-* Compilar y Source
-~~~
-    cd ~/sbot
-    colcon build
-    source ~/sbot/install/setup.sh
-~~~
-### IMPORTANTE "MATAR" (Ctrl+C) TODOS LOS PROCESOS ANTES DE LANZAR OTRO EJECUTABLE PARA EVITAR INCONSISTENCIAS O NODOS EJECUTANDOSÉ EN EL BACKGROUND
-
-
-
-Los posibles nombres de las juntas <joint_name\> a controlar y el tipo (en paréntesis) son:
-
-1. *base_joint* (revolución): Junta de la base
-2. *shoulder* (revolución): Articulación base-brazo
-3. *elbow* (revolución): Articulación brazo-antebrazo
-4. *pitch* (revolución): Articulación muñeca
-5. *roll* (revolución): Rotación del End Effector
-6. *finger_L_joint* (prismática): Dedos del gripper (ambos juntos)
-
-El <valor\> pasado está en radianes para las juntas de revolución y en metros para las prismáticas.
-
-* Comentario sobre el movimiento de los dedos:
-  
-Las 2 juntas están limitadas en su rango de movimiento. Los límites de movimiento están limitados a 0 (dedos abiertos) como mínimo y 0.024 (en metros, dedos cerrados) como máximo.
-
-
+ * **[sbot_moveit_gazebo](sbot_moveit_gazebo/readme.md)**: Este paquete es similar al anterior con el añadido configuraciones para la ejecución de la simulación del control de alto nivel sobre Gazebo. Para ello se modifica la descripción del robot, y se añaden ejecutables para inciar gazebo y spawnear el robot.
