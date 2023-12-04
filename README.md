@@ -76,22 +76,6 @@ ESTOS NO , FALTA CONFIRMAR
 ``` export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/ros/humble/lib``` 
 
 
-
-# GUIA DE USO:
-
-**PAQUETES**
-Aclaracion: Gazebo es equivalente a Ignition y se lo nombra en cualquiera de sus formas.
-
- * **sbot_description**: Contiene la descripción para **ROS2** del modelo en formato URDF, incluidas las meshses (exportadas directamente desde SolidWorks).
- * Launcher rviz_gui que tiene lanza el visualizador `rviz` con una gui de publicación de estados de las juntas.
-
- * **sbot_gazebo**: Contiene los archivos necesarios para la simulación basíca de control en Gazebo/Ignition. Los modelos URDF se importan de la descripción contenida en *sbot_description* y se agregan los plugins de GAZEBO (controladores PID de las juntas con las ganancias correspondientes). Además existen ejecutables para realizar el bridge, necesario para comunicar Ignition con ROS2. Existe un launcher para iniciar gazebo, y otro para realizar el spawn del brazo dentro de gazeob y demás nodos necesarios para la correcta simulacion en Ignition, así como tambien la visualización paralela en RVIZ2.
-   
- * **sbot_moveit**: Contiene los archivos generados en una estructura predefinida por el setup assistant de MOVEIT2. Existen diversos launchs que cumplen diferentes funciones, y la estructura modular generada permite el agregado o modificacion reducida de lineas de codigo para, en conjunto con ROS2CONTROL permitir el uso de controladores existentes o generados para realizar controles de alto nivel. Mediante RVIZ se permite controlar las distintas juntas que componen al robot para posteriormente ser controladas, valga la redundancia, por el control definido. En un futuro se incorporará gazebo a este paquete para la simulación más cercana a la realidad.
-
- * **sbot_moveit_gazebo**: Este paquete es similar al anterior con el añadido configuraciones para la ejecución de la simulación del control de alto nivel sobre Gazebo. Para ello se requiere configurar la descripción del robot, lanzar el mundo y spawnear el robot.
-
-
 **ESTRUCTURA**
 
 SCORBOT-ER-IX-ROS2
@@ -102,6 +86,7 @@ SCORBOT-ER-IX-ROS2
 │   ├── meshes
 │   ├── rviz
 │   ├── urdf
+│   ├── README.md
 │   ├── CMakeLists.txt
 │   └── package.xml
 │
@@ -110,6 +95,7 @@ SCORBOT-ER-IX-ROS2
 │   ├── launch
 │   ├── models
 │   ├── worlds
+│   ├── README.md
 │   ├── CMakeLists.txt
 │   └── package.xml
 │
@@ -117,6 +103,7 @@ SCORBOT-ER-IX-ROS2
 │   ├── config
 │   ├── launch
 │   ├── .setup_assistant
+│   ├── README.md
 │   ├── CMakeLists.txt
 │   └── package.xml
 │
@@ -124,6 +111,7 @@ SCORBOT-ER-IX-ROS2
 │   ├── config
 │   ├── launch
 │   ├── .setup_assistant
+│   ├── README.md
 │   ├── CMakeLists.txt
 │   └── package.xml
 │
@@ -131,6 +119,23 @@ SCORBOT-ER-IX-ROS2
 ├── LICENSE
 └── .gitignore
 ```
+
+ * **sbot_description**: Contiene la descripción para **ROS2** del modelo en formato URDF, incluidas las meshses (exportadas directamente desde SolidWorks).
+ * Launcher rviz_gui que tiene lanza el visualizador `rviz` con una gui de publicación de estados de las juntas.
+
+ * **sbot_gazebo**: Contiene los archivos necesarios para la simulación basíca de control en Gazebo/Ignition. Los modelos URDF se importan de la descripción contenida en *sbot_description* y se agregan los plugins de GAZEBO (controladores PID de las juntas con las ganancias correspondientes). Además existen ejecutables para realizar el bridge, necesario para comunicar Ignition con ROS2. Existe un launcher para iniciar gazebo, y otro para realizar el spawn del brazo dentro de gazeob y demás nodos necesarios para la correcta simulacion en Ignition, así como tambien la visualización paralela en RVIZ2.
+   
+ * **sbot_moveit**: Contiene los archivos generados en una estructura predefinida por el setup assistant de MOVEIT2. Existen diversos launchs que cumplen diferentes funciones, y la estructura modular generada permite el agregado o modificacion reducida de lineas de codigo para, en conjunto con ROS2CONTROL permitir el uso de controladores existentes o generados para realizar controles de alto nivel. Mediante RVIZ se permite controlar las distintas juntas que componen al robot para posteriormente ser controladas, valga la redundancia, por el control definido. En un futuro se incorporará gazebo a este paquete para la simulación más cercana a la realidad.
+
+ * **sbot_moveit_gazebo**: Este paquete es similar al anterior con el añadido configuraciones para la ejecución de la simulación del control de alto nivel sobre Gazebo. Para ello se requiere configurar la descripción del robot, lanzar el mundo y spawnear el robot.
+
+Para más información acerca de cada paquete:
+[sbot_description](sbot_description/readme.md)
+[sbot_gazebo](sbot_gazebo/readme.md)
+[sbot_moveit](sbot_moveit/readme.md)
+[sbot_moveit_gazebo](sbot_moveit_gazebo/readme.md)
+
+
 
 
 **COMANDOS BASICOS**
@@ -151,28 +156,7 @@ Se usa la dirección del Workspace como `~/sbot` para ejemplificar pero se puede
 ~~~
 ### IMPORTANTE "MATAR" (Ctrl+C) TODOS LOS PROCESOS ANTES DE LANZAR OTRO EJECUTABLE PARA EVITAR INCONSISTENCIAS O NODOS EJECUTANDOSÉ EN EL BACKGROUND
 
-[Enlace a sbot_description/readme.md](sbot_description/readme.md)
 
-
-## Sbot_description
-~~~shell1
-    ros2 launch sbot_description rviz_gui.launch 
-~~~
-## Sbot_gazebo
-Lanzar ignition
-~~~shell1
-    ros2 launch sbot_gazebo start_world.launch.py  
-~~~
-De ser necesario seleccionar Empty y run
-* Spawnear brazo
-~~~shell2
-    ros2 launch sbot_gazebo spawn_robot_gazebo.launch.xml  
-~~~
-El modelo en RVIZ se verá "roto" y esto es pq hasta que no se inicie la simulación en gazebo, no se publican el estado de las juntas. Para ello dar play en ignition
-* Controlar una junta
-~~~shell3
-    ros2 topic pub /commands/<joint_name> std_msgs/msg/Float64 'data: "<valor>"'
-~~~
 
 Los posibles nombres de las juntas <joint_name\> a controlar y el tipo (en paréntesis) son:
 
@@ -189,10 +173,4 @@ El <valor\> pasado está en radianes para las juntas de revolución y en metros 
   
 Las 2 juntas están limitadas en su rango de movimiento. Los límites de movimiento están limitados a 0 (dedos abiertos) como mínimo y 0.024 (en metros, dedos cerrados) como máximo.
 
-## Sbot_moveit
-~~~shell1
-ros2 launch sbot_moveit demo.launch.py 
-~~~
-Para no ver en loop la animacion, hay que destildar la loop animation, que se visualiza al desplazarse hacia abajo en el area correspondiente. Debajo se encuentran los controles para las juntas, se debe seleccionar el grupo a controlar: arm contiene todas las juntas excepto las de prismaticas del gripper que se encuentran en el grupo hand.
-![image](https://github.com/JERONIMODIFRANCO/SCORBOT-ER-IX-ROS2/assets/95137387/48642bd3-4a09-44d0-9b57-52ababeaf423)
 
