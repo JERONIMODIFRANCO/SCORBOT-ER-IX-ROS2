@@ -55,6 +55,22 @@
 
      pid2.Umin = -380;    // Saturacion negativa del PID
 
+     
+     //gRIPPER
+     pid3.Kp = 15;
+
+     pid3.Ki = 1;
+
+     pid3.Kd = 0;
+
+     pid3.c1 = 1;
+
+     pid3.c2 = 1;
+
+     pid3.Umax = 380;     // Saturacion positiva del PID
+
+     pid3.Umin = -380;    // Saturacion negativa del PID
+
 //    ///////////////////////////////PARAMETROS PID - CORRIENTE/////////////////////////////////////////
       //
 //      /////////////////////////////////SEGUNDA PLACA//////////////////////////////////////////////////////

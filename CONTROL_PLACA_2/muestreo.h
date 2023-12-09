@@ -10,6 +10,7 @@
 
 extern volatile POSSPEED qep_posspeed_1;
 extern volatile POSSPEED qep_posspeed_2;
+extern volatile POSSPEED qep_posspeed_3;
 extern volatile Uint16 corriente_medida_1;
 extern volatile Uint16 corriente_medida_2;
 extern volatile Uint16 corriente_medida_3;

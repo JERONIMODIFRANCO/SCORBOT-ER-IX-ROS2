@@ -73,6 +73,10 @@ typedef volatile struct dcl_pid {
                         0.0f, 1.0f, 1.0f, -1.0f, \
                         NULL_ADDR, NULL_ADDR }
 
+#define PID_3_DEFAULTS {  1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, \
+                        0.0f, 1.0f, 1.0f, -1.0f, \
+                        NULL_ADDR, NULL_ADDR }
+
 #define PID_4_DEFAULTS {  1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, \
                         0.0f, 1.0f, 1.0f, -1.0f, \
                         NULL_ADDR, NULL_ADDR }

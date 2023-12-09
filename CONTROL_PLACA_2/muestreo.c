@@ -19,6 +19,7 @@
 
 volatile POSSPEED qep_posspeed_1 = POSSPEED_1_DEFAULTS;
 volatile POSSPEED qep_posspeed_2 = POSSPEED_2_DEFAULTS;
+volatile POSSPEED qep_posspeed_3 = POSSPEED_3_DEFAULTS; //GRIPPER
 volatile Uint16 corriente_medida_1;
 volatile Uint16 corriente_medida_2;
 volatile Uint16 corriente_medida_3;
@@ -57,6 +58,7 @@ void Muestreo(void){
     //
     ref_entrada_1 = AdcaResultRegs.ADCRESULT1;
     ref_entrada_2 = AdcbResultRegs.ADCRESULT1;
+    //ref_entrada_3 = AdcbResultRegs.ADCRESULT1; //GRIPPER
     //
     // Referencias de posicion que entran por los ADCs en GRADOS - Conversion de sin signo (flotante) a con signo (entero)
     //
@@ -66,13 +68,13 @@ void Muestreo(void){
     ////////////////////////Segunda Placa//////////////////////////////
     ///////////////////////////////////////////////////////////////////
 //    //
-    // Espacio de trabajo eje 4 - 196°
+    // Espacio de trabajo eje 4 - 196ï¿½
     //
 //    aux_POS_1 = 0.04785f*ref_entrada_1-98;
 //
 //    SP_REF_1 = aux_POS_1;
 ////    //
-//    // Espacio de trabajo eje 5 - 737° - Limitado a 360°
+//    // Espacio de trabajo eje 5 - 737ï¿½ - Limitado a 360ï¿½
 //    //
 //    aux_POS_2 = 0.08789f*ref_entrada_2-180;
 //
@@ -83,9 +85,11 @@ void Muestreo(void){
     //
     qep_posspeed_1.calc(&qep_posspeed_1);                                       // Calcula todas las variables de la estructura posspeed de QEP
     qep_posspeed_2.calc(&qep_posspeed_2);
+    qep_posspeed_3.calc(&qep_posspeed_3); //GRIPPER
     //
     // Posiciones de los ejes 1, 2 y 3 en este momento en GRADOS
     //
     Angulo_grados_eje_1 = qep_posspeed_1.angle_robot;                          // Las posiciones son las variables a controlar con el PID de POSICION
     Angulo_grados_eje_2 = qep_posspeed_2.angle_robot;
+    Angulo_grados_eje_3 = qep_posspeed_3.angle_robot; //GRIPPER
 }
