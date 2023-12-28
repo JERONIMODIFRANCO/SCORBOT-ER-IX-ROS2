@@ -1,15 +1,13 @@
 # ROS2 
- **'ros2'** se utiliza para todos los comandos ROS2. Por lo tanto, para lanzar programas, tendrás dos opciones:
-
-- Inicie el programa ROS2 ejecutando directamente el **archivo ejecutable**.
-- Inicie el programa ROS2 iniciando **launch file**.
-- 
-```ros2 run <package_name> <executable_file>```
-```ros2 launch <package_name> <launch_file>```
+ROS 2 (Robot Operating System 2) es un marco de software para el desarrollo de robótica, proporcionando una plataforma sólida para crear sistemas robóticos complejos. Es un framework que se basa en un sistema operativo, permitiendo abstractizar el hardware del software, lo que facilita el desarrollo de programas para robots sin necesidad de contar con hardware físico en la escena. Algunas características clave de ROS 2 incluyen:
+Arquitectura de nodos: ROS 2 se basa en la idea de nodos, que son procesos independientes que se ejecutan y se comunican entre sí mediante mensajes.
+Herramientas y paquetes adicionales: ROS 2 incluye una serie de herramientas y paquetes adicionales para facilitar el desarrollo de robótica, como mapas y localización (2D/3D SLAM), navegación, percepción, representación de marcos de coordenadas y simulación.
+Compatibilidad con ROS 1: Aunque ROS 2 es una mejora significativa en comparación con ROS 1, aún es compatible con algunos componentes de ROS 1 y permite la colaboración con sistemas híbridos que utilizan ambos.
 
 # ¿Qué es un paquete?
 ROS2 utiliza **paquetes** para organizar sus programas. Se puede pensar en un paquete como **todos los archivos que contiene un programa ROS2 específico**; todos sus archivos C++, archivos de Python, archivos de configuración, archivos de compilación, archivos de lanzamiento y archivos de parámetros.
 Se puede crear dos tipos de paquetes: paquetes de Python y paquetes de CMake (C++).
+
 Los paquetes de Python contendrán ejecutables de Python. Cada paquete de Python tendrá la siguiente estructura de archivos y carpetas:
 package.xml - Archivo que contiene metainformación sobre el paquete (mantenedor del paquete, dependencias, etc.).
 setup.py - Archivo que contiene instrucciones sobre cómo compilar el paquete.
@@ -17,30 +15,15 @@ setup.cfg - Archivo que define dónde se instalarán los scripts.
 /<nombre_del_paquete> - Este directorio siempre tendrá el mismo nombre que su paquete. Colocarás todos tus scripts de Python dentro de esta carpeta. Ya contiene un archivo __init__.py vacío de forma predeterminada.
 Algunos paquetes pueden contener carpetas adicionales. Por ejemplo, la carpeta launch contiene los archivos de lanzamiento del paquete.
 
-# Crear un paquete
-El espacio de trabajo de ROS2 es el directorio en tu disco duro donde residen tus paquetes de ROS2 para que sean utilizados por ROS2. 
-El directorio src es una convención en ROS 2, el cual contiene todos los paquetes creados. Cada vez que desees crear un paquete, debes estar en este directorio nombre_del_paquete/src
-Para crear un paquete en ROS 2, primero debes asegurarte de estar en el directorio src de tu espacio de trabajo. Luego, puedes utilizar el siguiente comando para crear un nuevo paquete:
-Para un paquete de CMake:
-bash
-```ros2 pkg create --build-type ament_cmake <nombre_del_paquete> dependencies <package_dependencies>
-```
-Para un paquete de Python:
-bash
-```ros2 pkg create --build-type ament_python <nombre_del_paquete> dependencies <package_dependencies>
-```
-El nombre del paquete que deseas crear se especifica con <package_name>, y las dependencias del paquete se definen con <package_dependencies>
-Es una buena idea construir tu paquete después de haberlo creado. Es la forma más rápida de determinar si las dependencias que has listado pueden resolverse y verificar que no hay errores en los datos ingresados
-```
-cd ~/nombre_del_paquete/
-colcon build
-```
-```shell
-source install/setup.bash
-```
+La estructura de un proyecto CMake consta de los siguientes elementos:
+Carpeta launch: Contiene archivos de lanzamiento.
+Carpeta src: Contiene archivos de código (CPP, Python).
+Archivo CMakeLists.txt: Lista de reglas de CMake para la compilación.
+Archivo package.xml: Metadatos del paquete y dependencias.
+
 Los paquetes se organizan dentro de espacios de trabajo en ROS 2
 
-```estructura
+```Paquetes python
 ros2_ws/
     src/
         my_package/
@@ -56,10 +39,54 @@ ros2_ws/
             setup.py
             ...
 ```
+
+```Paquetes Cmake
+ros2_ws/
+    src/
+        my_package/
+            package.xml
+            CMakeLists.txt
+            ...
+        my_package_2/
+            package.xml
+            CMakeLists.txt
+            ...
+        my_package_x/
+            package.xml
+            CMakeLists.txt
+            ...
+```
+
+ **'ros2'** se utiliza para todos los comandos ROS2. 
+ 
+
+# Crear un paquete
+El espacio de trabajo de ROS2 es el directorio en tu disco duro donde residen tus paquetes de ROS2 para que sean utilizados por ROS2. 
+El directorio src es una convención en ROS 2, el cual contiene todos los paquetes creados. Cada vez que desees crear un paquete, debes estar en este directorio nombre_del_paquete/src
+Para crear un paquete en ROS 2, primero debes asegurarte de estar en el directorio src de tu espacio de trabajo. Luego, puedes utilizar el siguiente comando para crear un nuevo paquete:
+Para un paquete de CMake:
+```bash
+ros2 pkg create --build-type ament_cmake <nombre_del_paquete> dependencies <package_dependencies>
+```
+Para un paquete de Python:
+```bash
+ros2 pkg create --build-type ament_python <nombre_del_paquete> dependencies <package_dependencies>
+```
+El nombre del paquete que deseas crear se especifica con <package_name>, y las dependencias del paquete se definen con <package_dependencies>
+Es una buena idea construir tu paquete después de haberlo creado. Es la forma más rápida de determinar si las dependencias que has listado pueden resolverse y verificar que no hay errores en los datos ingresados
+```
+cd ~/nombre_del_paquete/
+colcon build
+```
+```shell
+source install/setup.bash
+```
+
 Compilar un paquete
 ```shell
 colcon build
 ```
+Para compilar un proyecto CMake, es necesario compilar cada vez que se cambie cualquier archivo, incluso archivos de Python o de lanzamiento que no necesiten compilación. Además, debido a que colcon build realiza una instalación y utiliza los archivos en ~/ros2_ws/install, los archivos ejecutados, es necesario ejecutar colcon build cada vez.
 Es importante realizar este paso en la direccion del paquete y no en el src del mismo.
 ```shell
 cd ~/ros2_ws
@@ -141,6 +168,62 @@ setup(
 )
 ```
 El objetivo de este código es instalar los archivos de lanzamiento. Por ejemplo, con el paquete llamado my_package, esto instalará todos los archivos de lanzamiento de la carpeta launch/ en ~/ros2_ws/install/my_package/share/my_package/.
+
+
+Modifica el archivo CMakeLists.txt para generar un ejecutable a partir del archivo C++ que has creado.
+Esto es algo que se requiere al trabajar en ROS2 con C++.
+Cuando se programa en C++, es necesario crear binarios (ejecutables) de tus programas para ejecutarlos. Para ello, deberás modificar el archivo CMakeLists.txt de tu paquete para indicar que deseas crear un ejecutable de tu archivo C++
+```cmake
+add_executable(simple_node src/simple.cpp)
+ament_target_dependencies(simple_node rclcpp)
+
+install(TARGETS
+   simple_node
+   DESTINATION lib/${PROJECT_NAME}
+ )
+
+# Install launch files.
+install(DIRECTORY
+  launch
+  DESTINATION share/${PROJECT_NAME}/
+)
+```
+
+```cmake
+add_executable(simple_node src/simple.cpp)
+```
+Esta línea genera un ejecutable a partir del archivo simple.cpp, que se encuentra en la carpeta src de tu paquete. Este ejecutable se llamará simple_node.
+```cmake
+ament_target_dependencies(simple_node rclcpp)
+```
+Esta línea agrega todas las dependencias del objetivo ament del ejecutable.
+```cmake
+install(TARGETS
+   simple_node
+   DESTINATION lib/${PROJECT_NAME}
+ )
+```
+Este fragmento instalará nuestro nodo ejecutable (simple_node) en nuestro espacio de instalación dentro del espacio de trabajo de ROS2. Por lo tanto, este ejecutable se colocará en el directorio del paquete de tu espacio de instalación, que se encuentra, de forma predeterminada, en ~/ros2_ws/install/my_package/lib/my_package/.
+```cmake
+install(DIRECTORY
+  launch
+  DESTINATION share/${PROJECT_NAME}/
+)
+```
+El objetivo de este código es instalar los archivos de lanzamiento. Por ejemplo, con el paquete llamado my_package, esto instalará todos los archivos de lanzamiento de la carpeta launch/ en ~/ros2_ws/install/my_package/share/my_package/launch.
+
+Por lo tanto, para lanzar programas, tendrás dos opciones:
+
+- Inicie el programa ROS2 ejecutando directamente el **archivo ejecutable**.
+
+- Inicie el programa ROS2 iniciando **launch file**.
+```
+ros2 run <package_name> <executable_file>
+```
+```
+ros2 launch <package_name> <launch_file>
+```
+
 # NODOS 
 En ROS 2, cada nodo debe ser responsable de un módulo único (por ejemplo, un nodo para controlar los motores de las ruedas, otro para controlar un sensor láser, etc.). Cada nodo puede comunicarse con otros nodos a través de diferentes métodos.
 ![image](https://github.com/JERONIMODIFRANCO/SCORBOT-ER-IX-ROS2/assets/95137387/940082c3-d29b-46c8-8937-b60ec247cefd)
@@ -161,6 +244,7 @@ Para publicar algo en un topico en ROS 2, primero debes verificar qué tipo de i
 ```shell
 ros2 interface list
 ```
+Un suscriptor es un nodo que lee información de un tema.
 Las interfaces en ROS 2 se dividen en los siguientes grupos:
 Mensajes: Se encuentran en archivos .msg. Son archivos de texto simples que describen los campos de un mensaje de ROS. Se utilizan para generar código fuente para mensajes en diferentes lenguajes de programación
 Servicios: Se encuentran en archivos .srv. Están compuestos por dos partes: una solicitud y una respuesta. Ambas son declaraciones de mensaje
@@ -222,7 +306,8 @@ En ROS 2, las acciones proporcionan feedback y se puede visualizar este feedback
     ROS2 Debugging Messages
     En ROS 2, el sistema de registro admite cinco niveles de gravedad para los mensajes de registro: DEBUG, INFO, WARN, ERROR y FATAL.
     ![image](https://github.com/JERONIMODIFRANCO/SCORBOT-ER-IX-ROS2/assets/95137387/a6e3d2b8-05e4-4408-b5bc-2824b97bdd8f)
-
+    
+# HERRAMIENTAS
 
 # RVIZ2
 RVIZ2 es una herramienta de visualización que permite ver imágenes, nubes de puntos, láseres, transformaciones cinemáticas, modelos de robots y más. No es una herramienta de simulación, sino que representa lo que se publica en los temas por la simulación o el robot real. 
