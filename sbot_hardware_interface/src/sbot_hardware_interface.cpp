@@ -70,7 +70,7 @@ namespace sbot_hardware_interface
             }
         }
 
-    return CallbackReturn::SUCCESS;
+        return CallbackReturn::SUCCESS;
     }
 
     CallbackReturn SbotSystemPositionOnlyHardware::on_configure(
@@ -238,7 +238,7 @@ namespace sbot_hardware_interface
         return hardware_interface::return_type::OK;
     }  
 
-} // namespace sbot_demo_hardware_interface
+} // namespace sbot_hardware_interface
 
 #include "pluginlib/class_list_macros.hpp"
 

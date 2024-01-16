@@ -5,3 +5,5 @@ Paquetes extras instalados:
 Problemas:
 	-Falta de comunicaición con los puertos del SO host: Se solucionó agregando en la parte de "puertos serie" de la MV como número de puerto serie el COM4, modo del puerto "Dispositivo anfritrión", y la ruta como COM4 (dicho puerto es el que se me detecta cuando conecto el conversor Serie/UART, por lo que para que funcione siempre debe estar conectado antes de arrancar la MV). Además, aclarar que dentro de la parte de USB de la configuración de la MV se agregó también el controlador de dicho conversor
 	-Lectura "atrasada" de la comunicación por parte del nodo.
+	-Cambio de variables entre bytes y las demás
+	-Uso activo de librerías
