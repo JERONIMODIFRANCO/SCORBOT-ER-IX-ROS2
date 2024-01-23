@@ -26,8 +26,7 @@ arm_controller:
       - position
     state_interfaces:
       - position
-      - velocity
-    #pid: {p: 1.0, i: 0.0, d:0.0 }
+      # - velocity
 gripper_controller:
   ros__parameters:
     joint: finger_L_joint
