@@ -9,6 +9,8 @@
 #include <termios.h>    // POSIX terminal control definitions
 #include <poll.h>       // Monitorear archivo hasta q esten listos para ser leídos o haya transcurrido un tiempo máximo
 
+#include "rclcpp/rclcpp.hpp"
+
 int write_usb(int USB, const void *buf, size_t count) {
     return write(USB, buf, count);
 }
@@ -29,17 +31,39 @@ void read_usb(int USB, unsigned char *buf, size_t count) {
   // } else {
     // Leer el byte del puerto USB
     ssize_t bytes_read = read(USB, buf, count);
-    // if (bytes_read == -1) {
-    //     // Error al leer el byte
-    //     *buf = 255;
-    //     std::cout << "Error en la recepción por USB de un byte" << std::endl;
-    // } else if (bytes_read == 0) {
-    //     // No se ha leído ningún byte
-    //     *buf = 255;
-    //     std::cout << "Error en la recepción por USB de un byte" << std::endl;
-    // }
+    if ((bytes_read == -1) || (bytes_read == 0)) {
+        // Error al leer el byte
+        RCLCPP_INFO(rclcpp::get_logger("RRBotSystemPositionOnlyHardware"),
+        "Error al leer el dato: %ld",bytes_read);
+      }
   // }
   return;
+}
+
+
+void read_usb_float(int USB, unsigned char (*datos)[4], int cantidad){
+  // int count = 0;
+  unsigned char byte = 0;
+
+      // RCLCPP_INFO(rclcpp::get_logger("RRBotSystemPositionOnlyHardware"),
+      // "Entrando a leer los datos!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
+  for(int dato = 0; dato < cantidad; dato++){
+    for(int count = 0; count < 4; count++) {
+
+      // Lectura del puerto
+      ssize_t bytes_read = read(USB, &byte, 1);  // Leer un byte desde el puerto serie
+      if ((bytes_read == -1) || (bytes_read == 0)) {
+        // Error al leer el byte
+        RCLCPP_INFO(rclcpp::get_logger("RRBotSystemPositionOnlyHardware"),
+        "Error al leer el dato: %ld",bytes_read);
+      }
+
+      datos[dato][count]=byte;
+      // RCLCPP_INFO(rclcpp::get_logger("RRBotSystemPositionOnlyHardware"),
+      // "Dato n° %d, byte %d: %d",dato, count, static_cast<int>(byte));
+    }
+  }
 }
 
 int conection_usb(int USB){

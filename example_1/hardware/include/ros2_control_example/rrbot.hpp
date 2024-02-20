@@ -80,7 +80,7 @@ private:
   int USB; //identificador del usb utilizado
   std::vector<double> comando_viejo;
   int ciclo_actual = 0;
-  
+  int ciclos_total = 1;
 };
 
 }  // namespace ros2_control_example

@@ -12,10 +12,20 @@ set(THIS_PACKAGE_INCLUDE_DEPENDS
   rclcpp
   rclcpp_lifecycle
 )
+set(CONTROLLER_INCLUDE_DEPENDS
+  pluginlib
+  rcpputils
+  controller_interface
+  realtime_tools
+  trajectory_msgs
+)
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
 foreach(Dependency IN ITEMS ${THIS_PACKAGE_INCLUDE_DEPENDS})
+  find_package(${Dependency} REQUIRED)
+endforeach()
+foreach(Dependency IN ITEMS ${CONTROLLER_INCLUDE_DEPENDS})
   find_package(${Dependency} REQUIRED)
 endforeach()
 
@@ -25,15 +35,18 @@ add_library(
   ros2_control_example
   SHARED
   hardware/rrbot.cpp
+  controller/r6bot_controller.cpp
 )
 target_compile_features(ros2_control_example PUBLIC cxx_std_17)
 target_include_directories(ros2_control_example PUBLIC
 $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/hardware/include>
+$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/controller/include>
 $<INSTALL_INTERFACE:include/ros2_control_example>
 )
 ament_target_dependencies(
   ros2_control_example PUBLIC
   ${THIS_PACKAGE_INCLUDE_DEPENDS}
+  ${CONTROLLER_INCLUDE_DEPENDS}
 )
 
 # Causes the visibility macros to use dllexport rather than dllimport,
@@ -42,6 +55,8 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE "ROS2_CONTROL_EXAMPLE_BUILDIN
 
 # Export hardware plugins
 pluginlib_export_plugin_description_file(hardware_interface ros2_control_example.xml)
+# Export controller plugins
+pluginlib_export_plugin_description_file(controller_interface ros2_control_example.xml)
 
 # INSTALL
 install(
@@ -73,5 +88,5 @@ endif()
 
 ## EXPORTS
 ament_export_targets(export_ros2_control_example HAS_LIBRARY_TARGET)
-ament_export_dependencies(${THIS_PACKAGE_INCLUDE_DEPENDS})
+ament_export_dependencies(${THIS_PACKAGE_INCLUDE_DEPENDS} ${CONTROLLER_INCLUDE_DEPENDS})
 ament_package()
