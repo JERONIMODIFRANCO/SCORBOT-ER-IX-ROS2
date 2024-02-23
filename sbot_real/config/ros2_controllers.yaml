@@ -27,6 +27,8 @@ arm_controller:
     state_interfaces:
       - position
       # - velocity
+    open_loop_control: false 
+    
 gripper_controller:
   ros__parameters:
     joint: finger_L_joint
