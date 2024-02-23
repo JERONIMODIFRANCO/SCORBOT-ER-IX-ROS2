@@ -67,7 +67,8 @@ export IGN_GAZEBO_SYSTEM_PLUGIN_PATH=$IGN_GAZEBO_SYSTEM_PLUGIN_PATH:/opt/ros/hum
 source /opt/ros/humble/setup.bash #SOURCE DE ROS2 HUMBLE
 
 source ~/sbot/install/setup.bash #SOURCE DE ENTORNO DE TRABAJO DEL PROYECTO
-``` 
+```
+para lograr la correcta comunicacion entre moveit y gazebo es necesario modificar el archivo launches.py del directorio /opt/ros/humble/lib/python3.10/site-packages/moveit_configs_utils en la línea 224 hay que colocar "use_sim_time":True,
 
 ESTOS NO , FALTA CONFIRMAR 
 ```
