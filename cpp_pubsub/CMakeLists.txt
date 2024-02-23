@@ -9,18 +9,23 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(moveit_core REQUIRED)
+find_package(moveit_msgs REQUIRED)
 # uncomment the following section in order to fill in
 # further dependencies manually.
-# find_package(<dependency> REQUIRED)
+
 
 add_executable(talker src/publisher_member_function.cpp)
 ament_target_dependencies(talker rclcpp std_msgs)
 add_executable(listener src/subscriber_member_function.cpp)
 ament_target_dependencies(listener rclcpp std_msgs)
+add_executable(logger src/guarda_comandos_estados.cpp)
+ament_target_dependencies(logger rclcpp std_msgs moveit_core moveit_msgs)
 
 install(TARGETS
   talker
   listener
+  logger
   DESTINATION lib/${PROJECT_NAME})
 
 if(BUILD_TESTING)
