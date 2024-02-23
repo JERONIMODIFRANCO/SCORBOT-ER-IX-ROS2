@@ -43,9 +43,9 @@ https://gazebosim.org/docs/fortress/install_ubuntu
  
  sudo apt install ros-humble-gazebo-ros-pkgs
  
- ros-humble-ign-ros2-control #solo deberia ser este y no el que sigue
+ sudo apt install ros-humble-ign-ros2-control #solo deberia ser este y no el que sigue
  
- ros-humble-gazebo-ros2-control 
+ sudo apt install ros-humble-gazebo-ros2-control 
  ```
 
 ## ENVIROMENT VARIABLES  (recomendable colocarlas en el bashrc)
