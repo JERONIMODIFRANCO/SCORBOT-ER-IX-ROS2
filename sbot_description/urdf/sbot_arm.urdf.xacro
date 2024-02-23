@@ -122,8 +122,8 @@
                 parent="${body}"
                 child="${upper_arm}"
                 limit_e="1000"
-                limit_l="-2.3562"
-                limit_u="2.3562"
+                limit_l="-2.268"
+                limit_u="0.349"
                 limit_v="0.5" />
 
     <xacro:m_joint name="${elbow}" type="revolute" 
@@ -133,8 +133,8 @@
                 parent="${upper_arm}"
                 child="${forearm}"
                 limit_e="1000"
-                limit_l="-2.3562"
-                limit_u="2.3562"
+                limit_l="-0.698"
+                limit_u="3.316"
                 limit_v="0.5" />
 
     <xacro:m_joint name="${pitch}" type="revolute"
@@ -144,8 +144,8 @@
                 parent="${forearm}"
                 child="${flange}"
                 limit_e="1000"
-                limit_l="-2.3562"
-                limit_u="2.3562"
+                limit_l="-1.483"
+                limit_u="1.745"
                 limit_v="0.5" />
 
     <!-- DEFINO UN CILINDRO INTERMEDIO PARA QUE GIRE EL GRIPPER LUEGO -->
@@ -167,15 +167,15 @@
       </collision> -->
     </link>
 
-    <xacro:m_joint name="${roll}" type="continuous"
+    <xacro:m_joint name="${roll}" type="revolute"
                   axis_xyz="0 0 -1"
                   origin_rpy="-1.5708 0 -1.5708"
                   origin_xyz="0 -0.0058721 0.036836"
                   parent="${flange}"
                   child="cylinder_link"
                   limit_e="1000"
-                  limit_l="-2.3562"
-                  limit_u="2.3562"
+                  limit_l="-3.1415"
+                  limit_u="3.1415"
                   limit_v="0.5" />
                   
     <!-- DEFINO EE_LINK -->
