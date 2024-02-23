@@ -66,51 +66,95 @@ void read_usb_float(int USB, unsigned char (*datos)[4], int cantidad){
   }
 }
 
-int conection_usb(int USB){
+int conection_usb(int USB1, int USB2){
     /* Error Handling */
-    if ( USB < 0 )
+    if ( USB1 < 0 )
     {
     std::cout << "Error " << errno << " opening " << "/dev/ttyACM0" << ": " << strerror (errno) << std::endl;
-      return 0;
     }
     // this->configuracion_port(USB);
     /* *** Configure Port *** */
-    struct termios tty;
-    struct termios tty_old;
-    memset (&tty, 0, sizeof tty);
+    struct termios tty1;
+    struct termios tty1_old;
+    memset (&tty1, 0, sizeof tty1);
 
     /* Error Handling */
-    if ( tcgetattr ( USB, &tty ) != 0 ) {
+    if ( tcgetattr ( USB1, &tty1 ) != 0 ) {
+      std::cout << "Error " << errno << " from tcgetattr: " << strerror(errno) << std::endl;
+    }
+
+    /* Save old tty parameters */
+    tty1_old = tty1;
+
+    /* Set Baud Rate */
+    // cfsetospeed (&tty, (speed_t)B9600);
+    // cfsetispeed (&tty, (speed_t)B9600);
+    cfsetispeed(&tty1, B38400);
+    cfsetospeed(&tty1, B38400); // Creo que es el máximo BR que soporta la librería
+
+    /* Setting other Port Stuff */
+    tty1.c_cflag     &=  ~PARENB;            // Make 8n1
+    tty1.c_cflag     &=  ~CSTOPB;
+    tty1.c_cflag     &=  ~CSIZE;
+    tty1.c_cflag     |=  CS8;
+
+    tty1.c_cflag     &=  ~CRTSCTS;           // no flow control
+    tty1.c_cc[VMIN]   =  1;                  // read doesn't block
+    tty1.c_cc[VTIME]  =  5;                  // 0.5 seconds read timeout
+    tty1.c_cflag     |=  CREAD | CLOCAL;     // turn on READ & ignore ctrl lines
+
+    /* Make raw */
+    cfmakeraw(&tty1);
+
+    /* Flush Port, then applies attributes */
+    tcflush( USB1, TCIFLUSH );
+    if ( tcsetattr ( USB1, TCSANOW, &tty1 ) != 0) {
+      std::cout << "Error " << errno << " from tcsetattr" << std::endl;
+    }
+
+
+    if ( USB2 < 0 )
+    {
+    std::cout << "Error " << errno << " opening " << "/dev/ttyS2" << ": " << strerror (errno) << std::endl;
+    }
+    // this->configuracion_port(USB);
+    /* *** Configure Port *** */
+    struct termios tty2;
+    struct termios tty2_old;
+    memset (&tty2, 0, sizeof tty2);
+
+    /* Error Handling */
+    if ( tcgetattr ( USB2, &tty2 ) != 0 ) {
       std::cout << "Error " << errno << " from tcgetattr: " << strerror(errno) << std::endl;
       return 0;
     }
 
     /* Save old tty parameters */
-    tty_old = tty;
+    tty2_old = tty2;
 
     /* Set Baud Rate */
     // cfsetospeed (&tty, (speed_t)B9600);
     // cfsetispeed (&tty, (speed_t)B9600);
-    cfsetispeed(&tty, B38400);
-    cfsetospeed(&tty, B38400); // Creo que es el máximo BR que soporta la librería
+    cfsetispeed(&tty2, B38400);
+    cfsetospeed(&tty2, B38400); // Creo que es el máximo BR que soporta la librería
 
     /* Setting other Port Stuff */
-    tty.c_cflag     &=  ~PARENB;            // Make 8n1
-    tty.c_cflag     &=  ~CSTOPB;
-    tty.c_cflag     &=  ~CSIZE;
-    tty.c_cflag     |=  CS8;
+    tty2.c_cflag     &=  ~PARENB;            // Make 8n1
+    tty2.c_cflag     &=  ~CSTOPB;
+    tty2.c_cflag     &=  ~CSIZE;
+    tty2.c_cflag     |=  CS8;
 
-    tty.c_cflag     &=  ~CRTSCTS;           // no flow control
-    tty.c_cc[VMIN]   =  1;                  // read doesn't block
-    tty.c_cc[VTIME]  =  5;                  // 0.5 seconds read timeout
-    tty.c_cflag     |=  CREAD | CLOCAL;     // turn on READ & ignore ctrl lines
+    tty2.c_cflag     &=  ~CRTSCTS;           // no flow control
+    tty2.c_cc[VMIN]   =  1;                  // read doesn't block
+    tty2.c_cc[VTIME]  =  5;                  // 0.5 seconds read timeout
+    tty2.c_cflag     |=  CREAD | CLOCAL;     // turn on READ & ignore ctrl lines
 
     /* Make raw */
-    cfmakeraw(&tty);
+    cfmakeraw(&tty2);
 
     /* Flush Port, then applies attributes */
-    tcflush( USB, TCIFLUSH );
-    if ( tcsetattr ( USB, TCSANOW, &tty ) != 0) {
+    tcflush( USB2, TCIFLUSH );
+    if ( tcsetattr ( USB2, TCSANOW, &tty2 ) != 0) {
       std::cout << "Error " << errno << " from tcsetattr" << std::endl;
       return 0;
     }

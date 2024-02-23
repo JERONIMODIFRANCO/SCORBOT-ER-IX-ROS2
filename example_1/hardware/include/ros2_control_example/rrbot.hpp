@@ -77,7 +77,7 @@ private:
   std::vector<double> hw_states_;
 
   // Variables para la comunicaciones
-  int USB; //identificador del usb utilizado
+  int USB1, USB2; //identificador del usb utilizado
   std::vector<double> comando_viejo;
   int ciclo_actual = 0;
   int ciclos_total = 1;

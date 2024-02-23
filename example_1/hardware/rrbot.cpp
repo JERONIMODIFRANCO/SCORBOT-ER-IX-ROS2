@@ -155,8 +155,9 @@ hardware_interface::CallbackReturn RRBotSystemPositionOnlyHardware::on_activate(
 
   // Starting the conection via SERIAL
   /* Open File Descriptor */
-  USB = open( "/dev/ttyACM0", O_RDWR| O_NOCTTY );
-  if(conection_usb(USB) != 1){
+  USB2 = open( "/dev/ttyACM0", O_RDWR| O_NOCTTY );
+  USB1 = open( "/dev/ttyS2", O_RDWR| O_NOCTTY );
+  if(conection_usb(USB1,USB2) != 1){
     return hardware_interface::CallbackReturn::ERROR;
   }
   // Finishing the conection via SERIAL
@@ -167,13 +168,19 @@ hardware_interface::CallbackReturn RRBotSystemPositionOnlyHardware::on_activate(
     hw_commands_[i] = hw_states_[i];
   }
 
-  // unsigned char comando_lectura = 'I';
-  // ssize_t bytes_written = write_usb(USB, &comando_lectura, 1);
-  // if(bytes_written == -1) {
-  //     // Handle error
-  //     RCLCPP_INFO(rclcpp::get_logger("RRBotSystemPositionOnlyHardware"),
-  //     "Error en el envío del comando de lectura");
-  // }
+  unsigned char comando_lectura = 'I';
+  ssize_t bytes_written = write_usb(USB1, &comando_lectura, 1);
+  if(bytes_written == -1) {
+      // Handle error
+      RCLCPP_INFO(rclcpp::get_logger("RRBotSystemPositionOnlyHardware"),
+      "Error en el envío del comando de lectura");
+  }
+  bytes_written = write_usb(USB2, &comando_lectura, 1);
+  if(bytes_written == -1) {
+      // Handle error
+      RCLCPP_INFO(rclcpp::get_logger("RRBotSystemPositionOnlyHardware"),
+      "Error en el envío del comando de lectura");
+  }
 
   // unsigned char respuesta;
   // do{
@@ -192,7 +199,8 @@ hardware_interface::CallbackReturn RRBotSystemPositionOnlyHardware::on_deactivat
   RCLCPP_INFO(
     rclcpp::get_logger("RRBotSystemPositionOnlyHardware"), "Deactivating ...please wait...");
 
-  close(USB);
+  close(USB1);
+  close(USB2);
 
   RCLCPP_INFO(rclcpp::get_logger("RRBotSystemPositionOnlyHardware"), "Successfully deactivated!");
   // END: This part here is for exemplary purposes - Please do not copy to your production code
@@ -213,7 +221,13 @@ hardware_interface::return_type RRBotSystemPositionOnlyHardware::read(
   if(ciclo_actual == ciclos_total){
 
     unsigned char comando_lectura = 'P';
-    ssize_t bytes_written = write_usb(USB, &comando_lectura, 1);
+    ssize_t bytes_written = write_usb(USB1, &comando_lectura, 1);
+    if(bytes_written == -1) {
+        // Handle error
+        RCLCPP_INFO(rclcpp::get_logger("RRBotSystemPositionOnlyHardware"),
+        "Error en el envío del comando de lectura");
+    }
+    bytes_written = write_usb(USB2, &comando_lectura, 1);
     if(bytes_written == -1) {
         // Handle error
         RCLCPP_INFO(rclcpp::get_logger("RRBotSystemPositionOnlyHardware"),
@@ -227,11 +241,12 @@ hardware_interface::return_type RRBotSystemPositionOnlyHardware::read(
     // int dato = 0; 
     // unsigned char bytes[3][4];
     // unsigned char dato1[4],dato2[4],dato3[4];
-    unsigned char datos[3][4];
+    unsigned char datos1[3][4], datos2[3][4];
     // int bandera = 0;
 
 
-    read_usb_float(USB, datos, 3);
+    read_usb_float(USB1, datos1, 3);
+    read_usb_float(USB2, datos2, 3);
     // while (!bandera) {
 
     //   // Lectura del puerto
@@ -266,13 +281,33 @@ hardware_interface::return_type RRBotSystemPositionOnlyHardware::read(
     int HyT[3];
 
     if(comando_lectura == 'C'){
-        std::memcpy(&corriente_1, datos[0], sizeof(float));
-        std::memcpy(&corriente_2, datos[1], sizeof(float));
-        std::memcpy(&corriente_3, datos[2], sizeof(float));
+        std::memcpy(&corriente_1, datos1[0], sizeof(float));
+        std::memcpy(&corriente_2, datos1[1], sizeof(float));
+        std::memcpy(&corriente_3, datos1[2], sizeof(float));
         // std::cout << "C: " << corriente_1 << '/' << corriente_2 << '/' << corriente_3 << std::endl;
     } else if(comando_lectura == 'P'){
         // Guardamos los ángulos (en grados) de cada junta en el estado (en radianes) correspondiente
-        std::memcpy(&intermedio, datos[0], sizeof(float));
+        std::memcpy(&intermedio, datos1[0], sizeof(float));
+        if((intermedio*(3.1415/180) < 6.28) && (intermedio*(3.1415/180) > -6.28)){
+          // hw_states_[0] = intermedio*(3.1415/180); 
+          hw_states_[0] = static_cast<double>(-intermedio*(3.1415/180)); 
+          // hw_states_[3] = static_cast<double>(-intermedio*(3.1415/180)); 
+        }
+        // RCLCPP_INFO(rclcpp::get_logger("RRBotSystemPositionOnlyHardware"),
+        // "Intermedio 1: %d",intermedio);
+        std::memcpy(&intermedio, datos1[1], sizeof(float));
+        if((intermedio*(3.1415/180) < 6.28) && (intermedio*(3.1415/180) > -6.28)){
+          // hw_states_[1] = intermedio*(3.1415/180); 
+          hw_states_[1] = static_cast<double>(intermedio*(3.1415/180)); 
+          // hw_states_[4] = static_cast<double>(intermedio*(3.1415/180)); 
+        }
+        std::memcpy(&intermedio, datos1[2], sizeof(float));
+        if((intermedio*(3.1415/180) < 6.28) && (intermedio*(3.1415/180) > -6.28)){
+          // hw_states_[2] = intermedio*(3.1415/180); 
+          hw_states_[2] = static_cast<double>(intermedio*(3.1415/180)); 
+        }
+        // Guardamos los ángulos (en grados) de cada junta en el estado (en radianes) correspondiente
+        std::memcpy(&intermedio, datos2[0], sizeof(float));
         if((intermedio*(3.1415/180) < 6.28) && (intermedio*(3.1415/180) > -6.28)){
           // hw_states_[0] = intermedio*(3.1415/180); 
           // hw_states_[0] = static_cast<double>(-intermedio*(3.1415/180)); 
@@ -280,23 +315,22 @@ hardware_interface::return_type RRBotSystemPositionOnlyHardware::read(
         }
         // RCLCPP_INFO(rclcpp::get_logger("RRBotSystemPositionOnlyHardware"),
         // "Intermedio 1: %d",intermedio);
-        std::memcpy(&intermedio, datos[1], sizeof(float));
+        std::memcpy(&intermedio, datos2[1], sizeof(float));
         if((intermedio*(3.1415/180) < 6.28) && (intermedio*(3.1415/180) > -6.28)){
           // hw_states_[1] = intermedio*(3.1415/180); 
           // hw_states_[1] = static_cast<double>(intermedio*(3.1415/180)); 
           hw_states_[4] = static_cast<double>(intermedio*(3.1415/180)); 
         }
-        std::memcpy(&intermedio, datos[2], sizeof(float));
+        std::memcpy(&intermedio, datos2[2], sizeof(float));
         if((intermedio*(3.1415/180) < 6.28) && (intermedio*(3.1415/180) > -6.28)){
           // hw_states_[2] = intermedio*(3.1415/180); 
           // hw_states_[2] = static_cast<double>(intermedio*(3.1415/180)); 
         }
         RCLCPP_INFO(rclcpp::get_logger("RRBotSystemPositionOnlyHardware"),
-        // "Posición Leida: %g/%g/%g",hw_states_[0],hw_states_[1],hw_states_[2]);
-        "Datos leidos: %g/%g",hw_states_[3],hw_states_[4]);
+        "Posición Leida: %g/%g/%g/%g/%g/%g",hw_states_[0],hw_states_[1],hw_states_[2],hw_states_[3],hw_states_[4],hw_states_[5]);
     } else{
         for(int i = 0; i < 3; i++){
-          HyT[i] = static_cast<int>(datos[i][0]);
+          HyT[i] = static_cast<int>(datos1[i][0]);
         }
         RCLCPP_INFO(rclcpp::get_logger("RRBotSystemPositionOnlyHardware"),
         "Datos leidos: %d/%d/%d",HyT[0],HyT[1],HyT[2]);
@@ -346,9 +380,9 @@ hardware_interface::return_type RRBotSystemPositionOnlyHardware::read(
 
 
     if(comando_lectura == 'C'){
-        std::memcpy(&corriente_1, datos[0], sizeof(float));
-        std::memcpy(&corriente_2, datos[1], sizeof(float));
-        std::memcpy(&corriente_3, datos[2], sizeof(float));
+        std::memcpy(&corriente_1, datos1[0], sizeof(float));
+        std::memcpy(&corriente_2, datos1[1], sizeof(float));
+        std::memcpy(&corriente_3, datos1[2], sizeof(float));
         // RCLCPP_INFO(rclcpp::get_logger("RRBotSystemPositionOnlyHardware"),
         // "Corriente Leida: %f/%f/%f",corriente_1,corriente_2,corriente_3);
     }
@@ -437,25 +471,39 @@ hardware_interface::return_type RRBotSystemPositionOnlyHardware::write(
        
     // }
 
-    // float comando_f[] = {static_cast<float>(hw_commands_[0]*180/3.14159), static_cast<float>(hw_commands_[1]*180/3.14159),static_cast<float>(hw_commands_[2]*180/3.14159)};
-    float comando_f[] = {static_cast<float>(hw_commands_[3]*-180/3.14159), static_cast<float>(hw_commands_[4]*180/3.14159),static_cast<float>(hw_commands_[5]*180/3.14159)};
+    float comando_f[] = {static_cast<float>(hw_commands_[0]*-180/3.14159), static_cast<float>(hw_commands_[1]*180/3.14159),static_cast<float>(hw_commands_[2]*180/3.14159)};
     unsigned char bytes_comando[3][4];
     std::memcpy(bytes_comando[0], &comando_f[0], sizeof(comando_f[0]));
     std::memcpy(bytes_comando[1], &comando_f[1], sizeof(comando_f[1]));
     std::memcpy(bytes_comando[2], &comando_f[2], sizeof(comando_f[2]));
     unsigned char cmd[] = "R";
     int n_written = 0, spot = 0;
-    n_written = write_usb( USB, cmd, 1 );
+    n_written = write_usb( USB1, cmd, 1 );
     for(int i = 0; i < 3; i++){
       spot = 3;
       do{
-        n_written = write_usb( USB, &bytes_comando[i][spot], 1 );
+        n_written = write_usb( USB1, &bytes_comando[i][spot], 1 );
         std::cout << "Enviando comando " << i << ", byte: " << static_cast<int>(bytes_comando[i][spot]) << " spot: " << spot << std::endl;
         spot -= n_written;
         // std::cout << "Spot luego: " << spot << "condición " << ((4- spot) > 4 && n_written > 0)<< std::endl;
       }while ((4- spot) < 5 && n_written > 0);
     }
-    
+    comando_f[0] = static_cast<float>(hw_commands_[3]*-180/3.14159);
+    comando_f[1] = static_cast<float>(hw_commands_[4]*180/3.14159);
+    comando_f[2] = static_cast<float>(hw_commands_[5]*180/3.14159); 
+    std::memcpy(bytes_comando[0], &comando_f[0], sizeof(comando_f[0]));
+    std::memcpy(bytes_comando[1], &comando_f[1], sizeof(comando_f[1]));
+    std::memcpy(bytes_comando[2], &comando_f[2], sizeof(comando_f[2]));
+    n_written = write_usb( USB2, cmd, 1 );
+    for(int i = 0; i < 3; i++){
+      spot = 3;
+      do{
+        n_written = write_usb( USB2, &bytes_comando[i][spot], 1 );
+        std::cout << "Enviando comando " << i << ", byte: " << static_cast<int>(bytes_comando[i][spot]) << " spot: " << spot << std::endl;
+        spot -= n_written;
+        // std::cout << "Spot luego: " << spot << "condición " << ((4- spot) > 4 && n_written > 0)<< std::endl;
+      }while ((4- spot) < 5 && n_written > 0);
+    }
   }
   
   
