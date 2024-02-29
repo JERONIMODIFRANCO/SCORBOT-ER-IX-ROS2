@@ -10,6 +10,6 @@
 
     <!-- Macro control_xacro -->
       <xacro:scorbot_ros2_control name="FakeSystem" system="mock_components/GenericSystem"  initial_positions_file="$(arg initial_positions_file)"/> 
-    <!-- <xacro:scorbot_ros2_control name="ScorbotPositionOnlyHardwareInterface" system="sbot_hi/ScorbotPositionOnlyHardwareInterface"  initial_positions_file="$(arg initial_positions_file)"/>-->
+    <!-- <xacro:scorbot_ros2_control name="SbotPositionOnlyHardware" system="sbot_hi/SbotPositionOnlyHardware"  initial_positions_file="$(arg initial_positions_file)"/>-->
 
 </robot>
