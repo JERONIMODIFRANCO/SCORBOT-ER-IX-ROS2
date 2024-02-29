@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(sbot_description)
+project(func_extras)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
@@ -7,15 +7,23 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
-find_package(urdf REQUIRED)
-find_package(xacro REQUIRED)
-find_package(ros2_control REQUIRED)
-find_package(controller_manager REQUIRED)
-# find_package(ign_ros2_control REQUIRED)
-find_package(joint_state_broadcaster REQUIRED)
-find_package(joint_trajectory_controller REQUIRED)
-# find_package(velocity_controllers REQUIRED)
-find_package(robot_state_publisher REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(std_msgs REQUIRED)
+find_package(moveit_core REQUIRED)
+find_package(moveit_msgs REQUIRED)
+# uncomment the following section in order to fill in
+# further dependencies manually.
+
+
+add_executable(listener src/subscriber_member_function.cpp)
+ament_target_dependencies(listener rclcpp std_msgs)
+add_executable(logger src/guarda_comandos_estados.cpp)
+ament_target_dependencies(logger rclcpp std_msgs moveit_core moveit_msgs)
+
+install(TARGETS
+  listener
+  logger
+  DESTINATION lib/${PROJECT_NAME})
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -28,15 +36,5 @@ if(BUILD_TESTING)
   set(ament_cmake_cpplint_FOUND TRUE)
   ament_lint_auto_find_test_dependencies()
 endif()
-
-install(
-  DIRECTORY
-    urdf
-    rviz
-    launch
-    meshes
-  DESTINATION
-    share/${PROJECT_NAME}/
-)
 
 ament_package()

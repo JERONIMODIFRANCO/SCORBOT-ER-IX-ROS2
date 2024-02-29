@@ -1,0 +1,9 @@
+# Default initial positions for scorbot's ros2_control fake system
+
+initial_positions:
+  base_joint: 0
+  elbow: 85
+  finger_L_joint: 0
+  pitch: 0
+  roll: 0
+  shoulder: 0

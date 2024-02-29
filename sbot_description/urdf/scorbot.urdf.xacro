@@ -20,6 +20,33 @@
         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
     </joint>
 
+    <link name="suelo">
+      <visual>
+        <origin rpy="0 0 0" xyz="0 0 0" />
+        <geometry>
+          <cylinder radius="1" length="0.01" />
+        </geometry>
+      </visual>
+      <collision>
+            <origin rpy="0 0 0" xyz="0 0 0" />
+        <geometry>
+          <cylinder radius="1" length="0.01" />
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="suelo_fixed_joint" type="fixed">
+      <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
+      <parent link="world"/>
+      <child link="suelo"/>
+    </joint>
+
+    <!-- For suelo -->
+  <gazebo reference="suelo">
+    <material>Gazebo/Black</material>
+  </gazebo>
+
+
     <!-- GENERAR EL GRIPPER -->
     <xacro:sbot_gripper prefix="" parent="tool0">
     </xacro:sbot_gripper>
