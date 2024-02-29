@@ -31,10 +31,10 @@
 
 namespace sbot_hi
 {
-class ScorbotPositionOnlyHardwareInterface : public hardware_interface::SystemInterface
+class SbotPositionOnlyHardware : public hardware_interface::SystemInterface
 {
 public:
-  RCLCPP_SHARED_PTR_DEFINITIONS(ScorbotPositionOnlyHardwareInterface);
+  RCLCPP_SHARED_PTR_DEFINITIONS(SbotPositionOnlyHardware);
 
   SBOT_HI_PUBLIC
   hardware_interface::CallbackReturn on_init(
@@ -44,25 +44,20 @@ public:
   hardware_interface::CallbackReturn on_configure(
     const rclcpp_lifecycle::State & previous_state) override;
 
-  // Devuelve el estado de las juntas hacia el controller_manager
   SBOT_HI_PUBLIC
   std::vector<hardware_interface::StateInterface> export_state_interfaces() override;
 
-  // Devuelve los comandos de las juntas desde el controller_manager
   SBOT_HI_PUBLIC
   std::vector<hardware_interface::CommandInterface> export_command_interfaces() override;
 
-  // Abrimos los USBs para la comunicación, inicializamos los comandos y ejecutamos la init del brazo
   SBOT_HI_PUBLIC
   hardware_interface::CallbackReturn on_activate(
     const rclcpp_lifecycle::State & previous_state) override;
 
-  // Cerramos los USBs
   SBOT_HI_PUBLIC
   hardware_interface::CallbackReturn on_deactivate(
     const rclcpp_lifecycle::State & previous_state) override;
 
-  // Lectura de los estados de las juntas, corrientes, y banderas de homeswitches y temperaturas
   SBOT_HI_PUBLIC
   hardware_interface::return_type read(
     const rclcpp::Time & time, const rclcpp::Duration & period) override;
@@ -82,8 +77,6 @@ private:
   std::vector<double> hw_states_;
 
   // Variables para la comunicaciones
-  const char * puerto_placa_1 = "/dev/ttyS2";
-  const char * puerto_placa_2 = "/dev/ttyACM0";
   int USB1, USB2; //identificador del usb utilizado
   std::vector<double> comando_viejo;
   int ciclo_actual = 0;

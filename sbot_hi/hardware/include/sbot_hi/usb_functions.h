@@ -11,8 +11,6 @@
 
 #include "rclcpp/rclcpp.hpp"
 
-
-
 int write_usb(int USB, const void *buf, size_t count) {
     return write(USB, buf, count);
 }
@@ -23,19 +21,19 @@ void read_usb(int USB, unsigned char *buf, size_t count) {
   // fds[0].events = POLLIN; // El evento que "senso" es la llegada de un byte
 
   // // Esperar hasta que haya datos disponibles o hasta que hayan transcurrido 50 ms
-  // int timeout = 50; // en milisegundos
+  // int timeout = 5; // en milisegundos
   // int result = poll(fds, 1, timeout); // Llegó algo al USB o se terminó el tiempo
   // if (result == -1) {
   //   // Error al llamar a poll
   // } else if (result == 0) {
-  //   // Se se agota el tiempo dejo el byte le asigno '255' = Error
-  //   *buf = 255;
+  //   RCLCPP_INFO(rclcpp::get_logger("SbotPositionOnlyHardware"),
+  //       "No llegó nada en %dms",timeout);
   // } else {
     // Leer el byte del puerto USB
     ssize_t bytes_read = read(USB, buf, count);
     if ((bytes_read == -1) || (bytes_read == 0)) {
         // Error al leer el byte
-        RCLCPP_INFO(rclcpp::get_logger("ScorbotPositionOnlyHardwareInterface"),
+        RCLCPP_INFO(rclcpp::get_logger("SbotPositionOnlyHardware"),
         "Error al leer el dato: %ld",bytes_read);
       }
   // }
@@ -47,7 +45,7 @@ void read_usb_float(int USB, unsigned char (*datos)[4], int cantidad){
   // int count = 0;
   unsigned char byte = 0;
 
-      // RCLCPP_INFO(rclcpp::get_logger("ScorbotPositionOnlyHardwareInterface"),
+      // RCLCPP_INFO(rclcpp::get_logger("SbotPositionOnlyHardware"),
       // "Entrando a leer los datos!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
   for(int dato = 0; dato < cantidad; dato++){
@@ -57,12 +55,12 @@ void read_usb_float(int USB, unsigned char (*datos)[4], int cantidad){
       ssize_t bytes_read = read(USB, &byte, 1);  // Leer un byte desde el puerto serie
       if ((bytes_read == -1) || (bytes_read == 0)) {
         // Error al leer el byte
-        RCLCPP_INFO(rclcpp::get_logger("ScorbotPositionOnlyHardwareInterface"),
+        RCLCPP_INFO(rclcpp::get_logger("SbotPositionOnlyHardware"),
         "Error al leer el dato: %ld",bytes_read);
       }
 
       datos[dato][count]=byte;
-      // RCLCPP_INFO(rclcpp::get_logger("ScorbotPositionOnlyHardwareInterface"),
+      // RCLCPP_INFO(rclcpp::get_logger("SbotPositionOnlyHardware"),
       // "Dato n° %d, byte %d: %d",dato, count, static_cast<int>(byte));
     }
   }
@@ -72,7 +70,9 @@ int conection_usb(int USB1, int USB2){
     /* Error Handling */
     if ( USB1 < 0 )
     {
-    std::cout << "Error " << errno << " opening port to 'Placa1'" << ": " << strerror (errno) << std::endl;
+    std::cout << "Error " << errno << " opening " << "/dev/ttyACM0" << ": " << strerror (errno) << std::endl;
+    RCLCPP_INFO(rclcpp::get_logger("SbotPositionOnlyHardware"),
+        "Error al recibir el usb1");
     }
     // this->configuracion_port(USB);
     /* *** Configure Port *** */
@@ -117,7 +117,9 @@ int conection_usb(int USB1, int USB2){
 
     if ( USB2 < 0 )
     {
-    std::cout << "Error " << errno << " opening  port to 'Placa2': " << strerror (errno) << std::endl;
+    std::cout << "Error " << errno << " opening " << "/dev/ttyS2" << ": " << strerror (errno) << std::endl;
+    RCLCPP_INFO(rclcpp::get_logger("SbotPositionOnlyHardware"),
+        "Error al recibir el usb2");
     }
     // this->configuracion_port(USB);
     /* *** Configure Port *** */

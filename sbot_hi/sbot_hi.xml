@@ -1,8 +1,6 @@
-
-<!-- Archivo que permite a ROS2 ver esta librería -->
 <library path="sbot_hi">
-  <class name="sbot_hi/ScorbotPositionOnlyHardwareInterface"
-         type="sbot_hi::ScorbotPositionOnlyHardwareInterface"
+  <class name="sbot_hi/SbotPositionOnlyHardware"
+         type="sbot_hi::SbotPositionOnlyHardware"
          base_class_type="hardware_interface::SystemInterface">
     <description>
       The ros2_control RRbot example using a system hardware interface-type.

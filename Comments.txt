@@ -7,3 +7,9 @@ Aparte, no habría que crear el robot_state_publisher con rviz creería si corre
 Hay que ver bien que cosas se pisan unas y otras.
 bridge debe ir con el nombre del mundo el remapeo inicial usa el default, el nuevo mundo se llama empty por eso se debe usar ese nombre
 en la jerarquia de mapeo.
+
+
+sudo usermod -aG root scorbot
+sudo chmod a+rw /dev/ttyACM0
+ls -l /dev/ttyACM0
+sudo chmod a+rw /dev/ttyUSB0

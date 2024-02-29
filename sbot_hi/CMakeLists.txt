@@ -13,13 +13,11 @@ set(THIS_PACKAGE_INCLUDE_DEPENDS
   rclcpp_lifecycle
 )
 
-
 # find dependencies
 find_package(ament_cmake REQUIRED)
 foreach(Dependency IN ITEMS ${THIS_PACKAGE_INCLUDE_DEPENDS})
   find_package(${Dependency} REQUIRED)
 endforeach()
-
 
 
 ## COMPILE
@@ -40,7 +38,7 @@ ament_target_dependencies(
 
 # Causes the visibility macros to use dllexport rather than dllimport,
 # which is appropriate when building the dll but not consuming it.
-target_compile_definitions(${PROJECT_NAME} PRIVATE "SBOT_HI_BUILDING_DLL")
+target_compile_definitions(${PROJECT_NAME} PRIVATE "sbot_hi_BUILDING_DLL")
 
 # Export hardware plugins
 pluginlib_export_plugin_description_file(hardware_interface sbot_hi.xml)
@@ -57,6 +55,11 @@ install(TARGETS sbot_hi
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin
 )
+
+if(BUILD_TESTING)
+  find_package(ament_cmake_pytest REQUIRED)
+endif()
+
 
 ## EXPORTS
 ament_export_targets(export_sbot_hi HAS_LIBRARY_TARGET)

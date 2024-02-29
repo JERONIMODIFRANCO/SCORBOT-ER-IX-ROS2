@@ -20,8 +20,7 @@
 #include "moveit_msgs/msg/display_trajectory.hpp"
 #include "sensor_msgs/msg/joint_state.hpp"
 
-#include "/home/gaston/sbot/src/sbot_hi/example_1/hardware/include/ros2_control_example/usb_functions.h"
-
+#include "/home/jdf/sbot/src/SCORBOT-ER-IX-ROS2/sbot_hi/hardware/include/sbot_hi/usb_functions.h"
 #include <stdio.h>      // standard input / output functions
 #include <stdlib.h>
 #include <string.h>     // string function definitions
@@ -47,9 +46,6 @@ public:
       "display_planned_path", 10, std::bind(&MinimalSubscriber::topic_callback, this, std::placeholders::_1));
     subscription_jt = this->create_subscription<sensor_msgs::msg::JointState>(
       "joint_states", 10, std::bind(&MinimalSubscriber::topic_jt, this, std::placeholders::_1));
-
-    // subscription_ = this->create_subscription<std_msgs::msg::String>(
-    //   "topic", 10, std::bind(&MinimalSubscriber::topic_callback, this, _1));
   }
 
   
@@ -58,30 +54,29 @@ public:
 
 private:
 
-
+  // Creo dos subscriptores a los tópicos DisplayTrajectory y a JointState para conocer tanto el plan como el 
+  // estado de las juntas durante todo el transcurso del mismo
 
   void topic_callback(const moveit_msgs::msg::DisplayTrajectory::SharedPtr msg) const
-  // void topic_callback(const std_msgs::msg::String & msg) const
   {
     
-    // RCLCPP_INFO(this->get_logger(), "I heard something");
     std::string nombre_archivo = "prueba" + std::to_string(plan_num) + ".txt";
     
     if (!msg->trajectory.empty()) {
-      // // Accede al primer punto de la trayectoria planificada
+      // Accede al primer punto de la trayectoria planificada
       // auto& first_trajectory_point = msg->trajectory[0].joint_trajectory.points[0];
 
-      // // Accede a los valores de las juntas en el primer punto
+      // Accede a los valores de las juntas en el primer punto
       // auto& joint_values = first_trajectory_point.positions;
 
-      // // Imprime los valores de las juntas
+      // Imprime los valores de las juntas
       // for (size_t i = 0; i < joint_values.size(); ++i) {
       //     RCLCPP_INFO(this->get_logger(), "Joint %zu value: %f", i, joint_values[i]);
       // }
             
 
-      // std::ofstream archivo("prueba.txt", std::ios::app); // Crea un objeto ofstream y abre el archivo datos.txt
-      std::ofstream plan(nombre_archivo); // Crea un objeto ofstream y abre el archivo datos.txt
+      // std::ofstream plan(nombre_archivo, std::ios::app); // Crea un objeto ofstream y abre el archivo sin borrar lo anterior
+      std::ofstream plan(nombre_archivo); // Crea un objeto ofstream y abre el archivo borrando lo anterior
       const char* separador = ","; 
       if (plan.is_open()) { // Verifica que el archivo se haya abierto correctamente
         plan << "Tiempo,J1,J2,J3,J4,J5"<< std::endl;
@@ -100,7 +95,7 @@ private:
         plan.close(); // Cierra el archivo
         // std::cout << "Dato guardado en el archivo." << std::endl;
       } else {
-        // std::cout << "No se pudo abrir el archivo." << std::endl;
+        std::cout << "No se pudo abrir el archivo." << std::endl;
       }
     
       auto& last_trajectory = msg->trajectory.back();
@@ -113,7 +108,7 @@ private:
   
     }
     
-    // Crea un nuevo nodo subscriptor
+    // Crea un nuevo nodo subscriptor para saber que se publica en el /joint_states
     RCLCPP_INFO(this->get_logger(), "Listo para escuchar");
     escuchando = 1;
     plan_num +=1;
@@ -149,7 +144,7 @@ private:
         // std::cout << "Dato guardado en el archivo." << std::endl;
         ejecucion.close(); // Cierra el archivo
       } else {
-        // std::cout << "No se pudo abrir el archivo." << std::endl;
+        std::cout << "No se pudo abrir el archivo." << std::endl;
       }
       
 
