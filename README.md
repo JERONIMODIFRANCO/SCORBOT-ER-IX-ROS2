@@ -97,7 +97,13 @@ Ejemplos de uso se encuentran dentro de cada uno de los paquetes.
 
 SCORBOT-ER-IX-ROS2
 ```
-
+├── funciones_extras
+│   ├── launch
+│   ├── src
+│   ├── README.md
+│   ├── CMakeLists.txt
+│   └── package.xml
+│
 ├── sbot_description
 │   ├── launch
 │   ├── meshes
@@ -116,7 +122,6 @@ SCORBOT-ER-IX-ROS2
 │   ├── CMakeLists.txt
 │   └── package.xml
 │
-<<<<<<< dev
 ├── sbot_hi
 │   ├── hardware
 │   ├── README.md
@@ -124,8 +129,6 @@ SCORBOT-ER-IX-ROS2
 │   ├── sbot_hi.xml
 │   └── package.xml
 │
-=======
->>>>>>> main
 ├── sbot_moveit
 │   ├── config
 │   ├── launch
@@ -142,7 +145,6 @@ SCORBOT-ER-IX-ROS2
 │   ├── CMakeLists.txt
 │   └── package.xml
 │
-<<<<<<< dev
 ├── sbot_real
 │   ├── config
 │   ├── launch
@@ -151,32 +153,27 @@ SCORBOT-ER-IX-ROS2
 │   ├── CMakeLists.txt
 │   └── package.xml
 │
-=======
->>>>>>> main
 ├── README.md
 ├── LICENSE
 └── .gitignore
 ```
 
-<<<<<<< dev
- * **[funciones_extras](funciones_extras)**: Este paquete contiene principalmente archivos de lanzamiento especializados en comunicación y log de datos tanto para.
- * 
+
+ * **[funciones_extras](funciones_extras)**: Este paquete contiene principalmente archivos de lanzamiento especializados en comunicación y log de datos, que sirven fundamentalmente como asistencia a los demás paquetes, sobre todo el que contempla la ejecución del control sobre el robot real.
+ 
  * **[sbot_description](sbot_description)**: Contiene la descripción para **ROS2** del modelo en formato URDF, incluidas las meshses (exportadas directamente desde SolidWorks) y ejecutables de `rviz` para visaulización y debugeo inicial del robot.
 
  * **[sbot_gazebo](sbot_gazebo)**: Contiene los archivos necesarios para la simulación basíca de control en Gazebo/Ignition. Los modelos URDF se importan de la descripción contenida en *sbot_description* y se agregan los plugins de GAZEBO (controladores PID de las juntas con las ganancias correspondientes). Además existen ejecutables para realizar el bridge, necesario para comunicar Ignition con ROS2, para generar el mundo vacío en GAZEBO y para spawnear el robot en él. Además, existe un launcher que engloba a todos los anteriores y sirve para para la correcta simulacion en Ignition (sin implementar un generador de trayectorias como MOVEIT2), así como tambien la visualización paralela en RVIZ2.
 
- * **[sbot_hi](sbot_hi)**: Este paquete contiene lo referido al hardware interface necesario para la comunicación entre el harware de bajo nivel presente en las placas de desarrollo y el control de alto nivel.
-=======
+ * **[sbot_hi](sbot_hi)**: Este paquete contiene lo referido al hardware interface necesario para la comunicación entre el hardware de bajo nivel presente en las placas de desarrollo y el control de alto nivel.
+
  * **[sbot_description](sbot_description)**: Contiene la descripción para **ROS2** del modelo en formato URDF, incluidas las meshses (exportadas directamente desde SolidWorks) y ejecutables de `rviz` para visaulización y debugeo inicial del robot.
 
  * **[sbot_gazebo](sbot_gazebo)**: Contiene los archivos necesarios para la simulación basíca de control en Gazebo/Ignition. Los modelos URDF se importan de la descripción contenida en *sbot_description* y se agregan los plugins de GAZEBO (controladores PID de las juntas con las ganancias correspondientes). Además existen ejecutables para realizar el bridge, necesario para comunicar Ignition con ROS2, para generar el mundo vacío en GAZEBO y para spawnear el robot en él. Además, existe un launcher que engloba a todos los anteriores y sirve para para la correcta simulacion en Ignition (sin implementar un generador de trayectorias como MOVEIT2), así como tambien la visualización paralela en RVIZ2.
->>>>>>> main
    
  * **[sbot_moveit](sbot_moveit)**: Contiene los archivos generados en una estructura predefinida por el setup assistant de MOVEIT2. Existe un conjunto de launchs que cumplen diferentes funciones, y posee una estructura modular generada que permite el agregado o modificacion reducida de lineas de codigo para, en conjunto con ROS2CONTROL, permitir el uso de controladores existentes o desarrollados para realizar controles de alto nivel. Mediante RVIZ se permite controlar las distintas juntas que componen al robot para posteriormente ser controladas, valga la redundancia, por el control definido. 
 
  * **[sbot_moveit_gazebo](sbot_moveit_gazebo)**: Este paquete es similar al anterior con el añadido configuraciones para la ejecución de la simulación del control de alto nivel sobre Gazebo. Para ello se modifica la descripción del robot, y se añaden ejecutables para inciar gazebo y spawnear el robot.
-<<<<<<< dev
- * 
+ 
  * **[sbot_real](sbot_real)**: Este paquete contiene los archivos necesarios para la implementacion de las librerias utilizadas sobre el robot real y hace uso del paquete sbot_hi para funcionar, debido a que es necesario el hardware interface para lograr la correcta comunicacion con el hardware que comanda al robot.
-=======
->>>>>>> main
+
