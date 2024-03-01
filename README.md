@@ -98,9 +98,8 @@ Ejemplos de uso se encuentran dentro de cada uno de los paquetes.
 ### IMPORTANTE "MATAR" (Ctrl+C) TODOS LOS PROCESOS ANTES DE LANZAR OTRO EJECUTABLE PARA EVITAR INCONSISTENCIAS O NODOS EJECUTANDOSÉ EN EL BACKGROUND
 
 **ESTRUCTURA**
-
-SCORBOT-ER-IX-ROS2
 ```
+SCORBOT-ER-IX-ROS2
 ├── funciones_extras
 │   ├── launch
 │   ├── src
