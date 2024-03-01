@@ -71,7 +71,7 @@ source ~/sbot/install/setup.bash #SOURCE DE ENTORNO DE TRABAJO DEL PROYECTO
 para lograr la correcta comunicacion entre moveit y gazebo es necesario modificar el archivo launches.py del directorio /opt/ros/humble/lib/python3.10/site-packages/moveit_configs_utils en la línea 224 hay que colocar "use_sim_time":True,
 
 Debido a que el paquete es de acceso restringido, se debe acceder con sudo
-```sudo nano /opt/ros/humble/lib/python3.10/site-packages/moveit_configs_utils/launches.py
+```sudo nano /opt/ros/humble/lib/python3.10/site-packages/moveit_configs_utils/launches.py```
 
 
 
