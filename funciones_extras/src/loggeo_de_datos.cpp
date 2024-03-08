@@ -14,22 +14,12 @@
 
 #include <functional>
 #include <memory>
+#include <fstream>
 
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
 #include "moveit_msgs/msg/display_trajectory.hpp"
 #include "sensor_msgs/msg/joint_state.hpp"
-
-#include "/home/jdf/sbot/src/SCORBOT-ER-IX-ROS2/sbot_hi/hardware/include/sbot_hi/usb_functions.h"
-#include <stdio.h>      // standard input / output functions
-#include <stdlib.h>
-#include <string.h>     // string function definitions
-#include <unistd.h>     // UNIX standard function definitions (escritura por usb)
-#include <fcntl.h>      // File control definitions
-#include <errno.h>      // Error number definitions
-#include <termios.h>    // POSIX terminal control definitions
-#include <iostream>
-#include <fstream>
 
 using std::placeholders::_1;
 int escuchando = 0;
@@ -40,7 +30,7 @@ class MinimalSubscriber : public rclcpp::Node
 {
 public:
   MinimalSubscriber()
-  : Node("minimal_subscriber")
+  : Node("logger")
   {
     subscription_dt = this->create_subscription<moveit_msgs::msg::DisplayTrajectory>(
       "display_planned_path", 10, std::bind(&MinimalSubscriber::topic_callback, this, std::placeholders::_1));
@@ -60,7 +50,7 @@ private:
   void topic_callback(const moveit_msgs::msg::DisplayTrajectory::SharedPtr msg) const
   {
     
-    std::string nombre_archivo = "prueba" + std::to_string(plan_num) + ".txt";
+    std::string nombre_archivo = "plan" + std::to_string(plan_num) + ".txt";
     
     if (!msg->trajectory.empty()) {
       // Accede al primer punto de la trayectoria planificada
@@ -104,12 +94,10 @@ private:
         last_time = static_cast<double>(last_point.time_from_start.sec + last_point.time_from_start.nanosec * 1e-09);
         // Ahora last_time contiene el tiempo del último punto de la última trayectoria
       }
-
-  
     }
     
     // Crea un nuevo nodo subscriptor para saber que se publica en el /joint_states
-    RCLCPP_INFO(this->get_logger(), "Listo para escuchar");
+    RCLCPP_INFO(this->get_logger(), "Plan N° %d almacenado. Empezando el loggeo", plan_num );
     escuchando = 1;
     plan_num +=1;
   }
@@ -132,25 +120,21 @@ private:
       std::vector<double> joint_positions = msg->position;
       double time_stamp = rclcpp::Clock().now().seconds() - start_time_.seconds();
 
-      
       if (ejecucion.is_open()) { // Verifica que el archivo se haya abierto correctamente
-        // ejecucion << "Tiempo,J1,J2,J3,J4,J5"<< std::endl;
         const char* separador = ",";
-        
-         
         ejecucion << time_stamp << separador << joint_positions[0] << separador << joint_positions[1] 
         << separador << joint_positions[2] << separador << joint_positions[3] << separador << joint_positions[4] 
         << separador << joint_positions[5] << std::endl; // Escribe el dato en el archivo
-        // std::cout << "Dato guardado en el archivo." << std::endl;
         ejecucion.close(); // Cierra el archivo
       } else {
         std::cout << "No se pudo abrir el archivo." << std::endl;
       }
       
 
-      if(time_stamp > last_time + 2){
+      if(time_stamp > last_time + 4){
         primero = 1;
         escuchando = 0;
+        RCLCPP_INFO(this->get_logger(), "Loggeo N° %d completado", plan_num-1 );
       }
     }
   }

@@ -24,7 +24,7 @@ endforeach()
 add_library(
   sbot_hi
   SHARED
-  hardware/rrbot.cpp
+  hardware/scorbot.cpp
 )
 target_compile_features(sbot_hi PUBLIC cxx_std_17)
 target_include_directories(sbot_hi PUBLIC
