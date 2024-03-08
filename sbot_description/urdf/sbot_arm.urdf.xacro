@@ -109,10 +109,10 @@
                 origin_xyz="-0.10805388876492 0 0"
                 parent="${base}"
                 child="${body}"
-                limit_e="1000"
+                limit_e="5000"
                 limit_l="-2.3562"
                 limit_u="2.3562"
-                limit_v="1" />
+                limit_v="3" />
 
 <!-- cambie el shoulder por el elbow -->
     <xacro:m_joint name="${shoulder}" type="revolute"
@@ -121,10 +121,10 @@
                 origin_xyz="0.07 0 0.372"
                 parent="${body}"
                 child="${upper_arm}"
-                limit_e="1000"
+                limit_e="5000"
                 limit_l="-2.268"
                 limit_u="0.349"
-                limit_v="1" />
+                limit_v="3" />
 
     <xacro:m_joint name="${elbow}" type="revolute" 
                 axis_xyz="0 0 1"
@@ -132,10 +132,10 @@
                 origin_xyz="0 0.28 0"
                 parent="${upper_arm}"
                 child="${forearm}"
-                limit_e="1000"
+                limit_e="5000"
                 limit_l="-0.698"
                 limit_u="3.316"
-                limit_v="1" />
+                limit_v="3" />
 
     <xacro:m_joint name="${pitch}" type="revolute"
                 axis_xyz="0 0 1"
@@ -143,10 +143,10 @@
                 origin_xyz="0 -0.23 0"
                 parent="${forearm}"
                 child="${flange}"
-                limit_e="1000"
+                limit_e="5000"
                 limit_l="-1.483"
                 limit_u="1.745"
-                limit_v="1" />
+                limit_v="3" />
 
     <!-- DEFINO UN CILINDRO INTERMEDIO PARA QUE GIRE EL GRIPPER LUEGO -->
     <link name="cylinder_link">
@@ -173,10 +173,10 @@
                   origin_xyz="0 -0.0058721 0.036836"
                   parent="${flange}"
                   child="cylinder_link"
-                  limit_e="1000"
+                  limit_e="5000"
                   limit_l="-3.1415"
                   limit_u="3.1415"
-                  limit_v="1" />
+                  limit_v="3" />
                   
     <!-- DEFINO EE_LINK -->
     <link name="ee_link">
