@@ -11,6 +11,8 @@ find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(moveit_core REQUIRED)
 find_package(moveit_msgs REQUIRED)
+find_package(gazebo_ros REQUIRED)
+find_package(ros_ign REQUIRED)
 
 # Dependencias necesarias para la función de movimiento
 set(THIS_PACKAGE_INCLUDE_DEPENDS
@@ -41,11 +43,14 @@ add_executable(logger src/loggeo_de_datos.cpp)
 ament_target_dependencies(logger rclcpp std_msgs moveit_core moveit_msgs)
 add_executable(planeador src/trayectorias_predefinidas.cpp)
 ament_target_dependencies(planeador ${THIS_PACKAGE_INCLUDE_DEPENDS} Boost)
+add_executable(logger_gz src/loggeo_de_gazebo.cpp)
+ament_target_dependencies(logger_gz rclcpp std_msgs moveit_core moveit_msgs)
 
 install(TARGETS
   listener
   logger
   planeador
+  logger_gz
   DESTINATION lib/${PROJECT_NAME})
 
 install(DIRECTORY launch

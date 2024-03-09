@@ -20,11 +20,16 @@
 #include "std_msgs/msg/string.hpp"
 #include "moveit_msgs/msg/display_trajectory.hpp"
 #include "sensor_msgs/msg/joint_state.hpp"
+#include "rosgraph_msgs/msg/clock.hpp"
 
 using std::placeholders::_1;
-int escuchando = 0;
+int juntas = 0;
+int tiempo = 0;
 double last_time;
 int plan_num = 1;
+int primero = 0;
+int ultimo = 0;
+double actual_time_;
 
 class MinimalSubscriber : public rclcpp::Node
 {
@@ -33,21 +38,20 @@ public:
   : Node("logger")
   {
     subscription_dt = this->create_subscription<moveit_msgs::msg::DisplayTrajectory>(
-      "display_planned_path", 10, std::bind(&MinimalSubscriber::topic_callback, this, std::placeholders::_1));
+      "display_planned_path", 10, std::bind(&MinimalSubscriber::trayectory_callback, this, std::placeholders::_1));
     subscription_jt = this->create_subscription<sensor_msgs::msg::JointState>(
-      "joint_states", 10, std::bind(&MinimalSubscriber::topic_jt, this, std::placeholders::_1));
+      "joint_states", 10, std::bind(&MinimalSubscriber::jt_callback, this, std::placeholders::_1));
+    subscription_clock = this->create_subscription<rosgraph_msgs::msg::Clock>(
+      "clock_gz", 10, std::bind(&MinimalSubscriber::clock_callback, this, std::placeholders::_1));
   }
 
-  
-
- 
 
 private:
 
   // Creo dos subscriptores a los tópicos DisplayTrajectory y a JointState para conocer tanto el plan como el 
   // estado de las juntas durante todo el transcurso del mismo
 
-  void topic_callback(const moveit_msgs::msg::DisplayTrajectory::SharedPtr msg) const
+  void trayectory_callback(const moveit_msgs::msg::DisplayTrajectory::SharedPtr msg) const
   {
     
     std::string nombre_archivo = "plan" + std::to_string(plan_num) + ".txt";
@@ -94,51 +98,74 @@ private:
         last_time = static_cast<double>(last_point.time_from_start.sec + last_point.time_from_start.nanosec * 1e-09);
         // Ahora last_time contiene el tiempo del último punto de la última trayectoria
       }
+
+      // Crea un nuevo nodo subscriptor para saber que se publica en el /joint_states
+      RCLCPP_INFO(this->get_logger(), "Plan N° %d almacenado. Empezando el loggeo", plan_num );
+      tiempo = 1;
+      primero = 1;
     }
     
-    // Crea un nuevo nodo subscriptor para saber que se publica en el /joint_states
-    RCLCPP_INFO(this->get_logger(), "Plan N° %d almacenado. Empezando el loggeo", plan_num );
-    escuchando = 1;
-    plan_num +=1;
+
   }
   rclcpp::Subscription<moveit_msgs::msg::DisplayTrajectory>::SharedPtr subscription_dt;
 
-  void topic_jt(const sensor_msgs::msg::JointState::SharedPtr msg) const
+  void clock_callback(const rosgraph_msgs::msg::Clock::SharedPtr clock_gz) const
   {
-    static int primero = 1;
-    static auto start_time_ = rclcpp::Clock().now();
-    std::string nombre_archivo = "ejecucion" + std::to_string(plan_num-1) + ".txt";
-    if(escuchando){
+    auto variable_tiempo = clock_gz->clock;
+    static auto start_time_ = variable_tiempo.sec + (variable_tiempo.nanosec / 1e9);
+    if(tiempo){
+      tiempo = 0;
+      if(primero){
+        start_time_ = variable_tiempo.sec + (variable_tiempo.nanosec / 1e9); // Inicia el contador de tiempo
+      }
+      actual_time_ = variable_tiempo.sec + (variable_tiempo.nanosec / 1e9) - start_time_; 
+      juntas = 1;
+
+      if(actual_time_ > last_time *1.2){
+        ultimo = 1;
+      }
+    }
+  }
+  rclcpp::Subscription<rosgraph_msgs::msg::Clock>::SharedPtr subscription_clock;
+
+  void jt_callback(const sensor_msgs::msg::JointState::SharedPtr joints) const
+  {
+    std::string nombre_archivo = "ejecucion" + std::to_string(plan_num) + ".txt";
+    if(juntas){
+      juntas = 0;
       std::ofstream ejecucion(nombre_archivo, std::ios::app); // Crea un objeto ofstream y abre el archivo datos.txt
       if(primero){
-        start_time_ = rclcpp::Clock().now(); // Inicia el contador de tiempo
         ejecucion << "Tiempo,J1,J2,J3,J4,J5"<< std::endl;
         primero = 0;
       }
 
-      std::vector<std::string> joint_names = msg->name;
-      std::vector<double> joint_positions = msg->position;
-      double time_stamp = rclcpp::Clock().now().seconds() - start_time_.seconds();
+      std::vector<std::string> joint_names = joints->name;
+      std::vector<double> joint_positions = joints->position;
 
       if (ejecucion.is_open()) { // Verifica que el archivo se haya abierto correctamente
         const char* separador = ",";
-        ejecucion << time_stamp << separador << joint_positions[0] << separador << joint_positions[1] 
+        ejecucion << actual_time_ << separador << joint_positions[0] << separador << joint_positions[1] 
         << separador << joint_positions[2] << separador << joint_positions[3] << separador << joint_positions[4] 
         << separador << joint_positions[5] << std::endl; // Escribe el dato en el archivo
         ejecucion.close(); // Cierra el archivo
       } else {
         std::cout << "No se pudo abrir el archivo." << std::endl;
       }
+
+      tiempo = 1;
       
 
-      if(time_stamp > last_time + 4){
+      if(ultimo){
+        ultimo = 0;
         primero = 1;
-        escuchando = 0;
-        RCLCPP_INFO(this->get_logger(), "Loggeo N° %d completado", plan_num-1 );
+        tiempo = 0;
+        RCLCPP_INFO(this->get_logger(), "Loggeo N° %d completado", plan_num );
+        plan_num +=1;
       }
     }
   }
   rclcpp::Subscription<sensor_msgs::msg::JointState>::SharedPtr subscription_jt;
+  
   
 };
 

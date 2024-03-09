@@ -17,7 +17,7 @@
 
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
-#include "/home/jdf/sbot/src/SCORBOT-ER-IX-ROS2/sbot_hi/hardware/include/sbot_hi/usb_functions.h"
+#include "/home/gaston/sbot/src/SCORBOT-ER-IX-ROS2/sbot_hi/hardware/include/sbot_hi/usb_functions.h"
 
 #include <stdio.h>      // standard input / output functions
 #include <stdlib.h>

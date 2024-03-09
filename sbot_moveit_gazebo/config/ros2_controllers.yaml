@@ -5,9 +5,9 @@ controller_manager:
 
     arm_controller:
       type: joint_trajectory_controller/JointTrajectoryController
-      pid:
-        p: 1000000
-        i: 100
+      # pid:
+      #   p: 1000000
+      #   i: 100
 
 
     gripper_controller:

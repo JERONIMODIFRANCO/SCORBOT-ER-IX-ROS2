@@ -112,7 +112,7 @@
                 limit_e="5000"
                 limit_l="-2.3562"
                 limit_u="2.3562"
-                limit_v="3" />
+                limit_v="0.5" />
 
 <!-- cambie el shoulder por el elbow -->
     <xacro:m_joint name="${shoulder}" type="revolute"
@@ -124,7 +124,7 @@
                 limit_e="5000"
                 limit_l="-2.268"
                 limit_u="0.349"
-                limit_v="3" />
+                limit_v="0.5" />
 
     <xacro:m_joint name="${elbow}" type="revolute" 
                 axis_xyz="0 0 1"
@@ -135,7 +135,7 @@
                 limit_e="5000"
                 limit_l="-0.698"
                 limit_u="3.316"
-                limit_v="3" />
+                limit_v="0.5" />
 
     <xacro:m_joint name="${pitch}" type="revolute"
                 axis_xyz="0 0 1"
@@ -146,7 +146,7 @@
                 limit_e="5000"
                 limit_l="-1.483"
                 limit_u="1.745"
-                limit_v="3" />
+                limit_v="0.5" />
 
     <!-- DEFINO UN CILINDRO INTERMEDIO PARA QUE GIRE EL GRIPPER LUEGO -->
     <link name="cylinder_link">
@@ -176,7 +176,7 @@
                   limit_e="5000"
                   limit_l="-3.1415"
                   limit_u="3.1415"
-                  limit_v="3" />
+                  limit_v="0.5" />
                   
     <!-- DEFINO EE_LINK -->
     <link name="ee_link">

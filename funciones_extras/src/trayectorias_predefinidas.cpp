@@ -178,7 +178,7 @@ int main(int argc, char** argv)
     RCLCPP_WARN(LOGGER, "Target joint position(s) were outside of limits, but we will plan and clamp to the limits ");
   }
   success = (move_group.plan(my_plan) == moveit::core::MoveItErrorCode::SUCCESS);
-  RCLCPP_INFO(LOGGER, "Ejecutando la Pose 1");
+  RCLCPP_INFO(LOGGER, "Ejecutando la Pose 1 %d", success);
   move_group.move();
   static auto start_time_ = rclcpp::Clock().now();
   while(start_time_.seconds() > rclcpp::Clock().now().seconds() - 2){}
