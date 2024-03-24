@@ -1,5 +1,15 @@
-# sbot_hi
-
-   *RRBot* - or ''Revolute-Revolute Manipulator Robot'' - a simple position controlled robot with one hardware interface. This example also demonstrates the switching between different controllers.
-
-Find the documentation in [doc/userdoc.rst](doc/userdoc.rst) or on [control.ros.org](https://control.ros.org/master/doc/ros2_control_demos/example_1/doc/userdoc.html).
+# SBOT_HI
+```
+├── sbot_hi
+    │
+    ├── hardware
+    │      └── include/sbot_hi:
+    │      │     ├── scorbot.hpp: archivo de cabecera de la libreria sbot_hi.
+    │      │     ├── usb_functions.h: funciones para la configuración y comunicación por usb.
+    │      │     └── visibility_control.h: macros para simplificación de escritura.
+    │      └── scorbot.cpp: implementación de la librería de hardware interface para el robot.
+    │
+    ├── README.md
+    ├── CMakeLists.txt
+    ├── sbot_hi.xml: informacion para ros2 sobre la libreria en cuestión.
+    └── package.xml

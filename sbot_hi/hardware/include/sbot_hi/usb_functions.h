@@ -56,7 +56,8 @@ void read_usb_float(int USB, unsigned char (*datos)[4], int cantidad){
       if ((bytes_read == -1) || (bytes_read == 0)) {
         // Error al leer el byte
         RCLCPP_INFO(rclcpp::get_logger("SbotPositionOnlyHardware"),
-        "Error al leer el dato: %ld",bytes_read);
+        "Error al leer el dato %d del USB %d",dato+1, USB);
+        break;
       }
 
       datos[dato][count]=byte;
@@ -117,7 +118,7 @@ int conection_usb(int USB1, int USB2){
 
     if ( USB2 < 0 )
     {
-    std::cout << "Error " << errno << " opening " << "/dev/ttyS2" << ": " << strerror (errno) << std::endl;
+    std::cout << "Error " << errno << " opening " << "/dev/ttyUSB0" << ": " << strerror (errno) << std::endl;
     RCLCPP_INFO(rclcpp::get_logger("SbotPositionOnlyHardware"),
         "Error al recibir el usb2");
     }

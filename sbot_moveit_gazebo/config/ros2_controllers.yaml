@@ -1,15 +1,21 @@
 # This config file is used by ros2_control
 controller_manager:
   ros__parameters:
-    update_rate: 100  # Hz
+    update_rate: 10000  # Hz
 
     arm_controller:
       type: joint_trajectory_controller/JointTrajectoryController
+      # pid:
+      #   p: 1000000
+      #   i: 100
 
 
     gripper_controller:
       type: position_controllers/GripperActionController
-
+      # pid:
+      #   p: 10
+      #   i: 0.02
+      #   d: 0.0
 
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
