@@ -35,9 +35,9 @@
 
      pid1.c2 = 1;
 
-     pid1.Umax = 100;     // Saturacion positiva del PID
+     pid1.Umax = 380;     // Saturacion positiva del PID
 
-     pid1.Umin = -100;    // Saturacion negativa del PID
+     pid1.Umin = -380;    // Saturacion negativa del PID
 
      //PID2
      //
@@ -57,19 +57,19 @@
 
      //PID3
      //
-     pid3.Kp = 12;
+     pid3.Kp = 5;
 
-     pid3.Ki = 0.0005;
+     pid3.Ki = 0.0001;
 
      pid3.Kd = 0;
 
      pid3.c1 = 1;
 
      pid3.c2 = 1;
+                                                     // =  U_obj * PWM_max/U_max
+     pid3.Umax = 45; //91;     // Saturacion positiva del PID = +12Vcc * 380 / 50
 
-     pid3.Umax = 380;     // Saturacion positiva del PID
-
-     pid3.Umin = -380;    // Saturacion negativa del PID
+     pid3.Umin = -45; //-91;    // Saturacion negativa del PID = -12Vcc * 380 / 50
        //
 
 //    ///////////////////////////////PARAMETROS PID - CORRIENTE/////////////////////////////////////////

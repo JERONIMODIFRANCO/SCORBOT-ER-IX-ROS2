@@ -12,6 +12,7 @@
 "./protecciones.obj"
 "./seteo_salidas.obj"
 "./device/F2837xD_CodeStartBranch.obj"
+"./device/F2837xD_CpuTimers.obj"
 "./device/F2837xD_DefaultISR.obj"
 "./device/F2837xD_EPwm.obj"
 "./device/F2837xD_EQep.obj"

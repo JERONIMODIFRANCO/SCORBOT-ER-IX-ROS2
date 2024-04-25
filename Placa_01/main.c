@@ -50,6 +50,7 @@ volatile int32 Modo = NORMAL;
 volatile int init = 1;
 volatile int init2 = 0;
 volatile int init3 = 0;
+volatile uint32_t count = 0;
 
 
 void main(void)
@@ -158,7 +159,7 @@ void main(void)
     //
     // Parametros del PID
     //
-    Set_Parametros_PID();
+    Set_Parametros_PID(1);
     //
     // Comunicaciones via UART/SCI
     Init_Comunicaciones();
@@ -186,6 +187,7 @@ void main(void)
         ///////////////En esta parte gestiono el muestreo y el control que va a depender de la interrupcion del ADCA1/////////////////////
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+        count = count + 1;
         Comunicaciones();
 
         if (doSample){
@@ -216,11 +218,8 @@ void main(void)
                     Set_Salidas();
                     if(!init){ // Si esta activada la inicialización
                         init = homming(); // homming() devuelve 1 si se terminó de inicializar
-                        if(init){ // Seteo como 0 el ángulo actual
-//                            Angle_Reset(1, &angulo_1, 0);
-//                            Angle_Reset(2, &angulo_2, 0);
-//                            Angle_Reset(3, &angulo_3, 0);
-//                            angulo_3 = 85;
+                        if(init){ // Seteo los nuevos valores de los PID
+                            Set_Parametros_PID(0);
                         }
                     }
 
@@ -246,6 +245,7 @@ void main(void)
             DELAY_US(1000000/15);                         // Espera para luego bajar la salida
             GpioDataRegs.GPCCLEAR.bit.GPIO94 = 1;         // Pone un 0 en la salida CLR_FAULT_OTP y lo deja
         }
+
     }
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////

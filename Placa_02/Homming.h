@@ -1,12 +1,12 @@
 /*
- * Homming.h
+ * homming.h
  *
  *  Created on: 20 dic. 2023
  *      Author: LAC-TELECOM-OLI-02
  */
 
-#ifndef HOMMING_H_
-#define HOMMING_H_
+#ifndef homming_H_
+#define homming_H_
 
 #include "F28x_Project.h"
 #include "DCLF32_scorbot.h"
@@ -44,4 +44,4 @@ int homming_placa2(void);
 
 
 
-#endif /* HOMMING_H_ */
+#endif /* homming_H_ */

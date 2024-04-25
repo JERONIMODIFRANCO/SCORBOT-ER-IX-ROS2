@@ -17,7 +17,7 @@
 #include "muestreo.h"
 //
 #define PWM_PERIOD 760                              // PWM1 frequency = 33kHz
-#define PWM_CMPR50 380                              // PWM1 initial duty cycle = 50% --> motores en reposo
+#define PWM_CMPR50 380                             // PWM1 initial duty cycle = 50% --> motores en reposo
 //
 //int16 rk1 = 0.0f;                                   // Referencia en radianes
 //int16 rk2 = 0.0f;
@@ -53,6 +53,8 @@ volatile Uint16 Abrir = 0;
 volatile Uint16 Cerrar = 0;
 volatile Uint16 rutina = 0;
 volatile float corriente_real_con_signo_1 = 0, corriente_real_con_signo_2 = 0, corriente_real_con_signo_3 = 0;
+volatile int Naxis4 = 180, Naxis5 = 100;
+volatile int mov_gripper = 0;;
 //
 /////////////Funcion para ejecutar el control////////////
 void Control(void){
@@ -91,7 +93,7 @@ void Control(void){
         rk1 = angulo_1;   // Descomentar para usarlo normal
         rk2 = angulo_2;
 //        rk3 = angulo_3;
-        rk3 = yk3;
+//        rk3 = yk3;
 
         //
         //////////////////Entrada por POTENCIOMENTRO//////////////////
@@ -102,11 +104,11 @@ void Control(void){
         //
         // Error (Solo Lectura - Variable informativa)
         //
-        e1 = 214.13*(rk1 - yk1);
+        e1 = Naxis4*(rk1 - yk1);
 //        if(abs(e1) < 0.5){e1 = 0;}
-        e2 = 243.8*(rk2 - yk2);
+        e2 = Naxis5*(rk2 - yk2);
 //        if(abs(e2) < 0.5){e2 = 0;}
-        e3 = 213.33*(rk3 - yk3);
+//        e3 = (rk3 - yk3);
 //        if(abs(e3) < 0.5){e3 = 0;}
         //
         // Corrientes reales con signo por los drivers [A]
@@ -125,9 +127,9 @@ void Control(void){
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Ejecuta control PID paralelo POSICION
         //
-        uk1 = DCL_runPID_C3(&pid1, rk1, yk1, 1.0f)+380;
-        uk2 = DCL_runPID_C3(&pid2, rk2, yk2, 1.0f)+380;
-        uk3 = DCL_runPID_C3(&pid3, rk3, yk3, 1.0f)+380;
+        uk1 = DCL_runPID_C3(&pid1, rk1, yk1, 1.0f)+PWM_CMPR50;
+        uk2 = DCL_runPID_C3(&pid2, rk2, yk2, 1.0f)+PWM_CMPR50;
+//        uk3 = DCL_runPID_C3(&pid3, rk3, yk3, 1.0f)+PWM_CMPR50;
 
         /////////////////PRIMERA PLACA/////////////////////////
         //
@@ -139,8 +141,34 @@ void Control(void){
         if(e2 == 0) Duty2 = PWM_CMPR50;  // Eje 2
         else Duty2 = uk2;
 
-        if(e3 == 0) Duty3 = PWM_CMPR50;  // Eje 3
-        else Duty3 = uk3;
+        if(mov_gripper == 0){
+            if (Cerrar != 0){
+                Duty3 = PWM_CMPR50 - 7*PWM_CMPR50/50;    // -7V aplicados al Gripper
+//                Duty3 = PWM_CMPR50 - 10*PWM_CMPR50/50;    // -5V aplicados al Gripper
+                mov_gripper = 1;
+                CpuTimer0.RegsAddr->TCR.bit.TRB = 1;     // 1 = reload timer
+                CpuTimer0.RegsAddr->TCR.bit.TSS = 0;     // 1 = Stop timer, 0 = Start/Restart Timer
+                Cerrar = 0;
+                rk3=0;
+            }else if (Abrir != 0){
+                Duty3 = PWM_CMPR50 + 7*PWM_CMPR50/50;    // -7V aplicados al Gripper
+//                Duty3 = PWM_CMPR50 + 10*PWM_CMPR50/50;    // -5V aplicados al Gripper
+                mov_gripper = 1;
+                CpuTimer0.RegsAddr->TCR.bit.TRB = 1;     // 1 = reload timer
+                CpuTimer0.RegsAddr->TCR.bit.TSS = 0;     // 1 = Stop timer, 0 = Start/Restart Timer
+                Abrir = 0;
+                rk3=0;
+            }else{
+                Duty3 = PWM_CMPR50;
+            }
+        }
+        if(corriente_real_3 > 0.32){
+            rk3 += 1;
+            if(rk3 > 2){
+                Duty3 = PWM_CMPR50;
+                mov_gripper = 0;
+            }
+        }else{rk3=0;}
         //
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///////////////////////////////////////////CONTROL DE POSICION Y CORRIENTE///////////////////////////////////////////

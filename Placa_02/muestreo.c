@@ -99,8 +99,8 @@ void Muestreo(void){
     //
     Angulo_grados_eje_1 = qep_posspeed_1.angle_robot + Offset_grados_eje_1;                          // Las posiciones son las variables a controlar con el PID de POSICION
     Angulo_grados_eje_2 = qep_posspeed_2.angle_robot + Offset_grados_eje_2;
-//    Angulo_grados_eje_3 = qep_posspeed_3.angle_robot + Offset_grados_eje_3;
-    Angulo_grados_eje_3 = 0;
+    Angulo_grados_eje_3 = qep_posspeed_3.angle_robot + Offset_grados_eje_3;
+//    Angulo_grados_eje_3 = 0;
 }
 
 

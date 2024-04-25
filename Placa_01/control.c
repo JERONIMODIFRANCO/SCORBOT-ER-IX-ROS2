@@ -53,6 +53,7 @@ volatile Uint16 Abrir = 0;
 volatile Uint16 Cerrar = 0;
 volatile Uint16 rutina = 0;
 volatile float corriente_real_con_signo_1 = 0, corriente_real_con_signo_2 = 0, corriente_real_con_signo_3 = 0;
+volatile float Naxis1 = 214.13, Naxis2 = 243.8, Naxis3 = 213.33;
 //
 /////////////Funcion para ejecutar el control////////////
 void Control(void){
@@ -101,11 +102,11 @@ void Control(void){
         //
         // Error (Solo Lectura - Variable informativa)
         //
-        e1 = 214.13*(rk1 - yk1);
+        e1 = Naxis1*(rk1 - yk1);
 //        if(abs(e1) < 0.5){e1 = 0;}
-        e2 = 243.8*(rk2 - yk2);
+        e2 = Naxis2*(rk2 - yk2);
 //        if(abs(e2) < 0.5){e2 = 0;}
-        e3 = 213.33*(rk3 - yk3);
+        e3 = Naxis3*(rk3 - yk3);
 //        if(abs(e3) < 0.5){e3 = 0;}
         //
         // Corrientes reales con signo por los drivers [A]

@@ -17,59 +17,124 @@
 #include "muestreo.h"
 #include "SetParametrosPID.h"
 
- void Set_Parametros_PID(){
-     //
-     ///////////////////////////////PARAMETROS PID - POSICION/////////////////////////////////////////
-     //
-     ///////////////////////////////PRIMERA PLACA/////////////////////////////////////////////////////
-     //
-     //PID1
-     //
-     pid1.Kp = 10;
+ void Set_Parametros_PID(int estado){
 
-     pid1.Ki = 0.0002;
+     #ifdef _LAUNCHXL_F28379D
+        int correccion = 1;
+    #else
+        int correccion = 2;
+    #endif
 
-     pid1.Kd = 0;
+     if(estado){ //Antes de inicializar
+         //
+         ///////////////////////////////PARAMETROS PID - POSICION/////////////////////////////////////////
+         //
+         ///////////////////////////////PRIMERA PLACA/////////////////////////////////////////////////////
+         //
+         //PID1
+         //
+         pid1.Kp = 10*correccion;
 
-     pid1.c1 = 1;
+         pid1.Ki = 0.0002*correccion;
 
-     pid1.c2 = 1;
+         pid1.Kd = 0;
 
-     pid1.Umax = 100;     // Saturacion positiva del PID
+         pid1.c1 = 1;
 
-     pid1.Umin = -100;    // Saturacion negativa del PID
+         pid1.c2 = 1;
 
-     //PID2
-     //
-     pid2.Kp = 10;
+         pid1.Umax = 100;     // Saturacion positiva del PID
 
-     pid2.Ki = 0.0002;
+         pid1.Umin = -100;    // Saturacion negativa del PID
 
-     pid2.Kd = 0;
+         //PID2
+         //
+         pid2.Kp = 10*correccion;
 
-     pid2.c1 = 1;
+         pid2.Ki = 0.0002*correccion;
 
-     pid2.c2 = 1;
+         pid2.Kd = 0;
 
-     pid2.Umax = 380;     // Saturacion positiva del PID
+         pid2.c1 = 1;
 
-     pid2.Umin = -380;    // Saturacion negativa del PID
+         pid2.c2 = 1;
 
-     //PID3
-     //
-     pid3.Kp = 12;
+         pid2.Umax = 380;     // Saturacion positiva del PID
 
-     pid3.Ki = 0.0005;
+         pid2.Umin = -380;    // Saturacion negativa del PID
 
-     pid3.Kd = 0;
+         //PID3
+         //
+         pid3.Kp = 12*correccion;
 
-     pid3.c1 = 1;
+         pid3.Ki = 0.0005*correccion;
 
-     pid3.c2 = 1;
+         pid3.Kd = 0;
 
-     pid3.Umax = 380;     // Saturacion positiva del PID
+         pid3.c1 = 1;
 
-     pid3.Umin = -380;    // Saturacion negativa del PID
+         pid3.c2 = 1;
+
+         pid3.Umax = 380;     // Saturacion positiva del PID
+
+         pid3.Umin = -380;    // Saturacion negativa del PID
+     }
+     else{ //Después de inicializar
+         //
+         ///////////////////////////////PARAMETROS PID - POSICION/////////////////////////////////////////
+         //
+         ///////////////////////////////PRIMERA PLACA/////////////////////////////////////////////////////
+         //
+         //PID1
+         //
+         pid1.Kp = 20*correccion;
+
+         pid1.Ki = 0.0005*correccion;
+
+         pid1.Kd = 0;
+
+         pid1.c1 = 1;
+
+         pid1.c2 = 1;
+
+         pid1.Umax = 100;     // Saturacion positiva del PID
+
+         pid1.Umin = -100;    // Saturacion negativa del PID
+
+         //PID2
+         //
+         pid2.Kp = 20*correccion;
+
+         pid2.Ki = 0.0005*correccion;
+
+         pid2.Kd = 0;
+
+         pid2.c1 = 1;
+
+         pid2.c2 = 1;
+
+         pid2.Umax = 380;     // Saturacion positiva del PID
+
+         pid2.Umin = -380;    // Saturacion negativa del PID
+
+         //PID3
+         //
+         pid3.Kp = 20*correccion;
+
+         pid3.Ki = 0.0005*correccion;
+
+         pid3.Kd = 0;
+
+         pid3.c1 = 1;
+
+         pid3.c2 = 1;
+
+         pid3.Umax = 380;     // Saturacion positiva del PID
+
+         pid3.Umin = -380;    // Saturacion negativa del PID
+     }
+
+
        //
 
 //    ///////////////////////////////PARAMETROS PID - CORRIENTE/////////////////////////////////////////

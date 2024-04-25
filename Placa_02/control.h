@@ -30,6 +30,7 @@ extern volatile Uint16 Abrir;
 extern volatile Uint16 Cerrar;
 extern volatile float corriente_real_con_signo_1, corriente_real_con_signo_2, corriente_real_con_signo_3;
 extern volatile Uint16 rutina;
+extern volatile int mov_gripper;
 
 void Control(void);
 

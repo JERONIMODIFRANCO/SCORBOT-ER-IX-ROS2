@@ -13,7 +13,11 @@ void ConfigureADC(void)
     //
     // ADC-A
     //
-    AdcaRegs.ADCCTL2.bit.PRESCALE = 6;          // Set ADCCLK divider to /4
+    #ifdef _LAUNCHXL_F28379D
+        AdcaRegs.ADCCTL2.bit.PRESCALE = 6;      // Set ADCCLK divider to /4
+    #else
+        AdcaRegs.ADCCTL2.bit.PRESCALE = 2;      // Set ADCCLK divider to /2
+    #endif
     AdcaRegs.ADCCTL2.bit.RESOLUTION =  0;       // 12-bit resolution
     AdcaRegs.ADCCTL2.bit.SIGNALMODE = 0;        // Single-ended channel conversions (12-bit mode only)
     AdcaRegs.ADCCTL1.bit.INTPULSEPOS = 1;       // Set pulse positions to late
@@ -23,7 +27,12 @@ void ConfigureADC(void)
     //
     // ADC-B
     //
-    AdcbRegs.ADCCTL2.bit.PRESCALE = 6;          // Set ADCCLK divider to /4
+
+    #ifdef _LAUNCHXL_F28379D
+        AdcbRegs.ADCCTL2.bit.PRESCALE = 6;      // Set ADCCLK divider to /4
+    #else
+        AdcbRegs.ADCCTL2.bit.PRESCALE = 2;      // Set ADCCLK divider to /2
+    #endif
     AdcbRegs.ADCCTL2.bit.RESOLUTION =  0;       // 12-bit resolution RESOLUTION_12BIT;
     AdcbRegs.ADCCTL2.bit.SIGNALMODE = 0;        // Single-ended channel conversions (12-bit mode only)
     AdcbRegs.ADCCTL1.bit.INTPULSEPOS = 1;       // Set pulse positions to late
@@ -33,7 +42,11 @@ void ConfigureADC(void)
     //
     // ADC-C
     //
-    AdccRegs.ADCCTL2.bit.PRESCALE = 6;          // Set ADCCLK divider to /4
+    #ifdef _LAUNCHXL_F28379D
+        AdccRegs.ADCCTL2.bit.PRESCALE = 6;      // Set ADCCLK divider to /4
+    #else
+        AdccRegs.ADCCTL2.bit.PRESCALE = 2;      // Set ADCCLK divider to /2
+    #endif
     AdccRegs.ADCCTL2.bit.RESOLUTION =  0;       // 12-bit resolution RESOLUTION_12BIT;
     AdccRegs.ADCCTL2.bit.SIGNALMODE = 0;        // Single-ended channel conversions (12-bit mode only)
     AdccRegs.ADCCTL1.bit.INTPULSEPOS = 1;       // Set pulse positions to late

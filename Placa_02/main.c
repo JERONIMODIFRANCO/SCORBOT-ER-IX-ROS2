@@ -23,9 +23,8 @@
 #include "F2837xD_input_xbar.h"
 #include "F2837xD_SWPrioritizedIsrLevels.h"
 #include "SetParametrosPID.h"
-#include "Homming.h"
-//#include "MEFs.h"
 #include "Comunicaciones.h"
+#include "Homming.h"
 
 #define SE_SIGN  (GpioDataRegs.GPBDAT.bit.GPIO59)       // Valor en tiempo real de la XINT de la Parada de Emergencia
 #define OCP_SIGN  (GpioDataRegs.GPCDAT.bit.GPIO95)      // Valor en tiempo real de la XINT de la Sobre Corriente
@@ -39,6 +38,7 @@ interrupt void adca1_isr(void);
 interrupt void xint_SE_isr(void);
 interrupt void xint_OCP_isr(void);
 interrupt void xint_OTP_isr(void);
+interrupt void timer_gripper_isr(void); // Interrupción para la apertura/cierre del gripper
 //
 // Variables globales
 //
@@ -51,14 +51,15 @@ volatile int init = 1;
 volatile int init2 = 0;
 volatile int init3 = 0;
 
+extern volatile int mov_gripper;
+const int segundos_gripper = 4;
 
+// Frecuencia periféricos - No def - Funciones Ram
 void main(void)
 {
     //
     // Inicializo el sistema de control
     //
-
-
     InitSysCtrl();
     EALLOW;
     ClkCfgRegs.PERCLKDIVSEL.bit.EPWMCLKDIV = 1;
@@ -92,6 +93,7 @@ void main(void)
     PieVectTable.XINT1_INT = &xint_SE_isr;                      // INTERRUPCION 4 DE GRUPO 1 - PRIORIDAD 5 EN CORE - PRIORIDAD 4 EN GRUPO 1
     PieVectTable.XINT2_INT = &xint_OCP_isr;                     // INTERRUPCION 5 DE GRUPO 1 - PRIORIDAD 5 EN CORE - PRIORIDAD 5 EN GRUPO 1
     PieVectTable.XINT3_INT = &xint_OTP_isr;                     // INTERRUPCION 1 DE GRUPO 12 - PRIORIDAD 5 EN CORE - PRIORIDAD 1 EN GRUPO 12 - MENOS PRIORIDAD
+    PieVectTable.TIMER0_INT = &timer_gripper_isr;               // INTERRUPCION 7 DE GRUPO 1 - PRIORIDAD 5 EN CORE - PRIORIDAD 7 EN GRUPO 1
     EDIS;                                                       // Cierra el permiso
     //
     // Configura el ADC y lo enciende
@@ -109,6 +111,20 @@ void main(void)
     // Configura el ADC para que sea disparado por ePWM
     //
     SetupADCEpwm();
+    //
+    // Inicializo y configuro el timer que cuenta el tiempo de apertura del gripper
+    //
+    InitCpuTimers();
+    #ifdef _LAUNCHXL_F28379D
+        ConfigCpuTimer(&CpuTimer0, 200, segundos_gripper*1000000); //200 MHz, segundos * 1.000.000 us
+    #else
+        ConfigCpuTimer(&CpuTimer0, 100, segundos_gripper*1000000); //200 MHz, segundos * 1.000.000 us
+    #endif
+    CpuTimer0Regs.TCR.all = 0x4001;
+    //
+    // Enable TINT0 in the PIE: Group 1 __interrupt 7
+    //
+       PieCtrlRegs.PIEIER1.bit.INTx7 = 1;
     //
     // Enable global Interrupts and higher priority real-time debug events:
     //
@@ -317,6 +333,21 @@ void xint_OTP_isr(void){
     //
     PieCtrlRegs.PIEACK.all = PIEACK_GROUP12;
     XintRegs.XINT3CR.bit.ENABLE = 1;                //Habilita XINT3
+}
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////Timer_isr/////////////////////////////
+/////////////////////////////////////////////////////////////////////
+__interrupt void timer_gripper_isr(void)
+{
+   CpuTimer0.InterruptCount++;
+   mov_gripper = 0;
+   CpuTimer0.RegsAddr->TCR.bit.TSS = 1;     // 1 = Stop timer, 0 = Start/Restart Timer
+   CpuTimer0.RegsAddr->TCR.bit.TRB = 1;     // 1 = reload timer
+
+   //
+   // Acknowledge this __interrupt to receive more __interrupts from group 1
+   //
+   PieCtrlRegs.PIEACK.all = PIEACK_GROUP1;
 }
 /////////////////////////////////////////////////////////////////////
 // End of file

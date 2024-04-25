@@ -149,7 +149,8 @@ int homming(void){
         angulo_3 = 0;
         return 1;
     }
-
+    return 0;
 }
+
 
 

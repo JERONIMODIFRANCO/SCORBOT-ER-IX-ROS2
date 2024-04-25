@@ -24,6 +24,7 @@ ORDERED_OBJS += \
 "./protecciones.obj" \
 "./seteo_salidas.obj" \
 "./device/F2837xD_CodeStartBranch.obj" \
+"./device/F2837xD_CpuTimers.obj" \
 "./device/F2837xD_DefaultISR.obj" \
 "./device/F2837xD_EPwm.obj" \
 "./device/F2837xD_EQep.obj" \
@@ -157,7 +158,7 @@ EXE_OUTPUTS__QUOTED += \
 all: blinky_cpu2.out
 
 # Tool invocations
-blinky_cpu2.out: $(OBJS) $(GEN_CMDS)
+blinky_cpu2.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 	@echo 'Building target: "$@"'
 	@echo 'Invoking: C2000 Linker'
 	"C:/ti/ccs1250/ccs/tools/compiler/ti-cgt-c2000_22.6.1.LTS/bin/cl2000" -v28 -ml -mt --float_support=fpu32 --cla_support=cla1 --tmu_support=tmu0 --vcu_support=vcu2 -g --define=CPU1 --define=_LAUNCHXL_F28379D --display_error_number --diag_suppress=10063 --diag_warning=225 -z -m"blinky_cpu2.map" --stack_size=0x100 --warn_sections -i"C:/ti/ccs1250/ccs/tools/compiler/ti-cgt-c2000_22.6.1.LTS/lib" -i"C:/ti/c2000_v5/C2000Ware_5_01_00_00/device_support/f2837xd/common/include" -i"C:/ti/c2000_v5/C2000Ware_5_01_00_00/device_support/f2837xd/headers/include" -i"C:/ti/c2000_v5/C2000Ware_5_01_00_00/libraries/math/IQmath/c28/lib" -i"C:/ti/ccs1250/ccs/tools/compiler/ti-cgt-c2000_22.6.1.LTS/include" -i"C:/ti/c2000_v5/C2000Ware_5_01_00_00/device_support/f2837xd/common/cmd" -i"C:/ti/c2000_v5/C2000Ware_5_01_00_00/device_support/f2837xd/headers/cmd" --reread_libs --display_error_number --xml_link_info="blinky_cpu2_linkInfo.xml" --entry_point=code_start --rom_model -o "blinky_cpu2.out" $(ORDERED_OBJS)
@@ -167,8 +168,8 @@ blinky_cpu2.out: $(OBJS) $(GEN_CMDS)
 # Other Targets
 clean:
 	-$(RM) $(EXE_OUTPUTS__QUOTED)
-	-$(RM) "Comunicaciones.obj" "Entradas_Salidas.obj" "Example_EPwmSetup.obj" "Homming.obj" "SetParametrosPID.obj" "adc_motor_1_2_3.obj" "control.obj" "eQEP_motor_1_2_3.obj" "init_PWM_motor_1_2_3.obj" "main.obj" "muestreo.obj" "protecciones.obj" "seteo_salidas.obj" "device\F2837xD_CodeStartBranch.obj" "device\F2837xD_DefaultISR.obj" "device\F2837xD_EPwm.obj" "device\F2837xD_EQep.obj" "device\F2837xD_GlobalVariableDefs.obj" "device\F2837xD_Gpio.obj" "device\F2837xD_Ipc.obj" "device\F2837xD_PieCtrl.obj" "device\F2837xD_PieVect.obj" "device\F2837xD_SysCtrl.obj" "device\F2837xD_usDelay.obj" 
-	-$(RM) "Comunicaciones.d" "Entradas_Salidas.d" "Example_EPwmSetup.d" "Homming.d" "SetParametrosPID.d" "adc_motor_1_2_3.d" "control.d" "eQEP_motor_1_2_3.d" "init_PWM_motor_1_2_3.d" "main.d" "muestreo.d" "protecciones.d" "seteo_salidas.d" "device\F2837xD_DefaultISR.d" "device\F2837xD_EPwm.d" "device\F2837xD_EQep.d" "device\F2837xD_GlobalVariableDefs.d" "device\F2837xD_Gpio.d" "device\F2837xD_Ipc.d" "device\F2837xD_PieCtrl.d" "device\F2837xD_PieVect.d" "device\F2837xD_SysCtrl.d" 
+	-$(RM) "Comunicaciones.obj" "Entradas_Salidas.obj" "Example_EPwmSetup.obj" "Homming.obj" "SetParametrosPID.obj" "adc_motor_1_2_3.obj" "control.obj" "eQEP_motor_1_2_3.obj" "init_PWM_motor_1_2_3.obj" "main.obj" "muestreo.obj" "protecciones.obj" "seteo_salidas.obj" "device\F2837xD_CodeStartBranch.obj" "device\F2837xD_CpuTimers.obj" "device\F2837xD_DefaultISR.obj" "device\F2837xD_EPwm.obj" "device\F2837xD_EQep.obj" "device\F2837xD_GlobalVariableDefs.obj" "device\F2837xD_Gpio.obj" "device\F2837xD_Ipc.obj" "device\F2837xD_PieCtrl.obj" "device\F2837xD_PieVect.obj" "device\F2837xD_SysCtrl.obj" "device\F2837xD_usDelay.obj" 
+	-$(RM) "Comunicaciones.d" "Entradas_Salidas.d" "Example_EPwmSetup.d" "Homming.d" "SetParametrosPID.d" "adc_motor_1_2_3.d" "control.d" "eQEP_motor_1_2_3.d" "init_PWM_motor_1_2_3.d" "main.d" "muestreo.d" "protecciones.d" "seteo_salidas.d" "device\F2837xD_CpuTimers.d" "device\F2837xD_DefaultISR.d" "device\F2837xD_EPwm.d" "device\F2837xD_EQep.d" "device\F2837xD_GlobalVariableDefs.d" "device\F2837xD_Gpio.d" "device\F2837xD_Ipc.d" "device\F2837xD_PieCtrl.d" "device\F2837xD_PieVect.d" "device\F2837xD_SysCtrl.d" 
 	-$(RM) "device\F2837xD_CodeStartBranch.d" "device\F2837xD_usDelay.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
