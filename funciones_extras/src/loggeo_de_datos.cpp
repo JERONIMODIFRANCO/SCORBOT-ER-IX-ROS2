@@ -131,7 +131,7 @@ private:
       }
       
 
-      if(time_stamp > last_time + 4){
+      if(time_stamp > (last_time*2) + 5){
         primero = 1;
         escuchando = 0;
         RCLCPP_INFO(this->get_logger(), "Loggeo N° %d completado", plan_num-1 );
