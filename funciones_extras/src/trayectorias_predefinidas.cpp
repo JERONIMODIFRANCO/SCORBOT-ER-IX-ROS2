@@ -42,6 +42,7 @@
 
 #include <moveit_msgs/msg/attached_collision_object.hpp>
 #include <moveit_msgs/msg/collision_object.hpp>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 
 // #include <moveit_visual_tools/moveit_visual_tools.h>
 
@@ -49,6 +50,9 @@
 // static const rclcpp::Logger named LOGGER, located at the top of the file
 // and inside the namespace with the narrowest scope (if there is one)
 static const rclcpp::Logger LOGGER = rclcpp::get_logger("Planeador");
+
+bool pose_juntas = 0; // Indica si voy a planear con el estado de las juntas
+bool pose_end_effector = 1; // Indica si voy a planear con poses del end_effector
 
 int main(int argc, char** argv)
 {
@@ -115,164 +119,232 @@ int main(int argc, char** argv)
   // To start, we'll create an pointer that references the current robot's state.
   // RobotState is the object that contains all the current position/velocity/acceleration data.
   moveit::core::RobotStatePtr current_state = move_group.getCurrentState(10);
-  //
-  // Next get the current set of joint values for the group.
-  std::vector<double> pose_1;
-  std::vector<double> pose_2;
-  std::vector<double> pose_3;
-  std::vector<double> pose_4;
-  std::vector<double> pose_5;
-  std::vector<double> pose_6;
-  current_state->copyJointGroupPositions(joint_model_group, pose_1);
-  current_state->copyJointGroupPositions(joint_model_group, pose_2);
-  current_state->copyJointGroupPositions(joint_model_group, pose_3);
-  current_state->copyJointGroupPositions(joint_model_group, pose_4);
-  current_state->copyJointGroupPositions(joint_model_group, pose_5);
-  current_state->copyJointGroupPositions(joint_model_group, pose_6);
-  
+
   move_group.setMaxVelocityScalingFactor(0.75);
   move_group.setMaxAccelerationScalingFactor(0.75);
+  //
+  // #################### Poses utilizando estados de las juntas ######################
+  if(pose_juntas){
+    std::vector<double> pose_1;
+    std::vector<double> pose_2;
+    std::vector<double> pose_3;
+    std::vector<double> pose_4;
+    std::vector<double> pose_5;
+    std::vector<double> pose_6;
+    // Copio tanto el tamaño del vector como las posiciones de las juntas (esto último no se usa)
+    current_state->copyJointGroupPositions(joint_model_group, pose_1);
+    current_state->copyJointGroupPositions(joint_model_group, pose_2);
+    current_state->copyJointGroupPositions(joint_model_group, pose_3);
+    current_state->copyJointGroupPositions(joint_model_group, pose_4);
+    current_state->copyJointGroupPositions(joint_model_group, pose_5);
+    current_state->copyJointGroupPositions(joint_model_group, pose_6);
+    
+    pose_1[0] = 0;  // radians
+    pose_1[1] = 0;  // radians
+    pose_1[2] = 0;  // radians
+    pose_1[3] = 0;  // radians
+    pose_1[4] = 0;  // radians
 
-  
-  // Pose 1
-  pose_1[0] = 0;  // radians
-  pose_1[1] = 0;  // radians
-  pose_1[2] = 0;  // radians
-  pose_1[3] = 0;  // radians
-  pose_1[4] = 0;  // radians
+    pose_2[0] = 0;  // radians
+    pose_2[1] = -1.57;  // radians
+    pose_2[2] = 1.57;  // radians
+    pose_2[3] = 0;  // radians
+    pose_2[4] = 0;  // radians
 
-  pose_2[0] = 0;  // radians
-  pose_2[1] = -1.57;  // radians
-  pose_2[2] = 1.57;  // radians
-  pose_2[3] = 0;  // radians
-  pose_2[4] = 0;  // radians
+    pose_3[0] = 1.57;  // radians
+    pose_3[1] = 0.262;  // radians
+    pose_3[2] = -0.698;  // radians
+    pose_3[3] = 0;  // radians
+    pose_3[4] = 0;  // radians
 
-  pose_3[0] = 1.57;  // radians
-  pose_3[1] = 0.262;  // radians
-  pose_3[2] = -0.698;  // radians
-  pose_3[3] = 0;  // radians
-  pose_3[4] = 0;  // radians
+    pose_4[0] = -1.57;  // radians
+    pose_4[1] = 0.262;  // radians
+    pose_4[2] = -0.698;  // radians
+    pose_4[3] = 0;  // radians
+    pose_4[4] = 0;  // radians
 
-  pose_4[0] = -1.57;  // radians
-  pose_4[1] = 0.262;  // radians
-  pose_4[2] = -0.698;  // radians
-  pose_4[3] = 0;  // radians
-  pose_4[4] = 0;  // radians
+    pose_5[0] = 0;  // radians
+    pose_5[1] = 0;  // radians
+    pose_5[2] = 0;  // radians
+    pose_5[3] = -1.483;  // radians
+    pose_5[4] = -3.1415;  // radians
 
-  pose_5[0] = 0;  // radians
-  pose_5[1] = 0;  // radians
-  pose_5[2] = 0;  // radians
-  pose_5[3] = -1.483;  // radians
-  pose_5[4] = -3.1415;  // radians
+    pose_6[0] = 0;  // radians
+    pose_6[1] = 0;  // radians
+    pose_6[2] = 0;  // radians
+    pose_6[3] = 1.483;  // radians
+    pose_6[4] = 3.1415;  // radians
 
-  pose_6[0] = 0;  // radians
-  pose_6[1] = 0;  // radians
-  pose_6[2] = 0;  // radians
-  pose_6[3] = 1.483;  // radians
-  pose_6[4] = 3.1415;  // radians
+    // Pose 1
+    within_bounds = move_group.setJointValueTarget(pose_1);
+    if (!within_bounds)
+    {
+      RCLCPP_WARN(LOGGER, "Target joint position(s) were outside of limits, but we will plan and clamp to the limits ");
+    }
+    success = (move_group.plan(my_plan) == moveit::core::MoveItErrorCode::SUCCESS);
+    RCLCPP_INFO(LOGGER, "Ejecutando la Pose 1 %d", success);
+    move_group.move();
+    static auto start_time_ = rclcpp::Clock().now();
+    while(start_time_.seconds() > rclcpp::Clock().now().seconds() - 2){}
 
-  // Pose 1
-  within_bounds = move_group.setJointValueTarget(pose_1);
-  if (!within_bounds)
-  {
-    RCLCPP_WARN(LOGGER, "Target joint position(s) were outside of limits, but we will plan and clamp to the limits ");
+    // Pose 2
+    within_bounds = move_group.setJointValueTarget(pose_2);
+    if (!within_bounds)
+    {
+      RCLCPP_WARN(LOGGER, "Target joint position(s) were outside of limits, but we will plan and clamp to the limits ");
+    }
+    success = (move_group.plan(my_plan) == moveit::core::MoveItErrorCode::SUCCESS);
+    RCLCPP_INFO(LOGGER, "Ejecutando la Pose 2");
+    move_group.move();
+    start_time_ = rclcpp::Clock().now();
+    while(start_time_.seconds() > rclcpp::Clock().now().seconds() - 2){}
+
+    // Pose 3
+    within_bounds = move_group.setJointValueTarget(pose_3);
+    if (!within_bounds)
+    {
+      RCLCPP_WARN(LOGGER, "Target joint position(s) were outside of limits, but we will plan and clamp to the limits ");
+    }
+    success = (move_group.plan(my_plan) == moveit::core::MoveItErrorCode::SUCCESS);
+    RCLCPP_INFO(LOGGER, "Ejecutando la Pose 3");
+    move_group.move();
+    start_time_ = rclcpp::Clock().now();
+    while(start_time_.seconds() > rclcpp::Clock().now().seconds() - 2){}
+
+    // Pose 2
+    within_bounds = move_group.setJointValueTarget(pose_2);
+    if (!within_bounds)
+    {
+      RCLCPP_WARN(LOGGER, "Target joint position(s) were outside of limits, but we will plan and clamp to the limits ");
+    }
+    success = (move_group.plan(my_plan) == moveit::core::MoveItErrorCode::SUCCESS);
+    RCLCPP_INFO(LOGGER, "Ejecutando la Pose 2");
+    move_group.move();
+    start_time_ = rclcpp::Clock().now();
+    while(start_time_.seconds() > rclcpp::Clock().now().seconds() - 2){}
+
+    // Pose 4
+    within_bounds = move_group.setJointValueTarget(pose_4);
+    if (!within_bounds)
+    {
+      RCLCPP_WARN(LOGGER, "Target joint position(s) were outside of limits, but we will plan and clamp to the limits ");
+    }
+    success = (move_group.plan(my_plan) == moveit::core::MoveItErrorCode::SUCCESS);
+    RCLCPP_INFO(LOGGER, "Ejecutando la Pose 4");
+    move_group.move();
+    start_time_ = rclcpp::Clock().now();
+    while(start_time_.seconds() > rclcpp::Clock().now().seconds() - 2){}
+
+    // Pose 1
+    within_bounds = move_group.setJointValueTarget(pose_1);
+    if (!within_bounds)
+    {
+      RCLCPP_WARN(LOGGER, "Target joint position(s) were outside of limits, but we will plan and clamp to the limits ");
+    }
+    success = (move_group.plan(my_plan) == moveit::core::MoveItErrorCode::SUCCESS);
+    RCLCPP_INFO(LOGGER, "Ejecutando la Pose 1");
+    move_group.move();
+    start_time_ = rclcpp::Clock().now();
+    while(start_time_.seconds() > rclcpp::Clock().now().seconds() - 2){}
+
+    // Pose 5
+    within_bounds = move_group.setJointValueTarget(pose_5);
+    if (!within_bounds)
+    {
+      RCLCPP_WARN(LOGGER, "Target joint position(s) were outside of limits, but we will plan and clamp to the limits ");
+    }
+    success = (move_group.plan(my_plan) == moveit::core::MoveItErrorCode::SUCCESS);
+    RCLCPP_INFO(LOGGER, "Ejecutando la Pose 5");
+    move_group.move();
+
+    // Pose 6
+    within_bounds = move_group.setJointValueTarget(pose_6);
+    if (!within_bounds)
+    {
+      RCLCPP_WARN(LOGGER, "Target joint position(s) were outside of limits, but we will plan and clamp to the limits ");
+    }
+    success = (move_group.plan(my_plan) == moveit::core::MoveItErrorCode::SUCCESS);
+    RCLCPP_INFO(LOGGER, "Ejecutando la Pose 6");
+    move_group.move();
+
+    // Pose 1
+    within_bounds = move_group.setJointValueTarget(pose_1);
+    if (!within_bounds)
+    {
+      RCLCPP_WARN(LOGGER, "Target joint position(s) were outside of limits, but we will plan and clamp to the limits ");
+    }
+    success = (move_group.plan(my_plan) == moveit::core::MoveItErrorCode::SUCCESS);
+    RCLCPP_INFO(LOGGER, "Ejecutando la Pose 1");
+    move_group.move();
   }
-  success = (move_group.plan(my_plan) == moveit::core::MoveItErrorCode::SUCCESS);
-  RCLCPP_INFO(LOGGER, "Ejecutando la Pose 1 %d", success);
-  move_group.move();
-  static auto start_time_ = rclcpp::Clock().now();
-  while(start_time_.seconds() > rclcpp::Clock().now().seconds() - 2){}
+  // ################### Fin oses utilizando estados de las juntas ######################
 
-  // Pose 2
-  within_bounds = move_group.setJointValueTarget(pose_2);
-  if (!within_bounds)
-  {
-    RCLCPP_WARN(LOGGER, "Target joint position(s) were outside of limits, but we will plan and clamp to the limits ");
+
+  // ################### Poses utilizando ubicación del end effector ####################
+  if(pose_end_effector){
+    geometry_msgs::msg::Pose target_pose1;
+    // Alargado
+    // target_pose1.orientation.x = 0.12;
+    // target_pose1.orientation.y = 0.73;
+    // target_pose1.orientation.z = -0.1;
+    // target_pose1.orientation.w = 0.66;
+    // target_pose1.position.x = 0.477;
+    // target_pose1.position.y = 0;
+    // target_pose1.position.z = 0.37;
+    // Agarrando 1
+    // target_pose1.orientation.x = 0;
+    // target_pose1.orientation.y = 1;
+    // target_pose1.orientation.z = 0;
+    // target_pose1.orientation.w = 0;
+    // target_pose1.position.x = 0.3;
+    // target_pose1.position.y = 0;
+    // target_pose1.position.z = 0.2;
+    target_pose1.orientation.x = 0;
+    target_pose1.orientation.y = 0;
+    target_pose1.orientation.z = 0;
+    target_pose1.orientation.w = 0;
+    target_pose1.position.x = 0.3;
+    target_pose1.position.y = 0;
+    target_pose1.position.z = 0.2;
+
+
+    geometry_msgs::msg::Pose target_pose2;
+    // target_pose2.orientation.x = 0;
+    // target_pose2.orientation.y = 1;
+    // target_pose2.orientation.z = 0;
+    // target_pose2.orientation.w = 0;
+    // target_pose2.position.x = 0.45;
+    // target_pose2.position.y = 0;
+    // target_pose2.position.z = 0.25;
+    target_pose2.orientation.x = 0;
+    target_pose2.orientation.y = 0;
+    target_pose2.orientation.z = 1;
+    target_pose2.orientation.w = 0;
+    target_pose2.position.x = 0;
+    target_pose2.position.y = 0.45;
+    target_pose2.position.z = 0.25;
+
+
+    // Ejecución Pose 1
+    move_group.setPoseTarget(target_pose1);
+    success = (move_group.plan(my_plan) == moveit::core::MoveItErrorCode::SUCCESS);
+    RCLCPP_INFO(LOGGER, "Plan 1 (pose goal) %s", success ? "" : "FAILED");
+    if(success){
+      RCLCPP_INFO(LOGGER, "Ejecutando la Pose 1");
+      move_group.move();
+    }
+
+    // Ejecución Pose 2
+    move_group.setPoseTarget(target_pose2);
+    success = (move_group.plan(my_plan) == moveit::core::MoveItErrorCode::SUCCESS);
+    RCLCPP_INFO(LOGGER, "Plan 2 (pose goal) %s", success ? "" : "FAILED");
+    if(success){
+      RCLCPP_INFO(LOGGER, "Ejecutando la Pose 2");
+      move_group.move();
+    }
   }
-  success = (move_group.plan(my_plan) == moveit::core::MoveItErrorCode::SUCCESS);
-  RCLCPP_INFO(LOGGER, "Ejecutando la Pose 2");
-  move_group.move();
-  start_time_ = rclcpp::Clock().now();
-  while(start_time_.seconds() > rclcpp::Clock().now().seconds() - 2){}
 
-  // Pose 3
-  within_bounds = move_group.setJointValueTarget(pose_3);
-  if (!within_bounds)
-  {
-    RCLCPP_WARN(LOGGER, "Target joint position(s) were outside of limits, but we will plan and clamp to the limits ");
-  }
-  success = (move_group.plan(my_plan) == moveit::core::MoveItErrorCode::SUCCESS);
-  RCLCPP_INFO(LOGGER, "Ejecutando la Pose 3");
-  move_group.move();
-  start_time_ = rclcpp::Clock().now();
-  while(start_time_.seconds() > rclcpp::Clock().now().seconds() - 2){}
-
-  // Pose 2
-  within_bounds = move_group.setJointValueTarget(pose_2);
-  if (!within_bounds)
-  {
-    RCLCPP_WARN(LOGGER, "Target joint position(s) were outside of limits, but we will plan and clamp to the limits ");
-  }
-  success = (move_group.plan(my_plan) == moveit::core::MoveItErrorCode::SUCCESS);
-  RCLCPP_INFO(LOGGER, "Ejecutando la Pose 2");
-  move_group.move();
-  start_time_ = rclcpp::Clock().now();
-  while(start_time_.seconds() > rclcpp::Clock().now().seconds() - 2){}
-
-  // Pose 4
-  within_bounds = move_group.setJointValueTarget(pose_4);
-  if (!within_bounds)
-  {
-    RCLCPP_WARN(LOGGER, "Target joint position(s) were outside of limits, but we will plan and clamp to the limits ");
-  }
-  success = (move_group.plan(my_plan) == moveit::core::MoveItErrorCode::SUCCESS);
-  RCLCPP_INFO(LOGGER, "Ejecutando la Pose 4");
-  move_group.move();
-  start_time_ = rclcpp::Clock().now();
-  while(start_time_.seconds() > rclcpp::Clock().now().seconds() - 2){}
-
-  // Pose 1
-  within_bounds = move_group.setJointValueTarget(pose_1);
-  if (!within_bounds)
-  {
-    RCLCPP_WARN(LOGGER, "Target joint position(s) were outside of limits, but we will plan and clamp to the limits ");
-  }
-  success = (move_group.plan(my_plan) == moveit::core::MoveItErrorCode::SUCCESS);
-  RCLCPP_INFO(LOGGER, "Ejecutando la Pose 1");
-  move_group.move();
-  start_time_ = rclcpp::Clock().now();
-  while(start_time_.seconds() > rclcpp::Clock().now().seconds() - 2){}
-
-  // Pose 5
-  within_bounds = move_group.setJointValueTarget(pose_5);
-  if (!within_bounds)
-  {
-    RCLCPP_WARN(LOGGER, "Target joint position(s) were outside of limits, but we will plan and clamp to the limits ");
-  }
-  success = (move_group.plan(my_plan) == moveit::core::MoveItErrorCode::SUCCESS);
-  RCLCPP_INFO(LOGGER, "Ejecutando la Pose 5");
-  move_group.move();
-
-  // Pose 6
-  within_bounds = move_group.setJointValueTarget(pose_6);
-  if (!within_bounds)
-  {
-    RCLCPP_WARN(LOGGER, "Target joint position(s) were outside of limits, but we will plan and clamp to the limits ");
-  }
-  success = (move_group.plan(my_plan) == moveit::core::MoveItErrorCode::SUCCESS);
-  RCLCPP_INFO(LOGGER, "Ejecutando la Pose 6");
-  move_group.move();
-
-  // Pose 1
-  within_bounds = move_group.setJointValueTarget(pose_1);
-  if (!within_bounds)
-  {
-    RCLCPP_WARN(LOGGER, "Target joint position(s) were outside of limits, but we will plan and clamp to the limits ");
-  }
-  success = (move_group.plan(my_plan) == moveit::core::MoveItErrorCode::SUCCESS);
-  RCLCPP_INFO(LOGGER, "Ejecutando la Pose 1");
-  move_group.move();
-
+  // ################### Fin poses utilizando ubicación del end effector ####################
 
   rclcpp::shutdown();
   return 0;

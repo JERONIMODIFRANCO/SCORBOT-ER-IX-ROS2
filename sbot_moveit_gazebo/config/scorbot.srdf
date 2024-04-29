@@ -34,17 +34,17 @@
     </group_state>
     <group_state name="pose_2" group="arm">
         <joint name="base_joint" value="1.57"/>
-        <joint name="elbow" value="-0.698"/>
+        <joint name="elbow" value="-0.524"/>
         <joint name="pitch" value="0"/>
         <joint name="roll" value="0"/>
-        <joint name="shoulder" value="0.349"/>
+        <joint name="shoulder" value="0.262"/>
     </group_state>
     <group_state name="pose_3" group="arm">
         <joint name="base_joint" value="-1.57"/>
-        <joint name="elbow" value="-0.698"/>
+        <joint name="elbow" value="-0.524"/>
         <joint name="pitch" value="0"/>
         <joint name="roll" value="0"/>
-        <joint name="shoulder" value="0.349"/>
+        <joint name="shoulder" value="0.262"/>
     </group_state>
     <group_state name="pose_4" group="arm">
         <joint name="base_joint" value="0"/>
