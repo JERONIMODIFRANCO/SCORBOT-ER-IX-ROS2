@@ -29,7 +29,6 @@ set(THIS_PACKAGE_INCLUDE_DEPENDS
   rclcpp
   rclcpp_action
   tf2_geometry_msgs
-  tf2_geometry_msgs
   tf2_ros
 )
 

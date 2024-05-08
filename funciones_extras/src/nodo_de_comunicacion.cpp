@@ -1,23 +1,13 @@
-// Copyright 2016 Open Source Robotics Foundation, Inc.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// Nodo utilizado para realizar verificación del estado de las comunicaciones por USB
+// Para utilizarlo, pegar "ros2 topic pub /topic std_msgs/msg/String 'data: "#"' "
+// Con "#" reemplazado por el comando que se quiera enviar hacia el control de bajo nivel
 
 #include <functional>
 #include <memory>
 
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
-#include "/home/gaston/sbot/src/SCORBOT-ER-IX-ROS2/sbot_hi/hardware/include/sbot_hi/usb_functions.h"
+#include "/home/scorbot/sbot/src/SCORBOT-ER-IX-ROS2/sbot_hi/hardware/include/sbot_hi/usb_functions.h"
 
 #include <stdio.h>      // standard input / output functions
 #include <stdlib.h>
@@ -29,8 +19,6 @@
 
 using std::placeholders::_1;
 
-// Para utilizarlo, pegar "ros2 topic pub /topic std_msgs/msg/String 'data: "#"' "
-// Con "#" reemplazado por el comando que se quiera enviar hacia el control de bajo nivel
 
 class MinimalSubscriber : public rclcpp::Node
 {
@@ -49,13 +37,14 @@ private:
   void topic_callback(const std_msgs::msg::String & msg) const
   {    
     /* Open File Descriptor */
-    int USB2 = open( "/dev/ttyACM0", O_RDWR| O_NOCTTY );
-    int USB1 = open( "/dev/ttyUSB0", O_RDWR| O_NOCTTY );
+    int USB2 = open( "/dev/ttyUSB0", O_RDWR| O_NOCTTY );
+    int USB1 = open( "/dev/ttyUSB1", O_RDWR| O_NOCTTY );
+    // int USB1 = 1;
 
     /* Error Handling */
     if ( USB1 < 0 )
     {
-    std::cout << "Error " << errno << " opening " << "/dev/ttyUSB0" << ": " << strerror (errno) << std::endl;
+    std::cout << "Error " << errno << " opening " << "/dev/ttyUSB1" << ": " << strerror (errno) << std::endl;
     }
     /* *** Configure Port *** */
     struct termios tty1;
@@ -99,7 +88,7 @@ private:
 
     if ( USB2 < 0 )
     {
-    std::cout << "Error " << errno << " opening " << "/dev/ttyS2" << ": " << strerror (errno) << std::endl;
+    std::cout << "Error " << errno << " opening " << "/dev/ttyUSB0" << ": " << strerror (errno) << std::endl;
     }
     // this->configuracion_port(USB);
     /* *** Configure Port *** */

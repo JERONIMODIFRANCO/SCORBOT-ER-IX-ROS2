@@ -1,11 +1,13 @@
-from ament_index_python.packages import get_package_share_path
+# launch file to spawn the robot in ignition
+
+# from ament_index_python.packages import get_package_share_path
 import random
 from launch_ros.actions import Node
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument
-from launch.substitutions import Command, LaunchConfiguration
-from launch.conditions import IfCondition
-from launch_ros.parameter_descriptions import ParameterValue
+# from launch.actions import DeclareLaunchArgument
+# from launch.substitutions import Command, LaunchConfiguration
+# from launch.conditions import IfCondition
+# from launch_ros.parameter_descriptions import ParameterValue
 def generate_launch_description():
 
     # Position and orientation

@@ -56,7 +56,8 @@ void read_usb_float(int USB, unsigned char (*datos)[4], int cantidad){
       if ((bytes_read == -1) || (bytes_read == 0)) {
         // Error al leer el byte
         RCLCPP_INFO(rclcpp::get_logger("SbotPositionOnlyHardware"),
-        "Error al leer el dato: %ld",bytes_read);
+        "Error al leer el dato %d del USB %d",dato+1, USB);
+        break;
       }
 
       datos[dato][count]=byte;
@@ -89,8 +90,8 @@ int conection_usb(int USB1, int USB2){
     tty1_old = tty1;
 
     /* Set Baud Rate */
-    // cfsetospeed (&tty, (speed_t)B9600);
-    // cfsetispeed (&tty, (speed_t)B9600);
+    // cfsetospeed (&tty1, (speed_t)B19200);
+    // cfsetispeed (&tty1, (speed_t)B19200);
     cfsetispeed(&tty1, B38400);
     cfsetospeed(&tty1, B38400); // Creo que es el máximo BR que soporta la librería
 
@@ -117,7 +118,7 @@ int conection_usb(int USB1, int USB2){
 
     if ( USB2 < 0 )
     {
-    std::cout << "Error " << errno << " opening " << "/dev/ttyS2" << ": " << strerror (errno) << std::endl;
+    std::cout << "Error " << errno << " opening " << "/dev/ttyUSB0" << ": " << strerror (errno) << std::endl;
     RCLCPP_INFO(rclcpp::get_logger("SbotPositionOnlyHardware"),
         "Error al recibir el usb2");
     }
@@ -137,10 +138,10 @@ int conection_usb(int USB1, int USB2){
     tty2_old = tty2;
 
     /* Set Baud Rate */
-    // cfsetospeed (&tty, (speed_t)B9600);
-    // cfsetispeed (&tty, (speed_t)B9600);
-    cfsetispeed(&tty2, B38400);
-    cfsetospeed(&tty2, B38400); // Creo que es el máximo BR que soporta la librería
+    cfsetospeed (&tty2, (speed_t)B4800);
+    cfsetispeed (&tty2, (speed_t)B4800);
+    // cfsetispeed(&tty2, B38400);
+    // cfsetospeed(&tty2, B38400); // Creo que es el máximo BR que soporta la librería
 
     /* Setting other Port Stuff */
     tty2.c_cflag     &=  ~PARENB;            // Make 8n1

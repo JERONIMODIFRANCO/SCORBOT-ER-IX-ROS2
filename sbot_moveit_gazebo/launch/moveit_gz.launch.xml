@@ -1,4 +1,6 @@
 <?xml version='1.0' ?>
+<!-- moveit simulation on igniton, includes demo.launch.py from this packages, 
+start_world.launch.py and spawn_robot.launch.py from sbot_gazebo package-->
 <launch>
 
   <!-- gazebo -->

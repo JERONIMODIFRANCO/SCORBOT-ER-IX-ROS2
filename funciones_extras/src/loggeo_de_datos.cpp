@@ -1,17 +1,8 @@
-// Copyright 2016 Open Source Robotics Foundation, Inc.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// Nodo para realizar el loggeo en un archivo de los estados de las juntas y las corrientes
+// desde el robot real y del plan ejecutado mediante la función "planear y ejecutar" 
+// del plugin de MoveIt2 en RViz
 
+// Todos los datos se almacenarán en archivos dentro de "/home/scorbot/Loggeo/Real"
 #include <functional>
 #include <memory>
 #include <fstream>
@@ -23,6 +14,8 @@
 
 using std::placeholders::_1;
 int escuchando = 0;
+int primero_jt = 1;
+int primero_cor = 1;
 double last_time;
 int plan_num = 1;
 
@@ -36,6 +29,8 @@ public:
       "display_planned_path", 10, std::bind(&MinimalSubscriber::topic_callback, this, std::placeholders::_1));
     subscription_jt = this->create_subscription<sensor_msgs::msg::JointState>(
       "joint_states", 10, std::bind(&MinimalSubscriber::topic_jt, this, std::placeholders::_1));
+    subscription_corr = this->create_subscription<std_msgs::msg::String>(
+      "corriente_juntas", 10, std::bind(&MinimalSubscriber::topic_corr, this, std::placeholders::_1));
   }
 
   
@@ -50,7 +45,7 @@ private:
   void topic_callback(const moveit_msgs::msg::DisplayTrajectory::SharedPtr msg) const
   {
     
-    std::string nombre_archivo = "plan" + std::to_string(plan_num) + ".txt";
+    std::string nombre_archivo = "/home/scorbot/Loggeo/Real/Plan/Plan_" + std::to_string(plan_num) + ".txt";
     
     if (!msg->trajectory.empty()) {
       // Accede al primer punto de la trayectoria planificada
@@ -105,15 +100,14 @@ private:
 
   void topic_jt(const sensor_msgs::msg::JointState::SharedPtr msg) const
   {
-    static int primero = 1;
     static auto start_time_ = rclcpp::Clock().now();
-    std::string nombre_archivo = "ejecucion" + std::to_string(plan_num-1) + ".txt";
+    std::string nombre_archivo = "/home/scorbot/Loggeo/Real/Posiciones/EjecucionR_" + std::to_string(plan_num-1) + ".txt";
     if(escuchando){
       std::ofstream ejecucion(nombre_archivo, std::ios::app); // Crea un objeto ofstream y abre el archivo datos.txt
-      if(primero){
+      if(primero_jt){
         start_time_ = rclcpp::Clock().now(); // Inicia el contador de tiempo
         ejecucion << "Tiempo,J1,J2,J3,J4,J5"<< std::endl;
-        primero = 0;
+        primero_jt = 0;
       }
 
       std::vector<std::string> joint_names = msg->name;
@@ -129,16 +123,46 @@ private:
       } else {
         std::cout << "No se pudo abrir el archivo." << std::endl;
       }
+
+    }
+  }
+  rclcpp::Subscription<sensor_msgs::msg::JointState>::SharedPtr subscription_jt;
+
+  void topic_corr(const std_msgs::msg::String::SharedPtr msg) const
+  {
+    static auto start_time_ = rclcpp::Clock().now();
+    std::string nombre_archivo = "/home/scorbot/Loggeo/Real/Corrientes/Corrientes_" + std::to_string(plan_num-1) + ".txt";
+    if(escuchando){
+      std::ofstream corrientes(nombre_archivo, std::ios::app); // Crea un objeto ofstream y abre el archivo datos.txt
+      if(primero_cor){
+        start_time_ = rclcpp::Clock().now(); // Inicia el contador de tiempo
+        corrientes << "Tiempo,C1,C2,C3,C4,C5,C6"<< std::endl;
+        primero_cor = 0;
+      }
+
+      
+      std_msgs::msg::String mensaje;
+      mensaje.data = msg->data;
+      double time_stamp = rclcpp::Clock().now().seconds() - start_time_.seconds();
+
+      if (corrientes.is_open()) { // Verifica que el archivo se haya abierto correctamente
+        const char* separador = ",";
+        corrientes << time_stamp << separador << mensaje.data << std::endl; // Escribe el dato en el archivo
+        corrientes.close(); // Cierra el archivo
+      } else {
+        std::cout << "No se pudo abrir el archivo." << std::endl;
+      }
       
 
-      if(time_stamp > (last_time*2) + 5){
-        primero = 1;
+      if(time_stamp > last_time *1.5){
+        primero_jt = 1;
+        primero_cor = 1;
         escuchando = 0;
         RCLCPP_INFO(this->get_logger(), "Loggeo N° %d completado", plan_num-1 );
       }
     }
   }
-  rclcpp::Subscription<sensor_msgs::msg::JointState>::SharedPtr subscription_jt;
+  rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription_corr;
   
 };
 

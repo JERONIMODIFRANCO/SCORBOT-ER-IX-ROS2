@@ -1,3 +1,6 @@
+<!-- Implementación de ignition plugin contol para scorbot + rviz -->
+<!-- Es el archivo encargado de "lanzar" los demás achivos del paquete -->
+
 <?xml version='1.0' ?>
 <launch>
 

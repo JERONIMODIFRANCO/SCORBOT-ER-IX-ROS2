@@ -28,6 +28,9 @@
 #include "rclcpp_lifecycle/state.hpp"
 #include "sbot_hi/visibility_control.h"
 
+#include "rclcpp/node.hpp"
+#include "std_msgs/msg/string.hpp" 
+
 
 namespace sbot_hi
 {
@@ -75,12 +78,17 @@ private:
   // Store the command for the simulated robot
   std::vector<double> hw_commands_;
   std::vector<double> hw_states_;
+  std::vector<double> hw_states_velocities_;
 
   // Variables para la comunicaciones
   int USB1, USB2; //identificador del usb utilizado
-  std::vector<double> comando_viejo;
+  double comando_viejo;
   int ciclo_actual = 0;
   int ciclos_total = 1;
+
+  //Varialbes para el nodo publicador
+  std::shared_ptr<rclcpp::Node> node;
+  decltype(node->create_publisher<std_msgs::msg::String>("corriente", 10)) publisher; // Declaración de la variable publisher
 };
 
 }  // namespace sbot_hi

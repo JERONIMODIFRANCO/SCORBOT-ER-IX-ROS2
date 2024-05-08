@@ -123,7 +123,7 @@
                 child="${upper_arm}"
                 limit_e="5000"
                 limit_l="-2.268"
-                limit_u="0.349"
+                limit_u="0.262"
                 limit_v="0.5" />
 
     <xacro:m_joint name="${elbow}" type="revolute" 

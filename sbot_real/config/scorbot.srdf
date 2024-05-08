@@ -20,13 +20,6 @@
     </group>
     <!--GROUP STATES: Purpose: Define a named state for a particular group, in terms of joint values. This is useful to define states like 'folded arms'-->
     <!--GROUP STATES: Purpose: Define a named state for a particular group, in terms of joint values. This is useful to define states like 'folded arms'-->
-    <group_state name="reposo" group="arm">
-        <joint name="base_joint" value="0"/>
-        <joint name="elbow" value="1.57"/>
-        <joint name="pitch" value="0"/>
-        <joint name="roll" value="0"/>
-        <joint name="shoulder" value="0"/>
-    </group_state>
     <group_state name="home" group="arm">
         <joint name="base_joint" value="0"/>
         <joint name="elbow" value="0"/>
@@ -34,40 +27,26 @@
         <joint name="roll" value="0"/>
         <joint name="shoulder" value="0"/>
     </group_state>
-    <group_state name="pose_1" group="arm">
+    <group_state name="reposo" group="arm">
         <joint name="base_joint" value="0"/>
         <joint name="elbow" value="1.57"/>
         <joint name="pitch" value="0"/>
         <joint name="roll" value="0"/>
-        <joint name="shoulder" value="-1.57"/>
+        <joint name="shoulder" value="0"/>
+    </group_state>
+    <group_state name="pose_1" group="arm">
+        <joint name="base_joint" value="1.57075"/>
+        <joint name="shoulder" value="0.175"/>
+        <joint name="elbow" value="2.618"/>
+        <joint name="pitch" value="1.57075"/>
+        <joint name="roll" value="2.36"/>
     </group_state>
     <group_state name="pose_2" group="arm">
-        <joint name="base_joint" value="1.57"/>
-        <joint name="elbow" value="-0.524"/>
-        <joint name="pitch" value="0"/>
-        <joint name="roll" value="0"/>
-        <joint name="shoulder" value="0.262"/>
-    </group_state>
-    <group_state name="pose_3" group="arm">
-        <joint name="base_joint" value="-1.57"/>
-        <joint name="elbow" value="-0.524"/>
-        <joint name="pitch" value="0"/>
-        <joint name="roll" value="0"/>
-        <joint name="shoulder" value="0.262"/>
-    </group_state>
-    <group_state name="pose_4" group="arm">
-        <joint name="base_joint" value="0"/>
-        <joint name="elbow" value="0"/>
-        <joint name="pitch" value="-1.483"/>
-        <joint name="roll" value="-3.1415"/>
-        <joint name="shoulder" value="0"/>
-    </group_state>
-    <group_state name="pose_5" group="arm">
-        <joint name="base_joint" value="0"/>
-        <joint name="elbow" value="0"/>
-        <joint name="pitch" value="1.483"/>
-        <joint name="roll" value="3.1415"/>
-        <joint name="shoulder" value="0"/>
+        <joint name="base_joint" value="-1.57075"/>
+        <joint name="shoulder" value="-1.222"/>
+        <joint name="elbow" value="-0.4363"/>
+        <joint name="pitch" value="-0.785"/>
+        <joint name="roll" value="-1.7453"/>
     </group_state>
     <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
     <end_effector name="end_effector" parent_link="ee_link" group="arm" parent_group="gripper"/>

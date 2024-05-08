@@ -1,5 +1,4 @@
-#!/usr/bin/python3
-# -*- coding: utf-8 -*-
+#  launch file to initiate ignition world
 import os
 
 from ament_index_python.packages import get_package_share_directory
@@ -11,7 +10,6 @@ from ament_index_python.packages import get_package_prefix
 
 def generate_launch_description():
 
-    # pkg_gazebo_ros = get_package_share_directory('gazebo_ros')
     pkg_sbot_gazebo = get_package_share_directory('sbot_gazebo')
 
     # We get the whole install dir
@@ -21,7 +19,6 @@ def generate_launch_description():
 
     # Set the path to the WORLD model files. Is to find the models inside the models folder in sbot_gazebo package
     gazebo_models_path = os.path.join(pkg_sbot_gazebo, 'models')
-    # os.environ["IGN_GAZEBO_MODEL_PATH"] = gazebo_models_path
 
     if 'IGN_GAZEBO_MODEL_PATH' in os.environ:
         os.environ['IGN_GAZEBO_MODEL_PATH'] =  os.environ['IGN_GAZEBO_MODEL_PATH'] + ':' + install_dir + '/share' + ':' + gazebo_models_path

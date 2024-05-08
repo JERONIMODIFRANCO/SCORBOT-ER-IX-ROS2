@@ -1,16 +1,5 @@
-// Copyright 2016 Open Source Robotics Foundation, Inc.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// Nodo para realizar el loggeo en un archivo de los estados de las juntas (desde Gazebo) 
+// y del plan ejecutado mediante la función "planear y ejecutar" del plugin de MoveIt2 en RViz
 
 #include <functional>
 #include <memory>
@@ -54,7 +43,7 @@ private:
   void trayectory_callback(const moveit_msgs::msg::DisplayTrajectory::SharedPtr msg) const
   {
     
-    std::string nombre_archivo = "plan" + std::to_string(plan_num) + ".txt";
+    std::string nombre_archivo = "/home/scorbot/Loggeo/Gazebo/Plan/Plan_" + std::to_string(plan_num) + ".txt";
     
     if (!msg->trajectory.empty()) {
       // Accede al primer punto de la trayectoria planificada
@@ -130,7 +119,7 @@ private:
 
   void jt_callback(const sensor_msgs::msg::JointState::SharedPtr joints) const
   {
-    std::string nombre_archivo = "ejecucion" + std::to_string(plan_num) + ".txt";
+    std::string nombre_archivo = "/home/scorbot/Loggeo/Gazebo/Posiciones/EjecucionS_" + std::to_string(plan_num) + ".txt";
     if(juntas){
       juntas = 0;
       std::ofstream ejecucion(nombre_archivo, std::ios::app); // Crea un objeto ofstream y abre el archivo datos.txt

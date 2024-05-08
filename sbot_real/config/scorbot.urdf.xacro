@@ -9,6 +9,6 @@
     <xacro:include filename="scorbot.ros2_control.xacro" />
 
 
-    <xacro:scorbot_ros2_control name="FakeSystem" initial_positions_file="$(arg initial_positions_file)"/>
+    <xacro:scorbot_ros2_control name="Sbot_Hardware_Interface" initial_positions_file="$(arg initial_positions_file)"/>
 
 </robot>

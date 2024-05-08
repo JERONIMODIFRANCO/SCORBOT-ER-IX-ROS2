@@ -14,7 +14,3 @@
     ├── CMakeLists.txt
     ├── sbot_hi.xml: informacion para ros2 sobre la libreria en cuestión.
     └── package.xml
-
-Para lograr que las funciones de comunicación puedan ser ejecutadas de manera correcta es necesario verificar el nombre de los puertos conectados con los conversores usb-uart, para ello se utiliza el comando PYTHON3 -M serial.tools.list_ports()
-
-Además es necesario activar los permisos de escritura en dichos puertos y agregar al usuario al grupo que tiene permisos de escritura y lectura sobre los mismos. De ser necesario también se debe dotar al ejecutable de dichos permisos.

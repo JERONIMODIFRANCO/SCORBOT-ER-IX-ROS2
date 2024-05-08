@@ -3,7 +3,7 @@
          type="sbot_hi::SbotPositionOnlyHardware"
          base_class_type="hardware_interface::SystemInterface">
     <description>
-      The ros2_control RRbot example using a system hardware interface-type.
+      The Scorbot hardware_interface using a system hardware interface-type.
     </description>
   </class>
 </library>
