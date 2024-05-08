@@ -37,7 +37,7 @@
 
          pid1.Ki = 0.0002*correccion;
 
-         pid1.Kd = 0;
+         pid1.Kd = 0*correccion;
 
          pid1.c1 = 1;
 
@@ -53,7 +53,7 @@
 
          pid2.Ki = 0.0002*correccion;
 
-         pid2.Kd = 0;
+         pid2.Kd = 1*correccion;
 
          pid2.c1 = 1;
 
@@ -69,7 +69,7 @@
 
          pid3.Ki = 0.0005*correccion;
 
-         pid3.Kd = 0;
+         pid3.Kd = 1.25*correccion;
 
          pid3.c1 = 1;
 
@@ -107,7 +107,7 @@
 
          pid2.Ki = 0.0005*correccion;
 
-         pid2.Kd = 0;
+         pid2.Kd = 0*correccion;
 
          pid2.c1 = 1;
 
@@ -123,7 +123,7 @@
 
          pid3.Ki = 0.0005*correccion;
 
-         pid3.Kd = 0;
+         pid3.Kd = 0*correccion;
 
          pid3.c1 = 1;
 

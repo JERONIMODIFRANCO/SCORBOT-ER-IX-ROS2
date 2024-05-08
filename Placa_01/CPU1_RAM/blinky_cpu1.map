@@ -1,7 +1,7 @@
 ******************************************************************************
              TMS320C2000 Linker PC v22.6.1                     
 ******************************************************************************
->> Linked Mon Apr 22 17:00:55 2024
+>> Linked Thu May  2 15:07:10 2024
 
 OUTPUT FILE NAME:   <blinky_cpu1.out>
 ENTRY POINT SYMBOL: "code_start"  address: 00000000
@@ -14,10 +14,10 @@ MEMORY CONFIGURATION
 PAGE 0:
   BEGIN                 00000000   00000002  00000002  00000000  RWIX
   RAMM0                 00000123   000002dd  000002da  00000003  RWIX
-  RAMLS0                00008000   00000800  000007fc  00000004  RWIX
+  RAMLS0                00008000   00000800  00000800  00000000  RWIX
   RAMLS1                00008800   00000800  000007fc  00000004  RWIX
-  RAMLS2                00009000   00000800  000007fe  00000002  RWIX
-  RAMLS3                00009800   00000800  0000030c  000004f4  RWIX
+  RAMLS2                00009000   00000800  000007ed  00000013  RWIX
+  RAMLS3                00009800   00000800  00000324  000004dc  RWIX
   RAMLS4                0000a000   00000800  00000000  00000800  RWIX
   RAMD0                 0000b000   00000800  000007fc  00000004  RWIX
   FLASHA                00080002   00001ffe  00000000  00001ffe  RWIX
@@ -677,12 +677,13 @@ RomWaitStateRegsFile
 *          1    0005f540    00000002     UNINITIALIZED
                   0005f540    00000002     F2837xD_GlobalVariableDefs.obj (RomWaitStateRegsFile)
 
-.text.1    0    00008000    000007fc     
+.text.1    0    00008000    00000800     
                   00008000    000004ae     eQEP_motor_1_2_3.obj (.text)
                   000084ae    000001fa     Homming.obj (.text)
-                  000086a8    00000113     SetParametrosPID.obj (.text)
-                  000087bb    00000029     rts2800_fpu32.lib : exit.c.obj (.text)
-                  000087e4    00000018                       : ll_aox28.asm.obj (.text)
+                  000086a8    0000011e     SetParametrosPID.obj (.text)
+                  000087c6    00000029     rts2800_fpu32.lib : exit.c.obj (.text)
+                  000087ef    00000009                       : _lock.c.obj (.text)
+                  000087f8    00000008     F2837xD_CodeStartBranch.obj (.text)
 
 .text.2    0    00008800    000007fc     
                   00008800    000004ab     F2837xD_SysCtrl.obj (.text)
@@ -691,17 +692,15 @@ RomWaitStateRegsFile
                   00008fc2    00000028     F2837xD_PieCtrl.obj (.text)
                   00008fea    00000012     rts2800_fpu32.lib : args_main.c.obj (.text)
 
-.text.3    0    00009000    000007fe     
+.text.3    0    00009000    000007ed     
                   00009000    000003ba     Comunicaciones.obj (.text)
                   000093ba    000000fd     F2837xD_EPwm.obj (.text)
                   000094b7    000000ee     muestreo.obj (.text)
                   000095a5    000000e1     main.obj (.text:retain)
                   00009686    000000b6     init_PWM_motor_1_2_3.obj (.text)
                   0000973c    000000b1     adc_motor_1_2_3.obj (.text)
-                  000097ed    00000009     rts2800_fpu32.lib : _lock.c.obj (.text)
-                  000097f6    00000008     F2837xD_CodeStartBranch.obj (.text)
 
-.text.4    0    00009800    0000030c     
+.text.4    0    00009800    00000324     
                   00009800    000000ac     Entradas_Salidas.obj (.text)
                   000098ac    00000088     rts2800_fpu32.lib : fs_div28.asm.obj (.text)
                   00009934    0000007e     protecciones.obj (.text)
@@ -712,6 +711,7 @@ RomWaitStateRegsFile
                   00009ab2    0000001f     seteo_salidas.obj (.text)
                   00009ad1    0000001e     rts2800_fpu32.lib : ll_cmp28.asm.obj (.text)
                   00009aef    0000001d                       : memcpy.c.obj (.text)
+                  00009b0c    00000018                       : ll_aox28.asm.obj (.text)
 
 .text.5    0    0000b000    000007fc     
                   0000b000    00000585     F2837xD_DefaultISR.obj (.text:retain)
@@ -731,7 +731,7 @@ MODULE SUMMARY
        main.obj                         595    72                 24                
        muestreo.obj                     238    186                228               
        Homming.obj                      506    36                 9                 
-       SetParametrosPID.obj             275    0                  0                 
+       SetParametrosPID.obj             286    0                  0                 
        init_PWM_motor_1_2_3.obj         182    0                  0                 
        adc_motor_1_2_3.obj              177    0                  0                 
        Entradas_Salidas.obj             172    0                  0                 
@@ -739,7 +739,7 @@ MODULE SUMMARY
        Example_EPwmSetup.obj            48     0                  0                 
        seteo_salidas.obj                31     0                  0                 
     +--+--------------------------------+------+------------------+--------------------+
-       Total:                           4923   700                593               
+       Total:                           4934   700                593               
                                                                                     
     .\device\
        F2837xD_GlobalVariableDefs.obj   0      0                  9854              
@@ -772,7 +772,7 @@ MODULE SUMMARY
                                                                                     
        Stack:                           0      0                  256               
     +--+--------------------------------+------+------------------+--------------------+
-       Grand Total:                     8964   1172               10713             
+       Grand Total:                     8975   1172               10713             
 
 
 GLOBAL DATA SYMBOLS: SORTED BY DATA PAGE
@@ -1100,12 +1100,12 @@ GLOBAL SYMBOLS: SORTED ALPHABETICALLY BY Name
 page  address   name                                  
 ----  -------   ----                                  
 abs   ffffffff  .text                                 
-0     000087bb  C$$EXIT                               
+0     000087c6  C$$EXIT                               
 0     000098ac  FS$$DIV                               
-0     000087e4  LL$$AND                               
+0     00009b0c  LL$$AND                               
 0     00009ad1  LL$$CMP                               
-0     000087ec  LL$$OR                                
-0     000087f4  LL$$XOR                               
+0     00009b14  LL$$OR                                
+0     00009b1c  LL$$XOR                               
 0     00009ae3  ULL$$CMP                              
 0     0000b0be  _ADCA1_ISR                            
 0     0000b33e  _ADCA2_ISR                            
@@ -1492,14 +1492,14 @@ abs   ffffffff  ___pinit__
 abs   ffffffff  ___text__                             
 0     00008fea  __args_main                           
 1     0000aa3e  __lock                                
-0     000097f5  __nop                                 
-0     000097f1  __register_lock                       
-0     000097ed  __register_unlock                     
+0     000087f7  __nop                                 
+0     000087f3  __register_lock                       
+0     000087ef  __register_unlock                     
 1     00000400  __stack                               
 0     0000b7fb  __system_post_cinit                   
 0     0000b7f9  __system_pre_init                     
 1     0000aa5a  __unlock                              
-0     000087bb  _abort                                
+0     000087c6  _abort                                
 0     000095a5  _adca1_isr                            
 1     0000a82c  _angulo_1                             
 1     0000a82e  _angulo_2                             
@@ -1530,7 +1530,7 @@ abs   ffffffff  ___text__
 1     0000a812  _e1                                   
 1     0000a814  _e2                                   
 1     0000a816  _e3                                   
-0     000087bd  _exit                                 
+0     000087c8  _exit                                 
 1     0000a93a  _flagsProtecciones                    
 0     00008623  _homming                              
 0     000084ba  _homming3_junta                       
@@ -1613,12 +1613,12 @@ page  address   name
 0     00008573  _homming_junta                        
 0     00008623  _homming                              
 0     000086a8  _Set_Parametros_PID                   
-0     000087bb  C$$EXIT                               
-0     000087bb  _abort                                
-0     000087bd  _exit                                 
-0     000087e4  LL$$AND                               
-0     000087ec  LL$$OR                                
-0     000087f4  LL$$XOR                               
+0     000087c6  C$$EXIT                               
+0     000087c6  _abort                                
+0     000087c8  _exit                                 
+0     000087ef  __register_unlock                     
+0     000087f3  __register_lock                       
+0     000087f7  __nop                                 
 0     00008800  _InitSysCtrl                          
 0     00008820  _InitPeripheralClocks                 
 0     000088a4  _DisablePeripheralClocks              
@@ -1680,9 +1680,6 @@ page  address   name
 0     0000971c  _InitEPwm5                            
 0     0000973c  _ConfigureADC                         
 0     0000977a  _SetupADCEpwm                         
-0     000097ed  __register_unlock                     
-0     000097f1  __register_lock                       
-0     000097f5  __nop                                 
 0     00009800  _Entradas_Salidas_init                
 0     000098ac  FS$$DIV                               
 0     00009934  _ComprobarLimites                     
@@ -1699,6 +1696,9 @@ page  address   name
 0     00009ad1  LL$$CMP                               
 0     00009ae3  ULL$$CMP                              
 0     00009aef  _memcpy                               
+0     00009b0c  LL$$AND                               
+0     00009b14  LL$$OR                                
+0     00009b1c  LL$$XOR                               
 0     0000b000  _TIMER1_ISR                           
 0     0000b00a  _TIMER2_ISR                           
 0     0000b014  _DATALOG_ISR                          
