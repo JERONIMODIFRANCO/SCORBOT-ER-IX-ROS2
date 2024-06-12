@@ -180,3 +180,6 @@ SCORBOT-ER-IX-ROS2
  
  * **[sbot_real](sbot_real)**: Este paquete contiene los archivos necesarios para la implementacion de las librerias utilizadas sobre el robot real y hace uso del paquete sbot_hi para funcionar, debido a que es necesario el hardware interface para lograr la correcta comunicacion con el hardware que comanda al robot.
 
+
+Demostration
+https://www.youtube.com/watch?v=dgp4lmHvS3Q
